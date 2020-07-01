@@ -1,10 +1,12 @@
-function logL = treeloglikelihood(tree, X, alphabet)
+function logL = treeloglikelihood(tree, alphabet, X, Y)
 %TREELOGLIKELIHOOD  Compute the likelihood of a context tree for the data X
+%                   or for the SeqROCTM (X,Y)
 % Inputs
 %
 %   tree        : context tree
-%   X           : sequence of symbols taking values in the alphabet
 %   alphabet    : alphabet 
+%   X           : sequence of inputs
+%   Y           : sequence of responses (optional)
 %
 % Outputs
 %
@@ -20,11 +22,15 @@ function logL = treeloglikelihood(tree, X, alphabet)
 %     			 1,   0,   0 ];
 %
 %			X = generatesampleCTM(ctxs, P, A, 100);  
-%			logL = completetree(ctxs, X, A);
+%			logL = completetree(ctxs, A, X);
 % 
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 05/2019
+%Date   : 06/2020
+
+if ~exist('Y', 'var')
+    Y = X;
+end
 
 ncontexts = length(tree);
 nsymbols = length(alphabet);
@@ -32,7 +38,7 @@ nsample = length(X);
 
 if isempty(tree)  
     % return the entropy since the sequence is iid
-    N = histc(X, alphabet);
+    N = histc(Y, alphabet);
     ind = N > 0;
     logL = sum(N(ind) .* (log(N(ind)) - log(nsample)));
 else
@@ -48,7 +54,7 @@ else
             idx = Count{2,i};
             ss(i) = Count{1,i};
             for id = idx
-                column = X(id + 1) + 1; %trick: use the fact that the alphabet is always [0,...,|A|-1]
+                column = Y(id + 1) + 1; %trick: use the fact that the alphabet is always [0,...,|A|-1]
                 N(i,column) = N(i,column) + 1; 
 
             end 

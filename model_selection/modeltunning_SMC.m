@@ -1,6 +1,6 @@
-function [opt_tree, idx, bootsamples_n2] = modeltunning_championTrees(championTrees, A, n1, n2, alpha, B, bootstrategy, param1, param2)
-%MODELTUNNING_CHAMPIONTREES Context tree selection using the Smallest Maximizer Criterion 
-%							(see article Galves, A. et. al., Ann. Appl. Stat., Volume 6, Number 1 (2012), 186-209)
+function [opt_tree, idx, bootsamples_n2] = modeltunning_SMC(championTrees, A, n1, n2, alpha, B, bootstrategy, param1, param2)
+%MODELTUNNING_SMC Context tree selection using the Smallest Maximizer Criterion 
+%				  (see article Galves, A. et. al., Ann. Appl. Stat., Volume 6, Number 1 (2012), 186-209)
 %
 % Inputs
 %
@@ -26,13 +26,14 @@ function [opt_tree, idx, bootsamples_n2] = modeltunning_championTrees(championTr
 %
 % Outputs
 %
-%   opt_tree      : optimal context tree
-%   idx           : index of the optimal context tree in the set of
-%                   Champion Trees
+%  opt_tree         : optimal context tree
+%  idx              : index of the optimal context tree in the set of
+%                       Champion Trees
+%  bootsamples_n2   : bootstrap samples generated
 %
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 05/2020
+%Date   : 07/2020
 
 nTrees = length(championTrees);
 
@@ -56,16 +57,16 @@ diff_n2 = zeros(nTrees-1, B);
 % initialize L_current
 L_current = zeros(B,2);
 for b = 1 : B
-    L_current(b,1) = treeloglikelihood(championTrees{1}, bootsamples_n2(b, 1:n1), A);
-    L_current(b,2) = treeloglikelihood(championTrees{1}, bootsamples_n2(b,:), A);
+    L_current(b,1) = treeloglikelihood(championTrees{1}, A, bootsamples_n2(b, 1:n1));
+    L_current(b,2) = treeloglikelihood(championTrees{1}, A, bootsamples_n2(b,:));
 end
 
 for t = 1 : nTrees-1
     L_next = zeros(B,2); % store the log-likelihood of tree t+1 to speed-up
     for b = 1 : B
         %
-        L_next(b,1) = treeloglikelihood(championTrees{t+1}, bootsamples_n2(b, 1:n1), A);
-        L_next(b,2) = treeloglikelihood(championTrees{t+1}, bootsamples_n2(b,:), A);
+        L_next(b,1) = treeloglikelihood(championTrees{t+1}, A, bootsamples_n2(b, 1:n1));
+        L_next(b,2) = treeloglikelihood(championTrees{t+1}, A, bootsamples_n2(b,:));
         
         % difference for n1 
         diff_n1(t,b) = (L_current(b,1) - L_next(b,1))/(n1^0.9);

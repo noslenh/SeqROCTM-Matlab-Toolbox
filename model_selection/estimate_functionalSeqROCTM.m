@@ -1,4 +1,4 @@
-function contexts = estimate_functionalSeqRoCTM(X, Y, Alphabet, max_height, n_BM, alpha, beta)
+function contexts = estimate_functionalSeqROCTM(X, Y, Alphabet, max_height, n_BM, alpha, beta)
 %ESTIMATE_FUNCTIONALSEQROCTM estimate a context tree from the sequence of
 %                            random objects driven by context tree model (X,Y),
 %                            where X is a context tree model and Y is a sequence of functional data

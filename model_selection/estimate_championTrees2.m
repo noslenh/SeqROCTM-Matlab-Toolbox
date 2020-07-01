@@ -1,13 +1,15 @@
-function [Trees, P, ML, cutoff] = estimate_championTrees(X, max_height, A, varargin)
-%ESTIMATE_CHAMPIONTREES estimate a context tree using the 'bic' criterion
-%                       for different values of the penalization constant.
-%                       The set of trees retrieved for all value of the
-%                       penalization constant is called champion trees (see
-%                       Ann. Appl. Stat. 6 (1), 2012, 186-209 for details)
+function [Trees, P, ML, cutoff] = estimate_championTrees2(X, Y, max_height, A, varargin)
+%ESTIMATE_CHAMPIONTREES estimate the Champion Trees for the SeqROCTM (X,Y).
+%                       Using the 'bic' criterion a context tree is
+%                       estimated for diferent values of the penalization
+%                       constant. This function implements the method
+%                       proposed in Ann. Appl. Stat. 6 (1), 2012, 186-209
+%                       for SeqROCTM
 %
 % Input
 %   
-%   X           : sequence of data
+%   X           : sequence of inputs
+%   Y           : sequence of responses
 %   max_height  : height of the complete tree
 %   A           : alphabet
 %   varargin    : contain the l_min and u values
@@ -23,7 +25,6 @@ function [Trees, P, ML, cutoff] = estimate_championTrees(X, max_height, A, varar
 %   ML          : maximum likelihood value for each of the champion tree
 %   cuttoff     : values of the bic penalization
 %
-% Usage
 %
 %
 
@@ -42,8 +43,11 @@ TEST = getTESTstructure(T, I, max_height, length(A), X);
 
 % estimate the trees for the minimum and maximal value of the penalization
 % constant
-[tau_l, p_l] = estimate_contexttree(X, A, max_height, 'bic', l_min, {T, I}, TEST);  
-[tau_upper, p_upper] = estimate_contexttree(X, A, max_height, 'bic', u, {T, I}, TEST);
+[tau_l, p_l] = CTestimator(X, A, max_height, 'bic', l_min, Y, {T, I}, TEST);
+[tau_upper, p_upper] = CTestimator(X, A, max_height, 'bic', u, Y, {T, I}, TEST);
+
+% [tau_l, p_l] = estimate_contexttree(X, A, max_height, 'bic', l_min, {T, I}, TEST);  
+% [tau_upper, p_upper] = estimate_contexttree(X, A, max_height, 'bic', u, {T, I}, TEST);
 
 % initialize
 upper_bound = u;
@@ -56,7 +60,7 @@ end
     tau_u = tau_upper;
     p_u = p_upper;
 
-    i = 1; Trees{i} = tau_l; P{i} = p_l; ML(i) = treeloglikelihood(tau_l, A, X); cutoff(i) = l_min;
+    i = 1; Trees{i} = tau_l; P{i} = p_l; ML(i) = treeloglikelihood(tau_l, A, X, Y); cutoff(i) = l_min;
 
     % estimate the different trees in the interval specified for the
     % penalization constant
@@ -66,14 +70,14 @@ end
                 a = u;                                               % the complete tree is obtain when l_min=0 and for any value     
                 tau_a = tau_u; p_a = p_u;                            % greater than zero, a tree different from the complete tree is obtained   
                 u = (l_min + u)/2;                                      
-                [tau_u, p_u] = estimate_contexttree(X, A, max_height, 'bic', u, {T, I}, TEST);   
+                [tau_u, p_u] = CTestimator(X, A, max_height, 'bic', u, Y, {T, I}, TEST);   
             end
             l_min = u; tau_l = tau_u;
             u = a; tau_u = tau_a; p_u = p_a;
         end
         i = i + 1;
         Trees{i} = tau_u; P{i} = p_u; cutoff(i) = u;
-        ML(i) = treeloglikelihood(tau_u, A, X);
+        ML(i) = treeloglikelihood(tau_u, A, X, Y);
         l_min = u; tau_l = tau_u; 
         u = upper_bound;
         tau_u = tau_upper;  

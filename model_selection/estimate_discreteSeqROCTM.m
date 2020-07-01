@@ -1,4 +1,4 @@
-function [contexts, Q] = estimate_discreteSeqRoCTM( X, Y, Alphabet, max_height, statistic, bic_pen)
+function [contexts, Q] = estimate_discreteSeqROCTM( X, Y, Alphabet, max_height, statistic, bic_pen)
 %ESTIMATE_DISCRETESEQROCTM estimate a context tree from the stochastic process driven
 %                        by a context tree model (X,Y), where X is a context tree
 %                        model and Y is a sequence of discrete data
@@ -31,7 +31,7 @@ function [contexts, Q] = estimate_discreteSeqRoCTM( X, Y, Alphabet, max_height, 
 %			X = generatesampleCTM(ctxs, P, A, 100);
 %			Y = generatesampleCTM(ctxs, P, A, 100);
 %			
-%			[c, q] = estimate_discreteSeqRoCTM(X, Y, A, 4, 'bic', 1);
+%			[c, q] = estimate_discreteSeqROCTM(X, Y, A, 4, 'bic', 1);
 
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)

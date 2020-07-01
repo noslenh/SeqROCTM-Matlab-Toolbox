@@ -195,7 +195,12 @@ else
                         % 3) delete from br_not_test every context that has the father of new_node as a suffix
                         to_delete = [];
                         for ii = 1 : size(br_not_test,2)
-                            if isequal(father_lwo, br_not_test{1,ii}{1}(end-lf+1:end))
+                            if iscell(br_not_test{1,ii})
+                                suff = br_not_test{1,ii}{1}(end-lf+1:end);
+                            else
+                                suff = br_not_test{1,ii}(end-lf+1:end);
+                            end
+                            if isequal(father_lwo, suff)
                                 to_delete = [to_delete; ii];
                             end
                         end
