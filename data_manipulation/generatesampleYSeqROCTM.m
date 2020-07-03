@@ -18,16 +18,24 @@ function [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)
 %
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 06/2020
+%Date   : 07/2020
 
-    n = length(X);
+n = length(X);
+
+if isempty(contexts)
+    Xnew = X;
+    Y = samplediscretedist(A, q, n);
+    qemp = hist(Y, A); %counts in same order than the alphabet
+else
     % length of the context of maximum length
     max_length = max(cellfun(@(x) length(x), contexts));
     
     % initialize the empirical distributions
     qemp = zeros(size(q));
+    
     % initialize the response sequence
     Y = zeros(1, n - max_length);
+    
     % delete from the input sequence the positions for which it is not
     % possible generate response
     Xnew = X(max_length + 1 : end);
@@ -39,10 +47,11 @@ function [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)
         % response
         [Y(i), idx] = samplediscretedist(A, q(idx_ctx,:), 1);
         % update the distriution associated to that context
-        qemp(idx_ctx, idx) = qemp(idx_ctx, idx) + 1; 
+        qemp(idx_ctx, idx) = qemp(idx_ctx, idx) + 1;
     end
-    
-    % normalize probabilities
-    qemp = bsxfun(@rdivide,qemp,sum(qemp,2));
+end
+
+% normalize probabilities
+qemp = bsxfun(@rdivide,qemp,sum(qemp,2));
 
 end

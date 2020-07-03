@@ -8,7 +8,7 @@ function match = match_contexts(ctx, est_ctx)
 %
 % match     : structure with the matching of contexts
  
-%Author : Noslen Hernandez, Aline Duarte 
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2019
  
  

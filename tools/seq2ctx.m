@@ -6,9 +6,8 @@ function ctx = seq2ctx(X, tau)
 %
 %   ctx : sequence with the indices of the contexts
 
-%Author : Noslen Hernandez, Aline Duarte
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2020
-
 
 max_length = max(cellfun(@(x) length(x), tau));
 ctx = -1 * ones(1, length(X)-max_length+1);

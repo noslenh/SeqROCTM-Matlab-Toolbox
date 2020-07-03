@@ -2,12 +2,10 @@ function B = brownianbrigde(N)
 %BROWNIANBRIDGE Generate a Brownian Bridge of dimension N
 %
 % Input
-%
-% N : dimension of the Brownian bridge
+%   N : dimension of the Brownian bridge
 %
 % Output
-%
-% B : Brownian bridge
+%   B : Brownian bridge
 %
 % Usage:
 %   B = brownianbrigde(100);

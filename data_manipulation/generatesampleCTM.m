@@ -30,7 +30,7 @@ function [seq, sP] = generatesampleCTM(contexts, P, A, lengthSeq, initStrategy)
 %	
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 04/2020
+%Date   : 07/2020
 
 % initialization
 seq = -1*ones(1, lengthSeq);
@@ -38,7 +38,7 @@ sP = zeros(size(P));
                 
 if isempty(contexts)    % generate an i.i.d sequence if contexts is empty
     seq = samplediscretedist(A, P, lengthSeq);
-    sP = hist(seq, unique(seq)); %counts in same order than the alphabet
+    sP = hist(seq, A); %counts in same order than the alphabet
 else
     % check if the strategy to begin generating the sequence was specified
     if ~exist('initStrategy', 'var')

@@ -84,7 +84,7 @@ diff_n2 = zeros(nTrees-1, B);
 L_current = zeros(B,2);
 for b = 1 : B
     L_current(b,1) = treeloglikelihood(championTrees{1}, A, Xbootsamples_n2(b, 1:n1), Ybootsamples_n2(b, 1:n1));
-    L_current(b,2) = treeloglikelihood(championTrees{1}, A, Xbootsamples_n2(b,:), Xbootsamples_n2(b,:));
+    L_current(b,2) = treeloglikelihood(championTrees{1}, A, Xbootsamples_n2(b,:), Ybootsamples_n2(b,:));
 end
 
 for t = 1 : nTrees-1

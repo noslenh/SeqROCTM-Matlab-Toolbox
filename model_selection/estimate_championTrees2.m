@@ -39,7 +39,7 @@ optargs(1:numvarargs) = varargin;
 
 % compute the complete tree and the TEST structure only once (for speed-up)
 [T, I] = completetree(X, max_height, A);
-TEST = getTESTstructure(T, I, max_height, length(A), X);
+TEST = getTESTstructure(T, I, length(A), Y);
 
 % estimate the trees for the minimum and maximal value of the penalization
 % constant

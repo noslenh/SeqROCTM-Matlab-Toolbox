@@ -7,7 +7,7 @@ function match = isequalCT(tree1, tree2)
 %
 %   match : true if the context tree are equal, false otherwise
 
-%Author : Aline Duarte, Noslen Hernandez
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2019
 
 match = false;
