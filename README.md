@@ -17,7 +17,7 @@ git clone https://github.com/noslenh/SeqROCTM-Matlab-Toolbox.git
 
 ## License
 
-Reseased under GNU license
+Released under GNU license
 
 ## Contact
 
