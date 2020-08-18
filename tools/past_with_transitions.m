@@ -1,17 +1,32 @@
-function [past, indexes] = past_with_transitions(past, all_past, N)
+function [pasts, indexes] = past_with_transitions(past, all_past, N)
+%PAST_WITH_TRANSITIONS Return all the pasts (and its indexes) from all_past
+%					   that can be generated from past
+% Inputs
+%  
+%  past 	: past sequence	
+%  all_past : all past sequences
+%  N		:
+%
+% Outputs
+%
+%  pasts 	: all pasts with transition from past
+%  indexes 	: indexes of pasts in all_past
+%
+
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Date   : 08/2020
 
 L = length(past);
 sub_past = past(2:end);
 
-% looks for all the past that begin with sub_past (esto saca una cuenta que
-% te ubica directamente en el íncide de esos pasados, sin necesidad de
-% recorrer todos los pasados)
+% looks for all the past that begin with sub_past (for this we made a computation
+% that gets directly the indexes of those pasts with no need to iterate all_past)
 index = 0;
 for i = 1 : L - 1
     index = index + (sub_past(i) - 1) * perm_with_repetition_ordermatter(N, L-i);
 end
 indexes = index + (1: N);
-past = all_past(indexes,:);
+pasts = all_past(indexes,:);
 end
 
 function n = perm_with_repetition_ordermatter(N, k)
