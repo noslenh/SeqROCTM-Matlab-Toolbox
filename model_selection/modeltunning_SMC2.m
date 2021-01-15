@@ -17,7 +17,7 @@ function [opt_tree, idx, Xbootsamples_n2, Ybootsamples_n2] = modeltunning_SMC2(c
 %   alpha         : alpha level to use on the t-test
 %   B             : number of resamples in the bootstrap procedure
 %   Xbootstrategy : bootstrap procedure used. 'parametric_ctm': a given
-%                   context tree model is used to generate the boostrap
+%                   context tree model is used to generate the bootstrap
 %                   samples. 'blocks': a renewal point is used to create
 %                   independent blocks that are used to generate the bootstrap
 %                   samples.
@@ -75,7 +75,7 @@ for i = 1 : B
 end
 
 
-% compute the differences in likelihood for each pair of consecutives trees
+% compute the differences in likelihood for each pair of consecutive trees
 % and all the bootstrap samples
 diff_n1 = zeros(nTrees-1, B);
 diff_n2 = zeros(nTrees-1, B);

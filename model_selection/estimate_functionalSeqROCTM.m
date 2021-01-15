@@ -10,7 +10,8 @@ function contexts = estimate_functionalSeqROCTM(X, Y, Alphabet, max_height, n_BM
 %                   dimension D
 % Alphabet      : alphabet 
 % max_height    : maximum height of the complete tree
-% n_BM          : number of Brownian motion used in the statistical test
+% n_BM          : number of Brownian bridges used in the statistical test
+%                   or a matrix with the Brownian bridges
 % alpha         : significant level of the KS test
 % beta          : significance level used in the statistical test with several
 %                   Brownian
@@ -19,7 +20,7 @@ function contexts = estimate_functionalSeqROCTM(X, Y, Alphabet, max_height, n_BM
 %
 % contexts      : estimated context tree
 
-%Author : Noslen Hernandez, Aline Duarte
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 11/2019
 
 length_X = size(X,2);
@@ -31,27 +32,39 @@ if length_X ~= Yc
 end
 
 % complete tree
-[T, I, nT] = completetree(X, max_height, Alphabet);
+[T, I] = completetree(X, max_height, Alphabet);
 
 if isempty(T)
     contexts = T;
 else
-         
-     % compute the thresholds required in the statitical test used for
-     % prunning
-     c = sqrt(-1/2 * (log(alpha/2)));
      
-     C = binoinv(1-beta, n_BM, alpha);
+     if isscalar(n_BM) 
+         if n_BM == 0
+             B = 1;
+             n_BM = size(Y,1);
+         else
+             % generate the Brownian bridges
+             B = zeros(n_BM, D);
+             for i = 1 : n_BM
+                 B(i,:) = brownianbrigde(D);
+             end
+         end
+     else
+         % get the the Brownian bridges 
+         B = n_BM;
+         n_BM = size(B, 1);
+     end
      
      % project all the functions chunk in the Brownian bridge(s)
-     Y_projected = zeros(n_BM, length_X);  % each row contain the projections of all the chunks in a Brownian
-     for i = 1 : n_BM
-        B = brownianbrigde(D);
-        Y_projected(i,:) = dot(Y, B'*ones(1,length_X));
-     end
-
+     % each row contain the projections of all the chunks in a Brownian
+     Y_projected = B * Y;
+     
+     % compute the thresholds required in the statistical test used for
+     % pruning
+%      c = sqrt(-1/2 * (log(alpha/2)));
+     C = binoinv(1-beta, n_BM, alpha);
+     
     %
-    la = length(Alphabet);
     br_not_test = {};
     
     TEST = cell(max_height+1,1);
@@ -94,7 +107,7 @@ else
     test = TEST{max_level};
     internal_nodes = {};
     
-    for s = max_level-1 : -1 : 1 %iterate the levels buttom-up
+    for s = max_level-1 : -1 : 1 %iterate the levels bottom-up
 
         % initialize br_test
         br_test = {};
@@ -116,11 +129,10 @@ else
                 new_node{3,1} = {cell2mat(test{3,b})};
                 
                 %
-                if isequal(new_node{1,1}, X(1:s-1)) % if X begins with the new_node, the counter needs to be increase by 1
-                    new_node{2,1} = new_node{2,1} + 1;
-                end
-                
-                if stat_ks_projective(test(:,b), n_BM, alpha, c, C) == 1 % prune => new_node = leave
+%                 if isequal(new_node{1,1}, X(1:s-1)) % if X begins with the new_node, the counter needs to be increase by 1
+%                     new_node{2,1} = new_node{2,1} + 1;
+%                 end
+                if stat_ks_projective(test(:,b), n_BM, alpha, C) == 1 % prune => new_node = leave
                     
                     % Find if new_node have sibling in the list internal_nodes
                     found = sibling_in_internal_nodes(internal_nodes, new_node{1,1}, 0);
@@ -145,7 +157,7 @@ else
                 end
         end
         test = br_test;
-        % add the phathers of internal nodes as internal nodes for the next
+        % add the fathers of internal nodes as internal nodes for the next
         % iteration
         internal_nodes = cellfun(@(x) x(2:end), internal_nodes, 'UniformOutput', false);
         

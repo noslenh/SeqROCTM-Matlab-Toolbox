@@ -52,7 +52,7 @@ else
         case 'max_length_context'
             
              % max_length_context: begin with some of the contexts of maximum length
-             % randomly choosen
+             % randomly chosen
              idx_ctxs_maxlength = find(lengths == max_length);
              % choose randomly
              msize = numel(idx_ctxs_maxlength);
@@ -71,7 +71,7 @@ else
             sP(idx_ctx, idx) = sP(idx_ctx, idx) + 1;
                
         case 'any_string'
-            % any_string: begin with any context w randomly choosen.
+            % any_string: begin with any context w randomly chosen.
             % Generate max_length-1 further steps. Truncate the
             % beginning of the sequence deleting m symbols (1<=m<l(w)).
             % This guarantee a sequence that begin with "any" string 
@@ -118,10 +118,10 @@ else
                         trouble = true;
                     end
                 end
-                % if the sequence was succefully generated we are done
+                % if the sequence was successfully generated we are done
                 success = ~trouble;   
             end
-            % randomly delete part of the beggining of the sequence
+            % randomly delete part of the beginning of the sequence
             if lw > 1
                 rp = randperm(lw-1);
                 ndelete = rp(1);
@@ -131,8 +131,8 @@ else
             seq(1:next_pos-1) = tmp_seq;
     end
     
-    % looks for the last context and add the next symbol according to its probs
-    % distribution
+    % looks for the last context and add the next symbol according to the  
+    % distribution associated to such context
     while next_pos < lengthSeq + 1
         [~, idx_ctx] = contextfunction(seq(next_pos - max_length : next_pos-1), contexts);
         [next_symbol, idx] = samplediscretedist(A, P(idx_ctx,:), 1);

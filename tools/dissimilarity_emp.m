@@ -97,7 +97,7 @@ function p = get_prob(x, contexts, P, mu_ctx)
 %
 % p         : invariant measure for x
 
-%Author : Noslen Hernandez, Aline Duarte
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2019
 
     stop = false;
@@ -131,7 +131,7 @@ function d = D_Bhattacharyya(p, q)
 %
 % d : Bhattacharyya distance
 
-%Author : Aline Duarte, Noslen Hernandez
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2019
 
 BC = sum(sqrt(p.*q));
@@ -147,7 +147,7 @@ function d = D_Hellinger(p, q)
 %
 % d : Hellinger distance
 
-%Author : Noslen Hernandez, Aline Duarte
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2019
 
 BC = sum(sqrt(p.*q));
@@ -163,7 +163,7 @@ function d = D_TotalVariation(p, q)
 %
 % d : Total variation distance
 
-%Author : Noslen Hernandez, Aline Duarte
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2019
 
 d = 0.5 * sum(abs(p - q));

@@ -37,7 +37,7 @@ if ncontexts ~= 0
 end
 
 lc = length(Tidx);
-count = cell(2, ncontexts + lc); %prealocate for speed
+count = cell(2, ncontexts + lc); %preallocate for speed
 count(1,:) = {0};
 
 % put the results in the structure of count
@@ -48,7 +48,7 @@ for i = 1 : length(Tidx)
         count{2, Tidx{i}} = I{i} + lw(Tidx{i}) - 1;
     else
         position = I{i} + length(T{i}) - 1;
-        if position >= height    % add only if the past sequence is large enought to find a context
+        if position >= height    % add only if the past sequence is large enough to find a context
             additional = additional + 1;
             count{1, ncontexts+additional} = length(I{i});
             count{2, ncontexts+additional} = position;

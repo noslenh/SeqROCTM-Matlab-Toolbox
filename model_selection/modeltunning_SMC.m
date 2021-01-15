@@ -49,7 +49,7 @@ switch bootstrategy
         bootsamples_n2 = generatesampleCTM_fast(tau0, P0, A, n2, B);
 end
 
-% compute the differences in likelihood for each pair of consecutives trees
+% compute the differences in likelihood for each pair of consecutive trees
 % and all the bootstrap samples
 diff_n1 = zeros(nTrees-1, B);
 diff_n2 = zeros(nTrees-1, B);

@@ -25,7 +25,7 @@ Y = -1*ones(1, n);
 qemp = zeros(size(q));
 
 next_pos = 1;
-% looks for the last context and add the next symbol according to its probs
+% looks for the last context and add the next symbol according to its probability
 % distribution
 while next_pos < n + 1
     idx_ctx = idx_contexts_X(next_pos);

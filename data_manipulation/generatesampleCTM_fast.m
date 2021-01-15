@@ -46,14 +46,14 @@ else
         
         seq = -1*ones(1, lengthSeq);
         
-        % initialize the sequence with a past choosen at random
+        % initialize the sequence with a past chosen at random
         rp = randperm(npast);
         idx_last_past = rp(1);
         init_past = past(idx_last_past, :); 
         seq(1 : max_length) = init_past;
         next_pos = max_length + 1;
 
-        % add the next symbol according to its probs given the past
+        % add the next symbol according to the distribution given the past
         while next_pos < lengthSeq + 1
             [next_symbol, idx] = samplediscretedist(A, Mc(idx_last_past,:), 1);
             seq(next_pos) = next_symbol;

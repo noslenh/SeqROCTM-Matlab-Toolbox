@@ -1,4 +1,4 @@
-function [predinf, H] = PredInfCT(contexts, P, A)
+function [predinf, H, mu_ctx] = PredInfCT(contexts, P, A)
 %IPRED Compute Predictive Information of a context tree model (see Bialek
 %      et.al, Neural Computation 13, 2409-2463, 2001)
 %
@@ -22,7 +22,7 @@ height = max(cellfun(@(x) length(x), contexts, 'uniformoutput', 1));
 
 % compute the entropy rate and the stationary distribution of the finite
 % order Markov process corresponding to the context tree model
-[H, ~, ~, Hmu_markovian] = EntropyRateCT(contexts, P, A);
+[H, ~, mu_ctx, Hmu_markovian] = EntropyRateCT(contexts, P, A);
 
 % predictive information (this is an specific derivation for Markov process
 % of finite order)

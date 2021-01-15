@@ -1,9 +1,12 @@
 function match = isequalCT(tree1, tree2)
 %ISEQUALCT determine if two context trees are equal (comparing only the
 %          contexts)
+% Inputs
 %
 %   tree1 : first context tree 
 %   tree2 : second context tree
+%
+% Outputs
 %
 %   match : true if the context tree are equal, false otherwise
 

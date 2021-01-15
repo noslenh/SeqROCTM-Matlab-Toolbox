@@ -9,7 +9,9 @@ function [c, idx] = contextfunction(past, contexts)
 % Outputs
 %
 % 	c         : context associated to the sequence [past]
-% 	idx       : index (position) of the context [c] in [contexts] 
+% 	idx       : index (position) of the context [c] in [contexts]. If do
+%               not exist, idx=-1
+
 %
 % Usage
 %			ctxs = {0, [0 1], [1 1], 2};

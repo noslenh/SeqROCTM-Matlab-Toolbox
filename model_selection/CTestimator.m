@@ -8,10 +8,10 @@ function [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, thresho
 %                   same dimension that X (it is optionally given in varargin)
 % Alphabet      : Alphabet 
 % max_height    : maximum height of the complete tree
-% statistic     : type of statistics used in the prunning criteria. It can
-%                   take the values 'bic' or 'emp_distribution'
-% threshold     : penalization constant used in the BIC criteria or
-%                   threshold used in the comparison of the empirical distributions
+% statistic     : type of statistics used in the pruning criteria. It can
+%                   take the values 'context' or 'emp_distribution'
+% threshold     : threshold used in the context algorithm or in the
+%                   comparison of the empirical distributions
 % varargin{1}   : Y sequence
 % varargin{2}   : complete tree (contexts and indexes)
 % varargin{3}   : TEST structure
@@ -34,7 +34,7 @@ function [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, thresho
 %			X = generatesampleCTM(ctxs, P, A, 100);
 %			Y = generatesampleCTM(ctxs, P, A, 100);
 %			
-%			[c, p] = CTestimator(X, A, 4, 'bic', 1, Y);
+%			[c, p] = CTestimator(X, A, 4, 'context', 1, Y);
 %
 %
 
@@ -78,13 +78,13 @@ if isempty(T)   % if the complete tree is the empty tree
     contexts = T;
     counts = histc(Y, Alphabet);
     P = counts / sum(counts); 	% return the frequency of each symbol
-    P = P';
+%     P = P';
 else
     la = length(Alphabet);
     br_not_test =  {};
     
     % organize the information in a structure called TEST to facilitate the
-    % prunning process
+    % pruning process
     if compute_TEST
         TEST = cell(max_height+1,1);
         max_level = 0;
@@ -125,7 +125,7 @@ else
         end
     end
         
-    % Here begin the prunning procedure
+    % Here begin the pruning procedure
     test = TEST{max_level};
     internal_nodes = {};
     
@@ -156,23 +156,23 @@ else
                 new_node{2,1} = sum(test{2,b});
                 new_node{3,1} = sum(test{3,b},2);
                 
-                % TRICK: if X begins with new_node, the counters needs to be increased by 1
-                % because that instance of new_node it is not taken into account by the sons 
-                if isequal(new_node{1,1}, X(1:s-1))
-                    % increasse the frequency
-                    new_node{2,1} = new_node{2,1} + 1;
-                    % index of the next symbol in the alphabet
-                    idx = Y(s) + 1; 
-                    % increases the transition
-                    new_node{3,1}(idx) = new_node{3,1}(idx) + 1;
-                end
+%                 % TRICK: if X begins with new_node, the counters needs to be increased by 1
+%                 % because that instance of new_node it is not taken into account by the sons 
+%                 if isequal(new_node{1,1}, X(1:s-1))
+%                     % increase the frequency
+%                     new_node{2,1} = new_node{2,1} + 1;
+%                     % index of the next symbol in the alphabet
+%                     idx = Y(s) + 1; 
+%                     % increases the transition
+%                     new_node{3,1}(idx) = new_node{3,1}(idx) + 1;
+%                 end
                 
                 % call the statistics
-                if stat_discrete(test(:,b), statistic, length_X, la, threshold) == 1 % prune => new_node = leave
+                if stat_discrete(test(:,b), statistic, threshold) == 1 % prune => new_node = leave
                     
-                    %%%% FIRST, verify if new_node has positive frequency up to lenght(X)-1, i.e., if Nw>0     %%%% 
+                    %%%% FIRST, verify if new_node has positive frequency up to length(X)-1, i.e., if Nw>0     %%%% 
                     %%%% This is a very low probability event, but it can happen when the sample size is small %%%%
-                    %%%% and the unique ocurrence of new_node was at the end of the sequence, so Nw = 0        %%%%
+                    %%%% and the unique occurrence of new_node was at the end of the sequence, so Nw = 0        %%%%
                     if new_node{2,1} == 0
                         flag_leaf_without_occurrences = true;
                         father_lwo = new_node{1,1}(2:end);
@@ -269,11 +269,12 @@ else
         contexts = {};
         counts = histc(Y, Alphabet);
         P = counts / sum(counts); % return the frequency of each symbol
-        P = P';
+%         P = P';
     else
         contexts = [br_not_test{1,:}];
         P = [br_not_test{3,:}];
         P = bsxfun(@rdivide, P, [br_not_test{2,:}]);
+        P = P';
     end
 end
 
@@ -302,7 +303,7 @@ end
 
 function [br, br_test] = delete_branch_from_br_test(br_test, str_node)
 % check if there exist a branch in br_test with siblings of [str_node]. If it
-% exists, then such brach is deleted from [br_test] and return in [br].
+% exists, then such branch is deleted from [br_test] and return in [br].
 % Otherwise, br = [];
 
 found = false;
@@ -320,7 +321,7 @@ end
 end
 
 function br_test = add_node_to_br_test(br_test, node)
-% add a node to the correspondind branch in br_test. If there is no branch
+% add a node to the corresponding branch in br_test. If there is no branch
 % of sibling, create a new branch with node
     
 nr = size(br_test,2);
@@ -357,8 +358,8 @@ function [Nw, Nwa] = get_counts(w, ind, X, length_alphabet)
 %   length_alphabet : length of the alphabet
 %
 % Outputs
-%   Nw              : Number of ocurrences of w in X
-%   Nwa             : Number of occurences of each symbol in the alphabet
+%   Nw              : Number of occurrences of w in X
+%   Nwa             : Number of occurrences of each symbol in the alphabet
 %                     after w 
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)

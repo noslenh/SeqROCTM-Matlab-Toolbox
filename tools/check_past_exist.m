@@ -23,7 +23,7 @@ if L == 1
 elseif sum(cellfun(@(a) isequal(a, past), contexts, 'Uni', 1)) == 1  %it is a context
     exist = true;    
 else
-    % check if the past with lenght L-1 exists
+    % check if the past with length L-1 exists
     if check_past_exist(past(1 : L-1), contexts, P)
         % check if the transition of symbol in position L, given the past, exists
         % looks if there exist a context associated to the past

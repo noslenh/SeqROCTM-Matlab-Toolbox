@@ -8,7 +8,7 @@ function [idx_opt_model, R] = modeltunning_risk(criteria, param_set, risk, B, n,
 % risk      : risk function 
 % B         : number of bootstrap samples
 % n         : length of the bootstrap samples 
-% tau0      : context tree used to generate the boostrap samples
+% tau0      : context tree used to generate the bootstrap samples
 % P0        : transition probabilities associated to the leaves of the tree
 % A         : alphabet
 %
@@ -42,7 +42,7 @@ bad_bootstrap_sample = [];
 np = length(param_set);
 L = zeros(B, np);
 for k = 1 : np
-%     disp(['Computing bootstraped risk for parameter value ' num2str(param_set(k)) '...']);
+%     disp(['Computing bootstrapped risk for parameter value ' num2str(param_set(k)) '...']);
     % estimate the model using param_set(k) for each bootstrap sample
     for b = 1 : B
         % estimate the model

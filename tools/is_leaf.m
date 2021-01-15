@@ -29,7 +29,7 @@ function [F, I, nT] = is_leaf(w, Alphabet, max_height, ind_father, X)
 	nson = 0;
     
     ind = is_in_sample(w, ind_father, X);
-    if numel(ind) > 0      % (no cambiar aquí para filtrar por veces que aparecen)
+    if numel(ind) > 0      % (do not change here the threshold to filter the context by its number of occurrences!!)
         if length(w) == max_height  % if the level is max_height, w is a leaf
             F = w;
             I = ind;

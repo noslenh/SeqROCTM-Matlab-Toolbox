@@ -3,13 +3,13 @@ function [ctxs, index] = is_suffix_of_contexts(ss, contexts)
 %                      a suffix
 % Inputs
 %
-% ss        : sequence
-% contexts  : set of contexts
+% 	ss        : sequence
+% 	contexts  : set of contexts
 %
 % Output
 %
-% ctxs      : contexts from which ss is a suffix
-% index     : indexes of such contexts in the array contexts
+% 	ctxs      : contexts from which ss is a suffix
+% 	index     : indexes of such contexts in the array contexts
 %
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)

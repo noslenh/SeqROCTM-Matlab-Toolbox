@@ -28,7 +28,7 @@ function [renwpoint, renewals] = tree_renewalpoint(contexts, P, A, X)
     Tw = transition_context2context(contexts, P, A);
     
     %initialize the variable to store the contexts that are renewal points
-    renewals = [];
+    renewals = {};
     lrnw = [];
 	
 	%if for all contexts w, there exist another context v such that v is

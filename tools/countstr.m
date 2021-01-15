@@ -21,11 +21,11 @@ function count = countstr(contexts, X)
 ncontexts = length(contexts);
 lX = length(X);
 
-count = cell(2, ncontexts); 	%prealocate for speed
+count = cell(2, ncontexts); 	%preallocate for speed
 % count(1,:) = {0};
 for n = 1 : ncontexts
     count{1,n} = 0;             % count ctxt
-    count{2,n} = zeros(1,lX);   % indexes of ctxts (pre-allocating for speed-up)      
+    count{2,n} = zeros(1,lX);   % indices of ctxts (preallocating for speed-up)      
 end
 
 %%%%%%%%%% version 1 => Aline %%%%%%%%%%

@@ -9,12 +9,11 @@ function d = distanceCT(tree1, tree2, A)
 %   tree1 : first context tree 
 %   tree2 : second context tree
 %       A : alphabet
-%   weigh
 %
 % Outputs
 %       d : distance value
 
-%Author : Noslen Hernandez, Aline Duarte
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2019
 
 ncontexts1 = length(tree1);
@@ -85,7 +84,7 @@ for c = 1 : ncontexts2
                 nodes_xor(idx_node) = 2;
                 % update the distance
                 d = d + weights(l_node);
-                % take the father to be analized (i.e., delete the first symbol)
+                % take the father to be analyzed (i.e., delete the first symbol)
                 node(1) = []; 
                 l_node = l_node - 1;
                 idx_node = node2index(node, powers(1:l_node), partial_sum(l_node+1));

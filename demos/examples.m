@@ -23,7 +23,7 @@ X = generatesampleCTM(tau, p, A, seq_length);
 
 %% Example 3: Simulate the response sequence of a SeqROCTM (X,Y) and do model selection using the BIC criteria
 
-% Simulate the response data Y for the sequence of inputs genetared in
+% Simulate the response data Y for the sequence of inputs generated in
 % Example 2, assuming three different strategies for an agent.
 
 % Strategy 1: The agent always that see a 0, plays a 1; always that see a

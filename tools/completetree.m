@@ -39,7 +39,7 @@ function [T, I, nT] = completetree(X, max_height, alphabet)
     
     % this will take into account all possible past occurring in the sequence
     % X including the past associated to step length(X) (this is the reason
-    % why it is written length(X)+1
+    % why it is written length(X)+1)
     for a = alphabet
         [f, id, nt] = is_leaf(a, alphabet, max_height, 2:length(X)+1, X);
         T = [T, f];

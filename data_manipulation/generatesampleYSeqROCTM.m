@@ -1,7 +1,7 @@
 function [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)
 %GENERATESAMPLEYSEQROCTM Generates the response sequence of a SeqROCTM from
 %                        the sequence of inputs, the context tree and the
-%                        distrubutions associated to the contexts
+%                        distributions associated to the contexts
 %
 % Inputs
 %
@@ -46,7 +46,7 @@ else
         % use the distribution associated to the context to generate the
         % response
         [Y(i), idx] = samplediscretedist(A, q(idx_ctx,:), 1);
-        % update the distriution associated to that context
+        % update the distribution associated to that context
         qemp(idx_ctx, idx) = qemp(idx_ctx, idx) + 1;
     end
 end

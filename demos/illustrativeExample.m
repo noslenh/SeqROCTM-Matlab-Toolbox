@@ -40,7 +40,7 @@ for v = 1 : n_volunteers
 end
 
 % visualize some symbols of the stimuli sequence and the corresponding EEG
-% chuncks for volunteer V05
+% chunks for volunteer V05
 figure;
 id_cols = 88:96;
 for i = 1 : 9

@@ -1,16 +1,13 @@
-function S = stat_discrete(Br, statistic, length_X, length_Alphabet, parameter)
+function S = stat_discrete(Br, statistic, threshold) % length_X, length_Alphabet
 %STAT_DISCRETE  Test if the branch should be pruned using different
 %               statistical criteria
 % Inputs 
 %
 %   Br               : branch to be tested 
-%   statistic        : type of statistics used in the prunning criteria. It can
-%                        take the values 'bic' or 'emp_distribution'
-%   length_X         : length of the sequence of data
-%   length_Alphabet  : length of the alphabet
-%   parameter        : penalization constant used in the BIC criteria or threshold
-%                   	used in the comparison of the empirical distributions in the 
-%						emp_distribution criteria
+%   statistic        : type of statistics used in the pruning criteria. It can
+%                        take the values 'context' or 'emp_distribution'
+%   threshold        : threshold used in the context algorithm or in the
+%                        comparison of the empirical distributions in the 
 %
 % Outputs
 %
@@ -56,11 +53,11 @@ function S = stat_discrete(Br, statistic, length_X, length_Alphabet, parameter)
      switch statistic
          
          case 'emp_distribution'
-             % Compute de distante between the empirical distributions
+             % Compute the distance between the empirical distributions
              for u = 1 : length(P)-1
                  v = u + 1;
                  while (S == true) && (v < length(P) + 1)
-                     S = ( abs(P(u)-P(v)) < parameter ) ;
+                     S = ( abs(P(u)-P(v)) < threshold ) ;
                      v = v + 1;
                  end
                  if S == false
@@ -68,17 +65,21 @@ function S = stat_discrete(Br, statistic, length_X, length_Alphabet, parameter)
                  end
              end
              
-         case 'bic'
+         case 'context'
              % Compute the statistic given by BIC criteria
              Count_father = sum(Count)'; 
              P_father = Count_father / sum(Count_father);
              
-             [~, c] = find(P > 0);   %% ineficiente, tirar segunda linha
+             [~, c] = find(P > 0);   %% inefficient, think a way to avoid the second line
              ind = P > 0;
              
-             % S = 2 * sum( Count(ind) .* (log(P(ind)) - log(P_father(c)) ) ) <  chi2inv(1-erro,length(Alphabet)-1)/2;
+             % based on chi-square asymptotic
+             % ss = chi2inv(1-erro, length(Alphabet)-1)/2;
              
-             ss = parameter * (length_Alphabet-1) * (d-1) * log(length_X);
+             % a particular threshold based on BIC comparison
+             % ss = threshold * (length_Alphabet-1) * (d-1) * log(length_X);
+             
+             ss = threshold;
              test = 2 * sum( Count(ind) .* (log(P(ind)) - log(P_father(c)) ) );
              S =  test < ss ;
      end

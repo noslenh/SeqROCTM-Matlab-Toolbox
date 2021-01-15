@@ -22,7 +22,7 @@ if pastlength < height
                 rp = length(idw_new{j}) <= pastlength;
                 j = j + 1;
             end
-            %continue checking the posible new contexts
+            %continue checking the possible new contexts
             j = 1;
             while rp && j <= nc
                 rp = is_renewal(pastlength+1, idw_new{j}, T, height, nA);
