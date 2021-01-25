@@ -41,7 +41,7 @@ function [renwpoint, renewals] = tree_renewalpoint(contexts, P, A, X)
         lrnw = lw;
     else %otherwise, check which contexts are renewal points
         for i = 1 : ncontexts
-            if (sw(i) == 0) && (is_renewal(lw(i), i, Tw, height, nA))
+            if (sw(i) == 0) && (is_renewal(lw(i), i, Tw, height, nA, lw))
                 renewals = [renewals, contexts{i}];
                 lrnw = [lrnw, lw(i)];
             end
@@ -51,8 +51,9 @@ function [renwpoint, renewals] = tree_renewalpoint(contexts, P, A, X)
     % select the most frequent
     count = countstr(renewals, X);
     freqs = cell2mat(count(1,:));
-    maxvalue = max(freqs);
-    idx = find(freqs == maxvalue);
+    [~, idx] = max(freqs);
+%     maxvalue = max(freqs);
+%     idx = find(freqs == maxvalue);
     
     %choose the smallest
     [~, idxmin]= min(lrnw(idx));

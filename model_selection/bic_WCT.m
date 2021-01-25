@@ -1,4 +1,4 @@
-function [tree, P, V, NODES, STATS] = bic_WCT(X, Alphabet, max_height, c, df, varargin)
+function [tree, P, V, outputs] = bic_WCT(X, Alphabet, max_height, c, df, missing, varargin)
 %BIC_WCT Estimate a context tree model from a sequence using the BIC
 %        criterion introduced in Csiszar 2005 IEEE Trans. Inf. Theory 
 %
@@ -21,29 +21,61 @@ function [tree, P, V, NODES, STATS] = bic_WCT(X, Alphabet, max_height, c, df, va
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 10/2020
 
-fast = true;
+fast = false;
 
 switch length(varargin) 
     case 1
         Y = varargin{1};
-        fast = false;
     case 2
         Y = varargin{1};
         if isempty(Y), Y = X; end
         precomputed_stats = varargin{2};
+        fast = true;
     case 0
         Y = X;
-        fast = false;
 end
-
-lX = length(X);
-penalization_factor = -1 * c * log(lX);
 
 if fast
-    [tree, V, P, NODES, STATS] = get_maximizingTree_fast([], length(Alphabet), max_height, lX, penalization_factor, df, precomputed_stats{1}, 0, 0, precomputed_stats{2});
+    lX_no_nan = precomputed_stats{3};
+    penalization_factor = -1 * c * log(lX_no_nan);
+    
+    % call the estimation algorithm
+    [tree, P, V, NODES, STATS] = get_maximizingTree_fast([], length(Alphabet), max_height, penalization_factor, df, precomputed_stats{1}, 0, 0, precomputed_stats{2});
+    
+    % create the structure 'outputs' with some useful additional outputs
+    outputs.nodes = NODES;
+    outputs.stats = STATS;
+    outputs.nonExistingNodes = precomputed_stats{2};
+    outputs.XlengthWithoutNaN = precomputed_stats{3};
 else
-    [tree, ~, V, P, ~, ~, NODES, STATS] = get_maximizingTree([], length(Alphabet), max_height, [], X, lX, penalization_factor, df, 0, Y);
+    lX = length(X);
+    
+    if missing    %there are missing values
+        % get the indexes and total of NaN values
+        idx_no_nan = find(~isnan(X));
+        
+        % initialize the ind_father variable (exclude the positions in which the
+        % sequence has NaN values)
+        ind_father = idx_no_nan(idx_no_nan > max_height);
+        lX_no_nan = length(idx_no_nan);
+    else
+        lX_no_nan = lX;
+        idx_no_nan = 1:lX;
+        
+        % initialize the ind_father variable
+        ind_father = max_height+1:lX;
+    end
+    
+    % initialize the common penalization term
+    penalization_factor = -1 * c * log(lX_no_nan);
+    
+    % estimation algorithm
+    [tree, P, ~, V, ~, ~, NODES, STATS, non_existing_nodes] = get_maximizingTree([], length(Alphabet), max_height, ind_father, X, penalization_factor, df, 0, Y);
+    
+    % create the structure 'outputs' with some useful additional outputs
+    outputs.nodes = NODES;
+    outputs.stats = STATS;
+    outputs.nonExistingNodes = non_existing_nodes;
+    outputs.nonanIndexes = idx_no_nan;
+    outputs.XlengthWithoutNaN = lX_no_nan;
 end
-
-
-

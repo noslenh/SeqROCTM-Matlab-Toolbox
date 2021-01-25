@@ -2,11 +2,11 @@
 % et. al., Ann. Appl. Stat., Volume 6, Number 1 (2012), 186-209] using the
 % Matlab SeqROCTM package.
 
-% In the simulations done in the article the symbol 1 was used as a renewal
-% point to generate the bootstrap samples. Here we included in the
-% simulations two other bootstrap strategies implemented in the package
-% than can be useful in realistic situations (true model and renewal points
-% unknown)
+% In the simulations, the symbol 1 was used as a renewal point to generate
+% the bootstrap samples. 
+
+% Here we include the routines to do also the simulations with the Context
+% Algorithm.
 
 %%% Model specification %%%
 
@@ -16,11 +16,11 @@ A = [0,1];
 % contexts
 contexts  = {1,  [1 0], [1 0 0], [0 0 0]};
 
-% family of distributions - Model 1
-P = [1, 0; 0.3, 0.7; 0.2, 0.8; 0.25, 0.75];  
+% % family of distributions - Model 1
+% P = [1, 0; 0.3, 0.7; 0.2, 0.8; 0.25, 0.75];  
 
-% % family of distributions - Model 2
-% P = [1, 0; 0.2, 0.8; 0.3, 0.7; 0.4, 0.6]; 
+% family of distributions - Model 2
+P = [1, 0; 0.2, 0.8; 0.3, 0.7; 0.4, 0.6]; 
 
 % renewal point specified by the user
 th_renwpoint = 1;
@@ -28,18 +28,19 @@ th_renwpoint = 1;
 
 %%% Parameters value %%%%
 
+n 			= 10000;			% length of the stochastic sequence
 Repetitions = 100;				% number of times the procedure is repeated
 B 			= 200;				% number of bootstrap samples
-n 			= 5000;				% length of the stochastic sequence
 n1 			= floor(0.3*n); 	% proportion of the size of the sample corresponding to the size of the smaller resample.
 n2 			= floor(0.9*n);		% proportion of the size of the sample corresponding to the size of the larger resample.
 alpha 		= 0.01;            	% alpha level to use on the t-test
 max_height 	= 6;				% height of the complete tree
 c_min 		= 0;				% minimum value of the BIC constant
-c_max 		= 500;				% maximum value of the BIC constant
+c_max 		= 1000;				% maximum value of the BIC constant
+c_max_ctx   = c_max*log(n);
 
-% fix the seed if you want to control random generations
-rng(200);
+% % fix the seed if you want to control random generations
+% rng(200);
 
 %%% Simulations %%%%
 
@@ -47,17 +48,74 @@ rng(200);
 ncontexts = numel(contexts);
 
 % initialization 
-mG1 = []; mG2 = []; mG3 = [];
+inside_champions_bic = 0;
+inside_champions_ctx = 0;
+true_model_bic = 0;
+true_model_ctx = 0;
 
 % for each repetition
 for r = 1 : Repetitions
     
-    %generate a sequence of length n
-    X = generatesampleCTM(contexts, P, A, n);
-  
-    %estimate the champion trees
-    [trees, Ps, ML, cutoff] = estimate_championTrees(X, max_height, A, c_min, c_max);
+    % generate a sequence of length n
+%     X = generatesampleCTM(contexts, P, A, n);
+    X = model2_10000(r,:);
     
+    disp(['Processing sample ' num2str(r) ' ...']);
+  
+    % tune the context tree model using bic
+    [optmodel, ~, resultsb] = tune_contextTreeModel(X, A, 'MaxTreeHeight', max_height,      ...
+                                                         'ParameterLowerBound', c_min,     ...
+                                                         'ParameterUpperBound', c_max,     ...
+                                                         'BootRenewalPoint', th_renwpoint, ...
+                                                         'BootNsamples', B,                ...
+                                                         'n1', n1,                         ...
+                                                         'n2', n2                          ...
+                                                    );
+    
+
+    % check if the true model is within the Champion Trees and if it was
+    % choosen as optimal
+    if isequalCT(contexts, optmodel)
+        true_model_bic = true_model_bic + 1;
+        inside_champions_bic = inside_champions_bic + 1;
+    else
+        nl = cellfun(@(x) length(x), resultsb.champions);
+        idx = find(nl == ncontexts);
+        if (~isempty(idx))&&(isequalCT(contexts, resultsb.champions{idx}))
+            inside_champions_bic = inside_champions_bic +1;
+        end
+    end
+    
+    % tune the context tree model using Context Algorithm
+    [optmodel, ~, resultsc] = tune_contextTreeModel(X, A, 'MaxTreeHeight', max_height,      ...
+                                                         'ParameterLowerBound', c_min,     ...
+                                                         'ParameterUpperBound', c_max_ctx, ...
+                                                         'BootRenewalPoint', th_renwpoint, ...
+                                                         'BootNsamples', B,                ...
+                                                         'n1', n1,                         ...
+                                                         'n2', n2,                         ...
+                                                         'EstimationMethod', 'context'     ...
+                                                    );
+                                                
+    % check if the true model is within the Champion Trees and if it was
+    % choosen as optimal
+    if isequalCT(contexts, optmodel)
+        true_model_ctx = true_model_ctx + 1;
+        inside_champions_ctx = inside_champions_ctx + 1;
+    else
+        nl = cellfun(@(x) length(x), resultsc.champions);
+        idx = find(nl == ncontexts);
+        if (~isempty(idx))&&(isequalCT(contexts, resultsc.champions{idx}))
+            inside_champions_ctx = inside_champions_ctx +1;
+        end
+    end
+end
+
+disp(['BIC: True model inside the Champion Trees: ' num2str(inside_champions_bic)]);
+disp(['BIC: True model choosen: ' num2str(true_model_bic)]);
+disp(['Context Algorithm: True model inside the Champion Trees: ' num2str(inside_champions_ctx)]);
+disp(['Context Algorithm: True model choosen: ' num2str(true_model_ctx)]);
+
 % 	%%% if you want to plot the curve, uncomment this %%%
 %     % plot the curve models vs. Likelihood
 %      figure
@@ -65,33 +123,3 @@ for r = 1 : Repetitions
 %      plot(nleaves, ML, '*--b')
 %      ylabel('log-likelihood');
 %      xlabel('no. of contexts');
-
-    % check if the true model is within the Champion Trees (this is only to speed-up the simulations:
-	% if the Champion Trees does not contain the true model it is not necessary to carry out the procedure)
-    nl = cellfun(@(x) length(x), trees);
-    idx = find(nl == ncontexts);
-    if (~isempty(idx))&&(isequalCT(contexts, trees{idx}))
-        
-        % we call the same procedure using different bootstrap strategies
-        
-		% bootstrap using an a priori known renewal point (this is the strategy used in the article)
-		[~, id_G1] = modeltunning_championTrees(trees, A, n1, n2, alpha, B, 'blocks', X, th_renwpoint);
-        
-		% bootstrap finding a renewal point of the largest model in the Champion Trees 
-        renewalpoint = tree_renewalpoint(trees{1}, Ps{1}', A, X);
-        [~, id_G2] = modeltunning_championTrees(trees, A, n1, n2, alpha, B, 'blocks', X, renewalpoint);
-
-		% parametric bootstrap using the largest model in the Champion Trees
-        [~, id_G3] = modeltunning_championTrees(trees, A, n1, n2, alpha, B, 'parametric_ctm', trees{1}, Ps{1}');
-		
-        % check if the resulting context tree matches the true context tree
-		mG1 = [mG1; isequalCT(trees{id_G1}, contexts)];
-        mG2 = [mG2; isequalCT(trees{id_G2}, contexts)];
-        mG3 = [mG3; isequalCT(trees{id_G3}, contexts)];
-    end
-end
-
-disp(['The Champion Trees contained the true model: ' num2str(length(mG1)*100/Repetitions) ' %']);
-disp(['Strategy 1: The true model was recovered ' num2str(sum(mG1)*100/Repetitions) ' %' ]);
-disp(['Strategy 2: The true model was recovered ' num2str(sum(mG2)*100/Repetitions) ' %' ]);
-disp(['Strategy 3: The true model was recovered ' num2str(sum(mG3)*100/Repetitions) ' %' ]);

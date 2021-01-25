@@ -1,4 +1,4 @@
-function [F, I, log_V, P, Nw, Nwa, NODES, STATS, non_existing_nodes, global_idx] = get_maximizingTree(w, lA, l, ind_father, X, lX, penalization_factor, df, global_idx, Y)
+function [F, P, I, log_V, Nw, Nwa, NODES, STATS, non_existing_nodes, global_idx] = get_maximizingTree(w, lA, max_height, ind_father, X, penalization_factor, df, global_idx, Y)
 % GET_MAXIMIZINGTREE Recursive function to compute the maximizing tree (see
 %                    the definition in Csiszar 2005 IEEE Trans. Inf. Theory)
 %
@@ -44,22 +44,21 @@ function [F, I, log_V, P, Nw, Nwa, NODES, STATS, non_existing_nodes, global_idx]
     global_idx = global_idx + 1;
     
     if isempty(w)
-%         ind = (l+1 : lX);
-        ind = (2 : lX);
+          ind = ind_father;        
     else
         ind = is_in_sample(w, ind_father, X);
     end
     
     if numel(ind) > 0  %~isempty(ind)
               
-        if length(w) == l % if w is at maximum level 
+        if length(w) == max_height % if w is at maximum level 
             % store w as a context
             F = w;
             I = ind;
             
             % compute Nw and Nwa
             [Nw, Nwa] = get_counts(w, ind, Y, lA);
-            P = [P; Nwa/Nw];
+            P = Nwa/Nw;
             
             % penalization term
             if df == 0
@@ -86,10 +85,11 @@ function [F, I, log_V, P, Nw, Nwa, NODES, STATS, non_existing_nodes, global_idx]
             Nw = 0;
             Nwa = zeros(1,lA);
             for a = (0 : lA-1)
-                [f, i, logv, p, nw, nwa, nodes, stats, nn, global_idx] = get_maximizingTree([a w], lA, l, ind, X, lX, penalization_factor, df, global_idx, Y);
+                [f, p, i, logv, nw, nwa, nodes, stats, nn, global_idx] = get_maximizingTree([a w], lA, max_height, ind, X, penalization_factor, df, global_idx, Y);
                 F = [F, f];
                 I = [I, i];
                 P = [P; p];
+                
                 non_existing_nodes = [non_existing_nodes; nn];
                
                 log_prodV = log_prodV + logv;
@@ -178,8 +178,8 @@ function [Nw, Nwa] = get_counts(w, ind, X, length_alphabet)
     
     for i = 1 : length(ind)
         pos = ind(i) + lw;
-        if pos <= lx            % this is because ind+l(w) gives the position after w
-            loc = X(pos) + 1;   % faster way: interpreting the symbol as index
+        if pos <= lx %&& ~isnan(X(pos))   % this is because ind+l(w) gives the position after w
+            loc = X(pos) + 1;            % faster way: interpreting the symbol as index
             Nwa(loc) = Nwa(loc) + 1;
         end  
     end   

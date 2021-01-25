@@ -1,5 +1,8 @@
-function rp = is_renewal(pastlength, idw, T, height, nA)
+function rp = is_renewal(pastlength, idw, T, height, nA, lcontexts)
 %IS_RENEWAL Recursive function to check if a context is a renewal point
+
+%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Date   : 01/2021
 
 rp = true;
 
@@ -19,18 +22,19 @@ if pastlength < height
             %the possible contexts
             j = 1;
             while rp && j <= nc
-                rp = length(idw_new{j}) <= pastlength;
+                rp = lcontexts(idw_new(j)) <= pastlength;
                 j = j + 1;
             end
-            %continue checking the possible new contexts
+            %continue checking (if rp is still true)
             j = 1;
             while rp && j <= nc
-                rp = is_renewal(pastlength+1, idw_new{j}, T, height, nA);
+                rp = is_renewal(pastlength+1, idw_new(j), T, height, nA, lcontexts);
                 j = j + 1;
             end
         else %if the new context is a suffix, check them
-             rp = is_renewal(pastlength+1, idw_new, T, height, nA);
+             rp = is_renewal(pastlength+1, idw_new, T, height, nA, lcontexts);
         end
+        s = s + 1;
     end
 end
 

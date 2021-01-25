@@ -1,4 +1,4 @@
-function count = countctx(contexts, X, alphabet)
+function count = countctx(contexts, X, alphabet, idx_without_NaN)
 %COUNTCTXT gives the number of times and positions where the contexts in [contexts]
 %          appears in the sequence X. If the sequence contains a past sequence which 
 %          have no context associated to it, it is also returned in count.
@@ -15,8 +15,12 @@ function count = countctx(contexts, X, alphabet)
 %              positions and in the 
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 05/2020
+%Date   : 01/2021
 
+
+if ~exist('idx_without_NaN', 'var')
+    idx_without_NaN = 2:length(X);
+end
 
 % Initialize the variable count
 ncontexts = length(contexts);
@@ -29,7 +33,8 @@ Tidx = {};  % position in the list of contexts (0 if it is not a context)
 
 if ncontexts ~= 0
     for a = alphabet
-        [f, id, c] = find_context(a, alphabet, 2:size(X,2), X, contexts, ncontexts, height);
+%         [f, id, c] = find_context(a, alphabet, height+1:lX, X, contexts, ncontexts, height);
+        [f, id, c] = find_context(a, alphabet, idx_without_NaN, X, contexts, ncontexts, height);
         T = [T, f];
         I = [I, id];
         Tidx = [Tidx, c];

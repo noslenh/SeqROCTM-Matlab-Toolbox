@@ -1,4 +1,4 @@
-function [contexts, P] = estimate_contexttree(X, Alphabet, varargin)
+function [contexts, P, outputs] = estimate_contexttree(X, Alphabet, varargin)
 %ESTIMATE_CONTEXTTREE estimate a context tree from the sequence of discrete 
 %                     symbols X
 % Inputs
@@ -39,9 +39,9 @@ function [contexts, P] = estimate_contexttree(X, Alphabet, varargin)
 
 %%%%%%%% name-value pairs arguments
 % default values
-options = struct('EstimationMethod', 'bic', 'MaxTreeHeight', log(length(X)), ...
-                    'ParameterValue', 1, 'CompleteTree', -1, 'TestStructure', -1, 'DegreeOfFreedom', 'fix', ...
-                        'BicPrecomputedStats', []);
+options = struct('EstimationMethod', 'bic', 'MaxTreeHeight', floor(log(length(X))), ...
+                    'ParameterValue', 1, 'CtxCompleteTree', -1, 'CtxTestStructure', -1, 'BicDegreeOfFreedom', 'fix', ...
+                        'BicPrecomputedStats', [], 'BicMissing', 0);
 
 % acceptable names
 optionNames = fieldnames(options);
@@ -49,7 +49,7 @@ optionNames = fieldnames(options);
 for pair = reshape(varargin, 2, [])
     inpName = pair{1};
     
-    if any(strcmpi(inpName, optionNames))
+    if any(strcmp(inpName, optionNames))
         options.(inpName) = pair{2};
     else
         error('%s is not a recognized parameter name', inpName);
@@ -58,33 +58,24 @@ end
 %%%%%%%%%%%%%%%%%%
 
 if strcmpi('bic', options.EstimationMethod)
-    df = ~strcmpi(options.DegreeOfFreedom,'fix');
+    df = ~strcmpi(options.BicDegreeOfFreedom,'fix');
     if isempty(options.BicPrecomputedStats)
-        [contexts, P] = bic_WCT(X, Alphabet, options.MaxTreeHeight, options.ParameterValue, df);
+        [contexts, P, ~, outputs] = bic_WCT(X, Alphabet, options.MaxTreeHeight, options.ParameterValue, df, options.BicMissing);
     else
-        [contexts, P] = bic_WCT(X, Alphabet, options.MaxTreeHeight, options.ParameterValue, df, [], options.BicPrecomputedStats);
+        [contexts, P, ~, outputs] = bic_WCT(X, Alphabet, options.MaxTreeHeight, options.ParameterValue, df, options.BicMissing, [], options.BicPrecomputedStats);
     end
 elseif any(strcmpi(options.EstimationMethod, {'context','emp_distribution'}))
-    if isequal(options.CompleteTree, -1)
+    if isequal(options.CtxCompleteTree, -1)
         [contexts, P] = CTestimator(X, Alphabet, options.MaxTreeHeight, options.EstimationMethod, options.ParameterValue);
     else
-        if isequal(options.TestStructure, -1)
-            [contexts, P] = CTestimator(X, Alphabet, options.MaxTreeHeight, options.EstimationMethod, options.ParameterValue, [], options.CompleteTree);
+        if isequal(options.CtxTestStructure, -1)
+            [contexts, P] = CTestimator(X, Alphabet, options.MaxTreeHeight, options.EstimationMethod, options.ParameterValue, [], options.CtxCompleteTree);
         else
-            [contexts, P] = CTestimator(X, Alphabet, options.MaxTreeHeight, options.EstimationMethod, options.ParameterValue, [], options.CompleteTree, options.TestStructure);
+            [contexts, P] = CTestimator(X, Alphabet, options.MaxTreeHeight, options.EstimationMethod, options.ParameterValue, [], options.CtxCompleteTree, options.CtxTestStructure);
         end
     end
 else
     error('%s is not a recognized parameter value', options.EstimationMethod);
 end
 
-
-% switch length(varargin)
-%     case 1
-%         [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, threshold, [], varargin{1});
-%     case 2
-%         [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, threshold, [], varargin{1}, varargin{2});
-%     case 0
-%         [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, threshold);
-% end
 end

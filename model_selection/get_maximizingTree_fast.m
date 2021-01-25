@@ -1,4 +1,4 @@
-function [F, log_V, P, NODES, STATS, global_idx, local_idx] = get_maximizingTree_fast(w, lA, l, lX, penalization_factor, df, precomputed_stats, ...
+function [F, P, log_V, NODES, STATS, global_idx, local_idx] = get_maximizingTree_fast(w, lA, max_height, penalization_factor, df, precomputed_stats, ...
                                                                             global_idx, local_idx, non_existing_nodes)
 % GET_MAXIMIZINGTREE_FAST A faster version of the recursive function GET_MAXIMIZINGTREE
 %                         in which the statistics associated to the nodes are given.  
@@ -47,7 +47,7 @@ function [F, log_V, P, NODES, STATS, global_idx, local_idx] = get_maximizingTree
         
     if ~ismember(global_idx, non_existing_nodes)
         
-        if length(w) == l % if w is at maximum level
+        if length(w) == max_height % if w is at maximum level
             
             % update the local marker (this marker does not count zero
             % frequency nodes). It is used to known the position of the
@@ -88,7 +88,7 @@ function [F, log_V, P, NODES, STATS, global_idx, local_idx] = get_maximizingTree
             log_prodV = 0;
   
             for a = (0 : lA-1)
-                [f, logv, p, nodes, stats, global_idx, local_idx] = get_maximizingTree_fast([a w], lA, l, lX, penalization_factor, df, ...
+                [f, p, logv, nodes, stats, global_idx, local_idx] = get_maximizingTree_fast([a w], lA, max_height, penalization_factor, df, ...
                                                                             precomputed_stats, global_idx, local_idx, non_existing_nodes);
                 F = [F, f];
                 P = [P; p];
