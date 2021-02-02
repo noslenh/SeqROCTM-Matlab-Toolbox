@@ -1,40 +1,24 @@
 function [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, threshold, varargin)
-%CTESTIMATOR estimate a context tree from the sequence X or from the 
-%            pair of sequences (X,Y) -- sequence of random objects driven by a context tree model
+%CTESTIMATOR estimate a context tree from the sequence X or from the SeqROCTM (X,Y)
 % Inputs
 %
-% X             : sequence of symbols taking values in Alphabet
-% Y             : response sequence (sequence of symbols). A vector of the
+%   X             : sequence of symbols taking values in Alphabet
+%   Y             : response sequence (sequence of symbols). A vector of the
 %                   same dimension that X (it is optionally given in varargin)
-% Alphabet      : Alphabet 
-% max_height    : maximum height of the complete tree
-% statistic     : type of statistics used in the pruning criteria. It can
+%   Alphabet      : Alphabet 
+%   max_height    : maximum height of the complete tree
+%   statistic     : type of statistics used in the pruning criteria. It can
 %                   take the values 'context' or 'emp_distribution'
-% threshold     : threshold used in the context algorithm or in the
+%   threshold     : threshold used in the context algorithm or in the
 %                   comparison of the empirical distributions
-% varargin{1}   : Y sequence
-% varargin{2}   : complete tree (contexts and indexes)
-% varargin{3}   : TEST structure
+%   varargin{1}   : Y sequence
+%   varargin{2}   : complete tree (contexts and indexes)
+%   varargin{3}   : TEST structure
 %
 % Output
 %
 % contexts      : estimated context tree
 % P             : estimated family of probability distribution
-%
-%
-% Usage
-%			A = [0,1,2];
-%
-%			ctxs = {0, [0 1], [1 1], 2}
-%			P = [0,   1,   0; ...                  
-%     			 0,   0.25,   0.75;
-%     			 1,   0,   0;
-%     			 1,   0,   0 ];
-%
-%			X = generatesampleCTM(ctxs, P, A, 100);
-%			Y = generatesampleCTM(ctxs, P, A, 100);
-%			
-%			[c, p] = CTestimator(X, A, 4, 'context', 1, Y);
 %
 %
 

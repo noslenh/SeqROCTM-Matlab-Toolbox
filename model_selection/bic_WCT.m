@@ -1,25 +1,36 @@
-function [tree, P, V, outputs] = bic_WCT(X, Alphabet, max_height, c, df, missing, varargin)
-%BIC_WCT Estimate a context tree model from a sequence using the BIC
-%        criterion introduced in Csiszar 2005 IEEE Trans. Inf. Theory 
+function [tree, P, V, results] = bic_WCT(X, Alphabet, max_height, c, df, missing, varargin)
+%BIC_WCT Estimate a context tree model from a sequence X using the BIC
+%        criterion
 %
 % Inputs
 %   X           : sequence of symbols taking values in the alphabet
 %   Alphabet    : alphabet
 %   height      : height of the complete tree
 %   c           : penalization constant of the BIC criteria
-%   Y, precomputed_stats
+%   df          : type of degree of freedom function
+%   missing     : 1 if treatment of missing values is needed, 0 otherwise
+%   varargin    : {1}-> Y, {2}-> precomputed_stats
 %
 % Outputs
 %   tree        : context tree estimated
-%   idx         : indexes of the context in the sample X
-%   V           : log(V) values for the contexts (see the article)
-%   NODES       : nodes of the complete tree that were analised
-%   STATS       : the values [Phat, ProdV, V, Xi] for each of the analysed
-%                   nodes
-%  
+%   P           : distributions associated to the contexts
+%   V           : log(V) values for the contexts (see [2])
+%   results     : structure with the following fields:
+%       'nodes'             --  all posible nodes of the tree 
+%       'stats'             --  statistics of the nodes [log_Ps, \sum log_Vas, log_Vs, \Xi_s, Nw, Nwa]
+%       'nonExistingNodes'  --  nodes of the tree that do not appear in the
+%                               sequence X
+%       'XlengthWithoutNaN' --  length of the sequence X discarding the Nan
+%                               values
+%       'nonanIndexes'      --  indexes of the non Nan elements in the
+%                               sequece X
+
+%   References:  
+%      [1] I. Csiszar et al., IEEE Trans. Inform. Theory, 3, 52, 1007-1016 (2006)
+%      [2] N. Hernández et al., arXiv xxx, (2021). 
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 10/2020
+%Date   : 01/2021
 
 fast = false;
 
@@ -43,10 +54,10 @@ if fast
     [tree, P, V, NODES, STATS] = get_maximizingTree_fast([], length(Alphabet), max_height, penalization_factor, df, precomputed_stats{1}, 0, 0, precomputed_stats{2});
     
     % create the structure 'outputs' with some useful additional outputs
-    outputs.nodes = NODES;
-    outputs.stats = STATS;
-    outputs.nonExistingNodes = precomputed_stats{2};
-    outputs.XlengthWithoutNaN = precomputed_stats{3};
+    results.nodes = NODES;
+    results.stats = STATS;
+    results.nonExistingNodes = precomputed_stats{2};
+    results.XlengthWithoutNaN = precomputed_stats{3};
 else
     lX = length(X);
     
@@ -73,9 +84,9 @@ else
     [tree, P, ~, V, ~, ~, NODES, STATS, non_existing_nodes] = get_maximizingTree([], length(Alphabet), max_height, ind_father, X, penalization_factor, df, 0, Y);
     
     % create the structure 'outputs' with some useful additional outputs
-    outputs.nodes = NODES;
-    outputs.stats = STATS;
-    outputs.nonExistingNodes = non_existing_nodes;
-    outputs.nonanIndexes = idx_no_nan;
-    outputs.XlengthWithoutNaN = lX_no_nan;
+    results.nodes = NODES;
+    results.stats = STATS;
+    results.nonExistingNodes = non_existing_nodes;
+    results.nonanIndexes = idx_no_nan;
+    results.XlengthWithoutNaN = lX_no_nan;
 end

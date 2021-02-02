@@ -1,17 +1,19 @@
-function [opt_tree, idx] = tunning_SMC(championTrees, A, n1, n2, alpha, bootsamples_n2, missing)
+function [opt_tree, idx] = tuning_SMC(championTrees, A, n1, n2, alpha, bootsamples_n2, missing)
 %MODELTUNNING_SMC Context tree selection using the Smallest Maximizer Criterion 
 %
 % Inputs
 %
-%   championTrees : set of Champion Trees (trees obtained for different
-%                   values of the penalization constant in the BIC
-%                   criteria)
-%   A             : alphabet
-%   n1            : proportion of the size of the sample corresponding to
-%                   the size of the smaller resample.
-%   n2            : proportion of the size of the sample corresponding to
-%                   the size of the larger resample.
-%   alpha         : alpha level to use on the t-test
+%   championTrees   : set of Champion Trees (trees obtained for different
+%                       values of the penalization constant in the BIC
+%                       criteria)
+%   A               : alphabet
+%   n1              : proportion of the size of the sample corresponding to
+%                       the size of the smaller resample.
+%   n2              : proportion of the size of the sample corresponding to
+%                       the size of the larger resample.
+%   alpha           : significance level used in the t-test
+%   bootsamples_n2  : bootstrap samples
+%   missing         : 1 if treatment of Nan values is needed, 0 otherwise.
 %
 % Outputs
 %
@@ -21,8 +23,8 @@ function [opt_tree, idx] = tunning_SMC(championTrees, A, n1, n2, alpha, bootsamp
 %
 
 %   References:
-%      [1] A. Galves et. al., Ann. Appl. Stat., Volume 6, Number 1 (2012),
-%          186-209
+%      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
+
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
@@ -82,7 +84,9 @@ while (pvalue > alpha)&&(t > 1)
     t = t - 1;
     [~, pvalue] = ttest2(diff_n1(t,:), diff_n2(t,:), 'Alpha', alpha, 'Tail', 'right');
 end
-idx = t+1;
+% if the null hypothesis was never rejected return the greatest tree
+if pvalue > alpha, idx = 1; else, idx = t+1; end
+% idx = t+1;
 opt_tree = championTrees{idx};
 
 end

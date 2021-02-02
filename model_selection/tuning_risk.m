@@ -1,16 +1,24 @@
-function [idx_opt_model, R] = tunning_risk(param_set, bootsamples, A, options)
-%MODELTUNNING_RISK Context tree selection using a risk function
+function [idx_opt_model, R] = tuning_risk(param_set, bootsamples, A, options)
+%MODELTUNNING_RISK Model selection using a risk function for a Context tree
+%                  model
 %
 % Inputs
 %
-% param_set     : set of values of the parameter to be tuned
-% bootsamples   : bootstrap samples
-% A             : alphabet
+%   param_set     : set of values of the parameter to be tuned
+%   bootsamples   : bootstrap samples
+%   A             : alphabet
+%   options       : structure with the values to be passed to the
+%                      estimation functions
+
 %
 % Outputs
 %
-% idx_opt_model : index of the optimal parameter value
-% R             : risk values corresponding to the parameter values 
+%   idx_opt_model : index of the optimal parameter value
+%   R             : risk values corresponding to the parameter values 
+
+%   References:
+%      [1] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)
+%
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
@@ -53,7 +61,7 @@ if strcmpi(options.EstimationMethod, 'context')
                 'BicMissing', options.BicMissing);
             
             % predict
-            Yhat = predictor_delta_loss(bootsamples(b,1:end-1), ck, Pk, A);
+            Yhat = predictor_delta_loss(Xb, ck, Pk, A);
             
             % compute the loss
             if Yhat == -1
@@ -100,7 +108,7 @@ elseif strcmpi(options.EstimationMethod, 'bic')
                 'BicMissing', options.BicMissing);
             
             % predict
-            Yhat = predictor_delta_loss(bootsamples(b,1:end-1), ck, Pk, A);
+            Yhat = predictor_delta_loss(Xb, ck, Pk, A);
             
             % compute the loss
             if Yhat == -1

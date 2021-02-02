@@ -1,4 +1,4 @@
-% Illustrative example
+% Illustrative example presented in the article XXX
 
 % number of volunteers
 n_volunteers = 3;

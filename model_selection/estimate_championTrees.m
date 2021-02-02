@@ -1,29 +1,43 @@
 function [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)
-%ESTIMATE_CHAMPIONTREES Compute the Champion Trees (see Ann. Appl. Stat. 6,
-%                       2012, 186-209 for details). This implementation
-%                       allows to use the BIC criteria or the Context
-%                       Algorithm for the estimation of the context trees.
+%ESTIMATE_CHAMPIONTREES Compute the Champion Trees.
+%   [TREE, P] = ESTIMATE_CHAMPIONTREES(X, A) compute the champion trees
+%   using the sequence X taking values in the alphabet A. The champion
+%   trees are returned in the cell array TREE and the corresponding family
+%   of distributions in the cell array P.
 %
-% Input
-%   
-%   X           : sequence of data
-%   A           : alphabet
-%   varargin    : contain the l_min and u values
-%                 l_min: minimum value for the penalization constant (usually 0)
-%                 u    : maximum value for the penalization constant
-%                        (usually a big value such that the resulting tree is the empty tree)
-%                 tol  : tolerance used when estimating the set of champion trees  
+%   [TREE, P, ML, CUTOFF] = ESTIMATE_CHAMPIONTREES(...) returns in the
+%   vector ML the likelihood of each champion tree and in vector CUTOFF the
+%   value of the hyperparameter with wich it was obtained each champion
+%   tree.
 %
-% Output
-%   
-%   Trees       : set of champion trees
-%   P           : set of distributions associated to the trees
-%   ML          : maximum likelihood value for each of the champion tree
-%   cuttoff     : values of the bic penalization
+%   [...] = ESTIMATE_CHAMPIONTREES(X,A,'PARAM1',val1,'PARAM2',val2,...)
+%   specifies one or more of the following name/value pairs:
 %
-% Usage
-%
-%
+%       Parameter                Value
+%       'EstimationMethod'       'bic' to estimate the context tree models
+%                                using the Bayesian Information Criteria or
+%                                'context' to estimate the context tree
+%                                models using the Context Algorithm.
+%                                Default is 'bic'.
+%       'MaxTreeHeight'          Maximum height of the context tree.
+%                                Default is log(length(X)).
+%       'ParameterLowerBound'    Minimum value of the parameter to be
+%                                tuned. Default is 0.
+%       'ParameterUpperBound'    Maximum value of the parameter to be
+%                                tuned. Default is 100.
+%       'Tolerance'              Minimum distance between parameter values.
+%                                Default value is 10^-5.
+%       'BicDegreeOfFreedom'     Degree of freedom used during the
+%                                penalization in the BIC algorithm. 'fix'
+%                                => (|A|-1), 'variable' => \sum_{a \in A}
+%                                1{P(a|w)~=0}. Default value is 'fix'.
+%       'BicMissing'             0 if there are no missing values in the
+%                                sample, 1 is there are missing values.
+%                                Default value is 0.
+
+%   References:
+%      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
+%      [2] N. Hernández et al., arXiv xxx, (2021).   
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
@@ -118,7 +132,7 @@ end
     % penalization constant
     while ~isequalCT(tau_l, tau_upper)
         while abs(u - l_min) > tol
-            while ~isequalCT(tau_u, tau_l)&&(abs(u - l_min) > 10^-5) % the second condition its necessary because for some cases,
+            while ~isequalCT(tau_u, tau_l)&&(abs(u - l_min) > tol) % the second condition its necessary because for some cases,
                 a = u;                                               % the complete tree is obtain when l_min=0 and for any value     
                 tau_a = tau_u; p_a = p_u;                            % greater than zero, a tree different from the complete tree is obtained   
                 u = (l_min + u)/2;                                      

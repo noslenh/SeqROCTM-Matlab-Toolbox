@@ -4,24 +4,23 @@ function contexts = estimate_functionalSeqROCTM(X, Y, Alphabet, max_height, n_BM
 %                            where X is a context tree model and Y is a sequence of functional data
 % Inputs
 %
-% X             : context tree model taking values in A
-% Y             : response sequence (sequence of chunk of functions). A matrix of
+%   X             : context tree model taking values in A
+%   Y             : response sequence (sequence of chunk of functions). A matrix of
 %                   dimension D x length_X. Each column has a function/vector of
 %                   dimension D
-% Alphabet      : alphabet 
-% max_height    : maximum height of the complete tree
-% n_BM          : number of Brownian bridges used in the statistical test
+%   Alphabet      : alphabet 
+%   max_height    : maximum height of the complete tree
+%   n_BM          : number of Brownian bridges used in the statistical test
 %                   or a matrix with the Brownian bridges
-% alpha         : significant level of the KS test
-% beta          : significance level used in the statistical test with several
-%                   Brownian
+%   alpha         : significance level of the KS test
+%   beta          : significance level of the Binomial approximation
 %
 % Outputs
 %
-% contexts      : estimated context tree
+%   contexts      : estimated context tree
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 11/2019
+%Date   : 01/2021
 
 length_X = size(X,2);
 [D, Yc] = size(Y);
@@ -59,9 +58,8 @@ else
      % each row contain the projections of all the chunks in a Brownian
      Y_projected = B * Y;
      
-     % compute the thresholds required in the statistical test used for
+     % compute the threshold required in the statistical test used for
      % pruning
-%      c = sqrt(-1/2 * (log(alpha/2)));
      C = binoinv(1-beta, n_BM, alpha);
      
     %

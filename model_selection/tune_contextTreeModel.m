@@ -1,5 +1,5 @@
 function [optTree, optP, results] = tune_contextTreeModel(X, A, varargin)
-%TUNE_CONTEXTTREEMODEL Tune a context tree model.
+%TUNE_CONTEXTTREEMODEL Tune a context tree estimation algorithm.
 %   [OPTTREE, OPTP] = TUNE_CONTEXTTREEMODEL(X,A) tunes a context tree model
 %   using the sequence X of values in the alphabet A. The optimal context
 %   tree is returned in OPTTREE and the probability distributions
@@ -20,7 +20,7 @@ function [optTree, optP, results] = tune_contextTreeModel(X, A, varargin)
 %   specifies one or more of the following name/value pairs:
 %
 %       Parameter                Value
-%       'TunningCriteria'        'smc' to perform the Smaller Maximizer
+%       'TuningMethod'          'smc' to perform the Smaller Maximizer
 %                                Criteria or 'risk' to use a risk function.
 %                                Default is 'smc'.
 %       'EstimationMethod'       'bic' to estimate the context tree models
@@ -55,7 +55,7 @@ function [optTree, optP, results] = tune_contextTreeModel(X, A, varargin)
 %       'BootStrategy'           bootstrap procedure. 'parametric': the
 %                                largest tree in the set of Champion Trees
 %                                is used to generate the bootstrap samples
-%                                or a model given in 'BootParametricModel'. 
+%                                or a model given in 'BootModel'. 
 %                                'blocks': a renewal point is used to
 %                                create independent blocks and these blocks
 %                                are sampled to create the bootstrap
@@ -67,12 +67,11 @@ function [optTree, optP, results] = tune_contextTreeModel(X, A, varargin)
 %                                compute from the largest context tree in
 %                                the Champion Trees. Default value is
 %                                'compute'.
-%       'BootParametricModel'    context tree model used to generate the
+%       'BootModel'              context tree model used to generate the
 %                                bootstrap samples when the bootstrap
 %                                strategy is 'parametric'. A cell array
-%                                that contains in BootParametricModel{1}
-%                                the context tree and in
-%                                BootParametricModel{2} the transition
+%                                that contains in BootModel{1} a context
+%                                tree and in BootModel{2} the transition
 %                                probabilities. Default value is [] (in
 %                                this case the largest model in the
 %                                champion trees is used).
@@ -91,7 +90,7 @@ lX = length(X);
 
 % name-value pairs arguments
 % default values
-options = struct(   'TunningCriteria', 'SMC',           ...
+options = struct(   'TuningMethod', 'smc',              ...
                     'EstimationMethod', 'bic',          ...  
                     'MaxTreeHeight', log(lX),           ...
                     'ParameterLowerBound', 0,           ...
@@ -105,7 +104,7 @@ options = struct(   'TunningCriteria', 'SMC',           ...
                     'BootNSamples', 200,                ...
                     'BootStrategy', 'blocks',           ...
                     'BootRenewalPoint', 'compute',      ...
-                    'BootParametricModel', []           ...
+                    'BootModel', []                     ...
                     );
 
 % acceptable names
@@ -143,13 +142,13 @@ end
                                                                 );
 
 smc = 1;
-if strcmpi(options.TunningCriteria, 'smc')
+if strcmpi(options.TuningMethod, 'smc')
     lengthbootsamples = options.n2;
-elseif strcmpi(options.TunningCriteria, 'risk')
+elseif strcmpi(options.TuningMethod, 'risk')
     smc = 0;
     lengthbootsamples = lX+1;
 else
-    error('%s is not a recognized tunning method', options.TunningCriteria);
+    error('%s is not a recognized tunning method', options.TuningMethod);
 end
                                                                     
 % generate the Bootstrap samples
@@ -165,15 +164,14 @@ switch options.BootStrategy
         results.bootsamples = bootstrap_blocks(X, renewal_point, lengthbootsamples, options.BootNSamples);
         bootstrap_missing = options.BicMissing;
     case 'parametric'
-        %if no model was specified through 'BootParametricModel' use
-        %the largest model in the champion trees. Otherwise use the
-        %model specified in 'BootParametricModel'
-        if isempty(options.BootParametricModel)
+        %if no model was specified through 'BootModel' use the largest
+        %model in the Champion Trees. Otherwise, use the model in 'BootModel'
+        if isempty(options.BootModel)
             tau0 = results.champions{1};
             p0 = results.Ps{1};
         else
-            tau0 = options.BootParametricModel{1};
-            p0 = options.BootParametricModel{2};
+            tau0 = options.BootModel{1};
+            p0 = options.BootModel{2};
         end
         results.bootsamples = generatesampleCTM_fast(tau0, p0, A, lengthbootsamples, options.BootNSamples);
         bootstrap_missing = 0;
@@ -182,12 +180,12 @@ switch options.BootStrategy
 end
                                                                                                                         
 if smc
-    %choose the optimal model
-    [optTree, results.idxOptTree] = tunning_SMC(results.champions, A, options.n1, options.n2,...
+    %choose the optimal model using smc
+    [optTree, results.idxOptTree] = tuning_SMC(results.champions, A, options.n1, options.n2,...
                                                       options.Alpha, results.bootsamples, bootstrap_missing);
 else
-    %choose the optimal model
-    [results.idxOptTree, results.fvalues] = tunning_risk(results.prmvalues, results.bootsamples, A, options);
+    %choose the optimal model using a risk function
+    [results.idxOptTree, results.fvalues] = tuning_risk(results.prmvalues, results.bootsamples, A, options);
     
     optTree = reults.champions{results.idxOptTree};
 end
