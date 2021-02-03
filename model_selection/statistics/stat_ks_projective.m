@@ -36,8 +36,9 @@ function S = stat_ks_projective(Br, n_BM, alpha, C)
      % correction using the significant level of the test
      % number of tests done in the branch
      nt = nchoosek(d, 2);
-     alpha = alpha/nt;
-    
+     alpha = alpha/nt; 
+     c = sqrt(-1/2 * (log(alpha/2)));
+     
      rejections = zeros(n_BM, 1);
      for p = 1 : n_BM
          %statistical test for each Brownian
@@ -45,8 +46,12 @@ function S = stat_ks_projective(Br, n_BM, alpha, C)
          lv_a = 1;
          lv_b = 2;
          while ~reject_H0 && lv_a < d  %if it is not fulfilled for one pair, then reject H0^w
-             % KS test for the pair (lv_a,lv_b)             
-             reject_H0 = kstest2(projs{lv_a}(p,:), projs{lv_b}(p,:), 'Alpha', alpha);
+             % KS test for the pair (lv_a,lv_b)  
+             [~, ~, D] = kstest2(projs{lv_a}(p,:), projs{lv_b}(p,:), 'Alpha', alpha);
+             nrm = sqrt( totals(lv_a)*totals(lv_b) / (totals(lv_a)+totals(lv_b)) );
+             reject_H0 = D * nrm > c;
+             
+%              reject_H0 = kstest2(projs{lv_a}(p,:), projs{lv_b}(p,:), 'Alpha', alpha);
              
              % update the indices
              if lv_b == d

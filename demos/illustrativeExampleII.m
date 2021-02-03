@@ -19,7 +19,7 @@ end
 
 
 % load EEG data for each volunteer
-names_volunteer = {'V05', 'V06', 'V08'};
+names_volunteer = {'V02', 'V09', 'V19'};
 
 X = [];
 Y = cell(1,3);
@@ -61,16 +61,16 @@ nBM = 1000;
 alpha = 0.05;
 beta = 0.05;
 
-rng(1); tree_v05 = estimate_functionalSeqROCTM(X(1,:), Y{1}, A, 3, nBM, alpha, beta, 0);
-rng(1); tree_v06 = estimate_functionalSeqROCTM(X(2,:), Y{2}, A, 3, nBM, alpha, beta, 0);
-rng(1); tree_v08 = estimate_functionalSeqROCTM(X(3,:), Y{3}, A, 3, nBM, alpha, beta, 0);
+rng(1); tree_v02 = estimate_functionalSeqROCTM(X(1,:), Y{1}, A, 3, nBM, alpha, beta);
+rng(1); tree_v09 = estimate_functionalSeqROCTM(X(2,:), Y{2}, A, 3, nBM, alpha, beta);
+rng(1); tree_v19 = estimate_functionalSeqROCTM(X(3,:), Y{3}, A, 3, nBM, alpha, beta);
 
 % draw the results
 figure
 subplot(1,3,1)
-draw_contexttree(tree_v05, A, [1 0 0], 3);
+draw_contexttree(tree_v02, A, [1 0 0], 3);
 subplot(1,3,2)
-draw_contexttree(tree_v06, A, [0 1 0], 3);
+draw_contexttree(tree_v09, A, [0 1 0], 3);
 subplot(1,3,3)
-draw_contexttree(tree_v08, A, [0 0 1], 3);
+draw_contexttree(tree_v19, A, [0 0 1], 3);
 

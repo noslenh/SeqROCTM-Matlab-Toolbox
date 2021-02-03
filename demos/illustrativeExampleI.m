@@ -1,4 +1,4 @@
-%% Example 1: Definition of a context tree model
+%% Definition of a context tree model
 
 % alphabet of three symbols
 A = [0,1,2];
@@ -13,7 +13,7 @@ p = [0, 1, 0 ; 1, 0, 0; 0, 0.2, 0.8; 1, 0, 0 ];
 % visualize the context tree used to generate the sequence of stimuli
 draw_contexttree(tau, A);
 
-%% Example 2: Generating an input sequence using the context tree model defined in Example 1
+%% Generation of an input sequence using the context tree model defined above
 
 % length of the sequence
 seq_length = 300;
@@ -21,7 +21,7 @@ seq_length = 300;
 % row vector with the sequence of stimuli (context tree model)
 X = generatesampleCTM(tau, p, A, seq_length);
 
-%% Example 3: Simulate the response sequence of a SeqROCTM (X,Y) and do model selection using the BIC criteria
+%% Simulation of the response sequence of a SeqROCTM (X,Y) and model selection 
 
 % Simulate the response data Y for the sequence of inputs generated in
 % Example 2, assuming three different strategies for an agent.

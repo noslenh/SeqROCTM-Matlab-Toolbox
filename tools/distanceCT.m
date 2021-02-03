@@ -66,11 +66,11 @@ for c = 1 : ncontexts1
 end
 
 % update the information in nodes_xor using the nodes in tree2: 
-% If appears in tree1 => nodes_xor = -1
-% If does not appears in tree1 => nodes_xor = 1
+% If the node appears in tree1 => nodes_xor = -1
+% If the node does not appear in tree1 => nodes_xor = 1
 % For the nodes that are not in tree2 
-% If does not appear in tree1 => nodes_xor = 0 (as it was initialized)
-% If appear in tree1 => nodes_xor = 1 (as it was initialized)
+% If it does not appear in tree1 => nodes_xor = 0 (as it was initialized)
+% If it appears in tree1 => nodes_xor = 1 (as it was initialized)
 for c = 1 : ncontexts2
     % initialize node with a context
     node = tree2{c};
