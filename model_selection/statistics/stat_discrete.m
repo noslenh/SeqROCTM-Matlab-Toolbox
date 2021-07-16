@@ -19,10 +19,10 @@ function S = stat_discrete(Br, statistic, threshold)
  
  S = true;
  
- % the leaves from Br that appears less than 2 times won´t be taken into
+ % the leaves from Br that appears less than 2 times will not be taken into
  % account to do the statistical test
  totals = Br{2,1}';         
- Count = Br{3,1}';          % the transpose is just to coincide with Count in Aline' source code    
+ Count = Br{3,1}';              
  
  lt = length(totals);
  dlt = false(lt,1);
@@ -44,40 +44,35 @@ function S = stat_discrete(Br, statistic, threshold)
  
  if (d > 1)&&(leaf_data)
      
+     % distributions associated to the leaves
      P = bsxfun(@rdivide, Count, totals);
+     
+     % distribution associate to the father
+     Count_father = sum(Count)'; 
+     P_father = Count_father / sum(Count_father);
      
      switch statistic
          
-         case 'emp_distribution'
+         case 'context_empD'
+             
              % Compute the distance between the empirical distributions
-             for u = 1 : length(P)-1
-                 v = u + 1;
-                 while (S == true) && (v < length(P) + 1)
-                     S = ( abs(P(u)-P(v)) < threshold ) ;
-                     v = v + 1;
-                 end
-                 if S == false
-                     break
-                 end
-             end
+             S =  max ( max( abs(P - ones(d,1) * P_father') ) ) < threshold;
              
-         case 'context'
-             % Compute the statistic given by BIC criteria
-             Count_father = sum(Count)'; 
-             P_father = Count_father / sum(Count_father);
+         case 'context_cL'
              
+             % Compute the statistic using likelihoods
              [~, c] = find(P > 0);   %% inefficient, think a way to avoid the second line
              ind = P > 0;
+             
+             ss = threshold;
+             test = 2 * sum( Count(ind) .* (log(P(ind)) - log(P_father(c)) ) );
+             S =  test < ss ;
              
              % based on chi-square asymptotic
              % ss = chi2inv(1-erro, length(Alphabet)-1)/2;
              
              % a particular threshold based on BIC comparison
              % ss = threshold * (length_Alphabet-1) * (d-1) * log(length_X);
-             
-             ss = threshold;
-             test = 2 * sum( Count(ind) .* (log(P(ind)) - log(P_father(c)) ) );
-             S =  test < ss ;
      end
  end
             

@@ -9,7 +9,7 @@ function [xsampled, indices] = samplediscretedist(x, prob, nsamples)
 %
 % Outputs
 %   xsampled  : sampled values
-%   idx       : indices of the sampled values
+%   idx       : index of the sampled values
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2020

@@ -5,27 +5,27 @@ function [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)
 %
 % Inputs
 %
-% X        : sequence of inputs
-% contexts : set of contexts
-% q        : distributions associated to the contexts
-% A        : alphabet
+%   X           : sequence of inputs
+%   contexts    : set of contexts
+%   q           : distributions indexes by the contexts
+%   A           : alphabet
 %
 % Outputs
 %
-% X        : sequence of inputs
-% Y        : sequence of responses
-% qemp     : empirical distributions computed on the simulated samples
+%   Xnew        : sequence of inputs
+%   Y           : sequence of responses
+%   qemp        : empirical distributions computed on the simulated samples
 %
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 07/2020
+%Date   : 02/2021
 
 n = length(X);
 
 if isempty(contexts)
     Xnew = X;
     Y = samplediscretedist(A, q, n);
-    qemp = hist(Y, A); %counts in same order than the alphabet
+    qemp = histc(Y, A); %counts in same order than the alphabet
 else
     % length of the context of maximum length
     max_length = max(cellfun(@(x) length(x), contexts));
@@ -36,19 +36,23 @@ else
     % initialize the response sequence
     Y = zeros(1, n - max_length);
     
-    % delete from the input sequence the positions for which it is not
-    % possible generate response
+    % delete from the input sequence the positions for which there won´t be
+    % a corresponding Y value
     Xnew = X(max_length + 1 : end);
     
     for i = 1 : n - max_length
         % find the context
         [~, idx_ctx] = contextfunction(X(i:i+max_length-1), contexts);
-        % use the distribution associated to the context to generate the
+        % use the distribution indexed by the context to generate the
         % response
-        [Y(i), idx] = samplediscretedist(A, q(idx_ctx,:), 1);
-        % update the distribution associated to that context
-        qemp(idx_ctx, idx) = qemp(idx_ctx, idx) + 1;
-    end
+        if idx_ctx ~= -1
+            [Y(i), idx] = samplediscretedist(A, q(idx_ctx,:), 1);
+            % update the distribution associated to that context
+            qemp(idx_ctx, idx) = qemp(idx_ctx, idx) + 1;
+        else
+            error('The context tree used to generate the sequence Y is not compatible with the sequence X');
+        end
+    end    
 end
 
 % normalize probabilities

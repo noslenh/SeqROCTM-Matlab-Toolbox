@@ -7,7 +7,7 @@ function [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)
 %
 %   [TREE, P, ML, CUTOFF] = ESTIMATE_CHAMPIONTREES(...) returns in the
 %   vector ML the likelihood of each champion tree and in vector CUTOFF the
-%   value of the hyperparameter with wich it was obtained each champion
+%   value of the hyperparameter with which it was obtained each champion
 %   tree.
 %
 %   [...] = ESTIMATE_CHAMPIONTREES(X,A,'PARAM1',val1,'PARAM2',val2,...)
@@ -16,8 +16,12 @@ function [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)
 %       Parameter                Value
 %       'EstimationMethod'       'bic' to estimate the context tree models
 %                                using the Bayesian Information Criteria or
-%                                'context' to estimate the context tree
-%                                models using the Context Algorithm.
+%                                'context_cL' to estimate the context tree
+%                                models using the Context Algorithm base on
+%                                comparison of likelihoods.
+%                                'context_empD' to estimate the context tree
+%                                models using the Context Algorithm based
+%                                on comparison of distributions.
 %                                Default is 'bic'.
 %       'MaxTreeHeight'          Maximum height of the context tree.
 %                                Default is log(length(X)).
@@ -44,7 +48,7 @@ function [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)
 
 %%%%%%%% name-value pairs arguments
 % default values
-options = struct('EstimationMethod', 'bic', 'MaxTreeHeight', log(length(X)), ...
+options = struct('EstimationMethod', 'bic', 'MaxTreeHeight', floor(log(length(X))), ...
                     'ParameterLowerBound', 0, 'ParameterUpperBound', 100, 'Tolerance', 10^-5,...
                     'BicDegreeOfFreedom', 'fix', 'BicMissing', 0);
 
@@ -57,7 +61,7 @@ for pair = reshape(varargin, 2, [])
     if any(strcmp(inpName, optionNames))
         
         if strcmp(inpName, 'EstimationMethod')
-            if any(strcmpi(pair{2}, {'bic','context'}))
+            if any(strcmpi(pair{2}, {'bic','context_empD', 'context_cL'}))
                 options.(inpName) = pair{2};
             else
                 error('%s is not a recognized parameter value', pair{2})
@@ -80,7 +84,7 @@ df = options.BicDegreeOfFreedom;
 miss = options.BicMissing;
 
 lA = length(A);
-if strcmpi(options.EstimationMethod, 'context')
+if any(strcmpi(options.EstimationMethod, {'context_empD','context_cL'}))
     % compute the complete tree and the TEST structure only once (for speed-up)
     [T, I] = completetree(X, max_height, A);
     TEST = getTESTstructure(T, I, lA, X);

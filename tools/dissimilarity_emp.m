@@ -56,7 +56,7 @@ else
 		lv = length(list_v);
         if lv > 1  % over_estimation
             for j = 1 : lv
-                fv = get_occurrences(list_v(j), X);
+                fv = get_occurrences(est_ctx{list_v(j)}, X);
                 d = d + fv * D_TotalVariation(P(c,:), est_P(list_v(j),:));
                 est_pi = [est_pi, fv];
             end

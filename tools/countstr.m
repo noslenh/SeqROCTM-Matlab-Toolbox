@@ -25,7 +25,7 @@ count = cell(2, ncontexts); 	%preallocate for speed
 % count(1,:) = {0};
 for n = 1 : ncontexts
     count{1,n} = 0;             % count ctxt
-    count{2,n} = zeros(1,lX);   % indices of ctxts (preallocating for speed-up)      
+    count{2,n} = zeros(1,lX);   % indexes of ctxts (preallocating for speed-up)      
 end
 
 %%%%%%%%%% version 1 => Aline %%%%%%%%%%

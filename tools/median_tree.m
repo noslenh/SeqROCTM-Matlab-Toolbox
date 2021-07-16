@@ -2,9 +2,9 @@ function [leaves, mt_contexts] = median_tree(Trees)
 % compute median tree of a list of trees
 
 % fix parameters (ToDo: put this as parameters of the function)
-max_height = 3;
+max_height = 4;
 length_alphabet = 3;
-max_num_nodes = 39;     %ToDo: compute this automatically
+max_num_nodes = 120;     %ToDo: compute this automatically
 
 % some auxiliary variables
 powers = length_alphabet.^(0:max_height);

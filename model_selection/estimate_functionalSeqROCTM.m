@@ -126,10 +126,6 @@ else
                 new_node{2,1} = sum(test{2,b});
                 new_node{3,1} = {cell2mat(test{3,b})};
                 
-                %
-%                 if isequal(new_node{1,1}, X(1:s-1)) % if X begins with the new_node, the counter needs to be increase by 1
-%                     new_node{2,1} = new_node{2,1} + 1;
-%                 end
                 if stat_ks_projective(test(:,b), n_BM, alpha, C) == 1 % prune => new_node = leave
                     
                     % Find if new_node have sibling in the list internal_nodes

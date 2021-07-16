@@ -137,7 +137,7 @@ idx_opt_model = np - tmp_idx + 1;
 end
 
 function Xhat = predictor_delta_loss(X, contexts, P, A)
-%PREDICTOR_DELTA_LOSS optimal predictor for the zero-one loss fuction
+%PREDICTOR_DELTA_LOSS optimal predictor for the zero-one loss function
  
  if isempty(contexts)
      % i.i.d model, so return the most probable symbol

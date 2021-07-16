@@ -46,7 +46,7 @@ options.BicMissing = 0;
 % number of contexts
 ncontexts = numel(contexts);
 
-% indexes of the model choosen (for each sample and each of the 18 tuning
+% indexes of the model chosen (for each sample and each of the 18 tuning
 % configurations)
 idx_optimalModel = zeros(100, 18);
 champions_bic_fix = cell(100,1);
@@ -57,8 +57,7 @@ champions_ctx = cell(100,1);
 for r = 1 : Repetitions
     
     % generate a sequence of length n
-%     X = generatesampleCTM(contexts, P, A, n);
-    X = model2_10000(r,:);
+    X = generatesampleCTM(contexts, P, A, n);
     
     disp(['Processing sample ' num2str(r) ' ...']);
   
@@ -195,7 +194,7 @@ for r = 1 : Repetitions
  
 end
 
-%%%% Sumarization of the results
+%%%% Summarization of the results
 TM_inside_champions = zeros(3,1); % number of times the true model was inside the Champion Trees
 TM_choosen = zeros(100,18);
 

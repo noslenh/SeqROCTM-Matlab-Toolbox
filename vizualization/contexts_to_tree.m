@@ -23,7 +23,7 @@ max_level = 0;
 for ii = 1 : length(contexts)
     level = length(contexts{ii});
     txt = mat2str(contexts{ii});
-    txt(regexp(txt,'[[ ]]'))=[];    %delete brakets and white spaces
+    txt(regexp(txt,'[[ ]]'))=[];    %delete brackets and white spaces
     NODES{level} = [NODES{level}, node(txt)];
     if level > max_level
         max_level = level;

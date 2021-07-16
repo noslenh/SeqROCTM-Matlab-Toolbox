@@ -28,18 +28,6 @@ lpast = length(past);
 idx = -1;
 c = [];
 
-% i = 1;
-% li = length(contexts{i});
-% while (i <= n_contexts)&&...
-%         ( (li > lpast) || (~isequal(contexts{i},past(end-li+1 : end))) )
-%     i = i + 1;
-% end
-% 
-% if (i <= n_contexts)
-%     c = contexts{i};
-%     idx = i;
-% end
-
 found = false;
 i = 0;
 while (~found)&&(i < n_contexts)

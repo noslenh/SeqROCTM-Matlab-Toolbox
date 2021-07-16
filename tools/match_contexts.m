@@ -2,12 +2,18 @@ function match = match_contexts(ctx, est_ctx)
 %MATCH_CONTEXTS match the contexts in ctx with the corresponding
 %               well_estimated, over_estimated or under_estimated contexts
 %               in est_ctx
+% Inputs
 %
 % ctx       : set of contexts of the true tree
 % est_ctx   : set of contexts of the estimated tree
 %
-% match     : structure with the matching of contexts
- 
+% Outputs
+%
+% match     : cell array with the matching of contexts. On each row i, the
+%             first column contains the contexts of est_ctx that matches
+%             the i-th context in ctx and the second row the differences in
+%             level.
+
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2019
  

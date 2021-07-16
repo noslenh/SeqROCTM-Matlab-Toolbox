@@ -51,9 +51,7 @@ function S = stat_ks_projective(Br, n_BM, alpha, C)
              nrm = sqrt( totals(lv_a)*totals(lv_b) / (totals(lv_a)+totals(lv_b)) );
              reject_H0 = D * nrm > c;
              
-%              reject_H0 = kstest2(projs{lv_a}(p,:), projs{lv_b}(p,:), 'Alpha', alpha);
-             
-             % update the indices
+             % update the index
              if lv_b == d
                  lv_a = lv_a + 1;
                  lv_b = lv_a + 1;

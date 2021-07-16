@@ -32,7 +32,7 @@ bad_bootstrap_sample = [];
 np = length(param_set);
 L = zeros(B, np);
 
-if strcmpi(options.EstimationMethod, 'context')
+if any(strcmpi(options.EstimationMethod, {'context_empD', 'context_cL'}))
     %%% Context Algorithm
     for b = 1 : B
         
@@ -72,7 +72,7 @@ if strcmpi(options.EstimationMethod, 'context')
                     ' was incompatible with the bootstrap sample generated for prediction.']);
             else
                 % loss
-                L(b,k) = delta_loss(Yhat, Ybootsamples(b,end));
+                L(b,k) = delta_loss(Yhat, Xbootsamples(b,end));
             end
         end
     end
@@ -108,6 +108,13 @@ elseif strcmpi(options.EstimationMethod, 'bic')
                 'BicPrecomputedStats', precomputed_stats);
             
             % predict
+            %%% DELETE %%%%
+            try
+                a = ck{1};
+            catch
+                disp('here')
+            end
+            %%%%%%%%%%%%%%%
             Yhat = predictor_delta_loss(Xb, ck, Pk, A);
             
             % compute the loss
@@ -119,7 +126,7 @@ elseif strcmpi(options.EstimationMethod, 'bic')
                     ' was incompatible with the bootstrap sample generated for prediction.']);
             else
                 % loss
-                L(b,k) = delta_loss(Yhat, Ybootsamples(b,end));
+                L(b,k) = delta_loss(Yhat, Xbootsamples(b,end));
             end
         end
     end

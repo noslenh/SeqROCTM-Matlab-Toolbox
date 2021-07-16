@@ -52,8 +52,6 @@ function [renwpoint, renewals] = tree_renewalpoint(contexts, P, A, X)
     count = countstr(renewals, X);
     freqs = cell2mat(count(1,:));
     [~, idx] = max(freqs);
-%     maxvalue = max(freqs);
-%     idx = find(freqs == maxvalue);
     
     %choose the smallest
     [~, idxmin]= min(lrnw(idx));

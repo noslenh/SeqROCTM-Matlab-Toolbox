@@ -139,18 +139,7 @@ else
                 new_node{1,1} = test{1,b}{1}(2:end);
                 new_node{2,1} = sum(test{2,b});
                 new_node{3,1} = sum(test{3,b},2);
-                
-%                 % TRICK: if X begins with new_node, the counters needs to be increased by 1
-%                 % because that instance of new_node it is not taken into account by the sons 
-%                 if isequal(new_node{1,1}, X(1:s-1))
-%                     % increase the frequency
-%                     new_node{2,1} = new_node{2,1} + 1;
-%                     % index of the next symbol in the alphabet
-%                     idx = Y(s) + 1; 
-%                     % increases the transition
-%                     new_node{3,1}(idx) = new_node{3,1}(idx) + 1;
-%                 end
-                
+                                
                 % call the statistics
                 if stat_discrete(test(:,b), statistic, threshold) == 1 % prune => new_node = leave
                     

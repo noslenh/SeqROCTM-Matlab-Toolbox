@@ -10,7 +10,7 @@ function [M, I] = permn(V, N, K)
 %   with 3 input variables: M = PERMN(V,N,K) returns only the K-ths
 %   permutations.  The output is the same as M = PERMN(V,N) ; M = M(K,:),
 %   but it avoids memory issues that may occur when there are too many
-%   combinations.  This is particulary useful when you only need a few
+%   combinations.  This is particularly useful when you only need a few
 %   permutations at a given time. If V or K is empty, or N is zero, M will
 %   be empty. M has the size numel(K)-by-N. 
 %

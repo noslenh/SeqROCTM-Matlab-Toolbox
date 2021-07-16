@@ -31,8 +31,8 @@ th_renwpoint = 1;
 n 			= 10000;			% length of the stochastic sequence
 Repetitions = 100;				% number of times the procedure is repeated
 B 			= 200;				% number of bootstrap samples
-n1 			= floor(0.3*n); 	% proportion of the size of the sample corresponding to the size of the smaller resample.
-n2 			= floor(0.9*n);		% proportion of the size of the sample corresponding to the size of the larger resample.
+n1 			= floor(0.3*n); 	% proportion of the size of the sample corresponding to the size of the smaller re-sample.
+n2 			= floor(0.9*n);		% proportion of the size of the sample corresponding to the size of the larger re-sample.
 alpha 		= 0.01;            	% alpha level to use on the t-test
 max_height 	= 6;				% height of the complete tree
 c_min 		= 0;				% minimum value of the BIC constant
@@ -74,7 +74,7 @@ for r = 1 : Repetitions
     
 
     % check if the true model is within the Champion Trees and if it was
-    % choosen as optimal
+    % chosen as optimal
     if isequalCT(contexts, optmodel)
         true_model_bic = true_model_bic + 1;
         inside_champions_bic = inside_champions_bic + 1;
@@ -98,7 +98,7 @@ for r = 1 : Repetitions
                                                     );
                                                 
     % check if the true model is within the Champion Trees and if it was
-    % choosen as optimal
+    % chosen as optimal
     if isequalCT(contexts, optmodel)
         true_model_ctx = true_model_ctx + 1;
         inside_champions_ctx = inside_champions_ctx + 1;
@@ -112,6 +112,6 @@ for r = 1 : Repetitions
 end
 
 disp(['BIC: True model inside the Champion Trees: ' num2str(inside_champions_bic)]);
-disp(['BIC: True model choosen: ' num2str(true_model_bic)]);
+disp(['BIC: True model chosen: ' num2str(true_model_bic)]);
 disp(['Context Algorithm: True model inside the Champion Trees: ' num2str(inside_champions_ctx)]);
-disp(['Context Algorithm: True model choosen: ' num2str(true_model_ctx)]);
+disp(['Context Algorithm: True model chosen: ' num2str(true_model_ctx)]);

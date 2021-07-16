@@ -6,15 +6,15 @@ function [contexts, P, results] = estimate_contexttree(X, A, varargin)
 %   family of distributions is returned in P.
 %
 %   [CONTEXTS, P, RESULTS] = ESTIMATE_CONTEXTTREE(...) returns a structure
-%   with the following fields (only when 'bic' is choosen):
-%       'nodes'             --  all posible nodes of the tree 
+%   with the following fields (only when 'bic' is chosen):
+%       'nodes'             --  all possible nodes of the tree 
 %       'stats'             --  statistics of the nodes [log_Ps, \sum log_Vas, log_Vs, \Xi_s, Nw, Nwa]
 %       'nonExistingNodes'  --  nodes of the tree that do not appear in the
 %                               sequence X
 %       'XlengthWithoutNaN' --  length of the sequence X discarding the Nan
 %                               values
 %       'nonanIndexes'      --  indexes of the non Nan elements in the
-%                               sequece X
+%                               sequence X
 %
 %   [...] = ESTIMATE_CONTEXTTREE(X,A,'PARAM1',val1,'PARAM2',val2,...)
 %   specifies one or more of the following name/value pairs:
@@ -38,10 +38,10 @@ function [contexts, P, results] = estimate_contexttree(X, A, varargin)
 %                                'emp_distribution'. Default value is 1.
 %       'CtxCompleteTree'        Initial complete tree for the algorithm
 %                                Context (usually used to speed-up).
-%                                Default vavlue is [].
+%                                Default value is [].
 %       'CtxTestStructure'       Auxiliary structure for the algorithm
 %                                Context (usually used to speed-up).
-%                                Default vavlue is [].
+%                                Default value is [].
 %       'BicDegreeOfFreedom'     Degree of freedom used during the
 %                                penalization in the BIC algorithm. 'fix'
 %                                => (|A|-1), 'variable' => \sum_{a \in A}

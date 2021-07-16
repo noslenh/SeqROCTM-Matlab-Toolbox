@@ -1,5 +1,5 @@
 # SeqROCTM Matlab Toolbox
-This is a Matlab toolbox for the analysis of Sequences of Random Objects driven by Context Tree Models (SeqROCTM). It implements model selection methods for both SeqROCTM and context tree models. The toolbox includes several others algorithms like: simulation of these kind of stochastic processes, tunning of hyperparameters, visualization of the context tree structure, among others.  
+This is a Matlab toolbox for the analysis of Sequences of Random Objects driven by Context Tree Models (SeqROCTM). It implements model selection methods for both SeqROCTM and context tree models. The toolbox includes several others algorithms like: simulation of these kind of stochastic processes, tunning of hyperparameters, complexity measures for context tree models, dissimilarities for context tree models, visualization of the context tree structure, among others.  
 
 It is written purely in Matlab language. It is self-cointained. There is no external dependency.
 

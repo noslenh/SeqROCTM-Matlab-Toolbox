@@ -25,11 +25,15 @@ function [optTree, optP, results] = tune_contextTreeModel(X, A, varargin)
 %                                Default is 'smc'.
 %       'EstimationMethod'       'bic' to estimate the context tree models
 %                                using the Bayesian Information Criteria
-%                                and tune the penalization constant or
-%                                'context' to estimate the context tree
-%                                models using the Context Algorithm and
-%                                tune the threshold involved in the Context
-%                                Algorithm. Default is 'bic'.
+%                                and tune the penalization constant.
+%                                'context_cL' to estimate the context tree
+%                                models using the Context Algorithm based
+%                                on the comparison of likelihoods and tune
+%                                the threshold.
+%                                'context_empD' to estimate the context tree
+%                                models using the Context Algorithm based
+%                                on the comparison of distribution and tune
+%                                the threshold. Default is 'bic'.
 %       'MaxTreeHeight'          Maximum height of the context tree.
 %                                Default is log(length(X)).
 %       'ParameterLowerBound'    Minimum value of the parameter to be
@@ -92,7 +96,7 @@ lX = length(X);
 % default values
 options = struct(   'TuningMethod', 'smc',              ...
                     'EstimationMethod', 'bic',          ...  
-                    'MaxTreeHeight', log(lX),           ...
+                    'MaxTreeHeight', floor(log(lX)),    ...
                     'ParameterLowerBound', 0,           ...
                     'ParameterUpperBound', 100,         ...
                     'Tolerance', 10^-5,                 ...
@@ -116,7 +120,7 @@ for pair = reshape(varargin, 2, [])
     if any(strcmpi(inpName, optionNames))
         
         if strcmpi(inpName, 'estimationmethod')
-            if any(strcmpi(pair{2}, {'bic','context'}))
+            if any(strcmpi(pair{2}, {'bic','context_empD', 'context_cL'}))
                 options.(inpName) = pair{2};
             else
                 error('%s is not a recognized parameter value', pair{2})
@@ -187,7 +191,7 @@ else
     %choose the optimal model using a risk function
     [results.idxOptTree, results.fvalues] = tuning_risk(results.prmvalues, results.bootsamples, A, options);
     
-    optTree = reults.champions{results.idxOptTree};
+    optTree = results.champions{results.idxOptTree};
 end
 optP = results.Ps{results.idxOptTree};
     

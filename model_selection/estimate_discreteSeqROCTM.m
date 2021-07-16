@@ -7,14 +7,14 @@ function [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, vara
 %   returned in Q.
 %
 %   [CONTEXTS, Q, RESULTS] = ESTIMATE_DISCRETESEQROCTM(...) returns a structure
-%   with the following fields (only when 'bic' is choosen):
-%       'nodes'             --  all posible nodes of the tree 
+%   with the following fields (only when 'bic' is chosen):
+%       'nodes'             --  all possible nodes of the tree 
 %       'stats'             --  statistics of the nodes [log_Ps, \sum log_Vas, log_Vs, \Xi_s, Nw, Nwa]
 %       'nonExistingNodes'  --  nodes of the tree that do not appear in the
 %                               sequence X
 %       'XlengthWithoutNaN' --  length of the sequence X (because this
 %                               function does not treat Nan values)
-%       'nonanIndexes'      --  indexes of the elements in the sequece X
+%       'nonanIndexes'      --  indexes of the elements in the sequence X
 %                               (because this function does not treat Nan
 %                               values)
 %
@@ -24,12 +24,11 @@ function [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, vara
 %       Parameter                Value
 %       'EstimationMethod'       'bic' to estimate the model using the
 %                                Bayesian Information Criteria.
-%                                'context' to estimate the model using the
-%                                Context Algorithm.
-%                                'emp_distribution' to estimate model using
-%                                a pruning criterion based on the
-%                                comparison of the empirical distributions
-%                                indexes by the contexts of the tree.
+%                                'context_cL' to estimate the model using the
+%                                Context Algorithm based on likelihoods.
+%                                'context_empD' to estimate model using the
+%                                algorithm Context based on the comparison
+%                                of distributions.
 %                                Default is 'bic'.
 %       'MaxTreeHeight'          Maximum height of the context tree.
 %                                Default is log(length(X)).
@@ -40,10 +39,10 @@ function [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, vara
 %                                'emp_distribution'. Default value is 1.
 %       'CtxCompleteTree'        Initial complete tree for the algorithm
 %                                Context (usually used to speed-up).
-%                                Default vavlue is [].
+%                                Default value is [].
 %       'CtxTestStructure'       Auxiliary structure for the algorithm
 %                                Context (usually used to speed-up).
-%                                Default vavlue is [].
+%                                Default value is [].
 %       'BicDegreeOfFreedom'     Degree of freedom used during the
 %                                penalization in the BIC algorithm. 'fix'
 %                                => (|A|-1), 'variable' => \sum_{a \in A}
@@ -65,7 +64,7 @@ function [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, vara
 
 %%%%%%%% name-value pairs arguments
 % default values
-options = struct('EstimationMethod', 'bic', 'MaxTreeHeight', log(length(X)), ...
+options = struct('EstimationMethod', 'bic', 'MaxTreeHeight', floor(log(length(X))), ...
                     'ParameterValue', 1, 'CtxCompleteTree', -1, 'CtxTestStructure', -1, 'BicDegreeOfFreedom', 'fix', ...
                         'BicPrecomputedStats', []);
 
@@ -90,7 +89,7 @@ if strcmpi('bic', options.EstimationMethod)
     else
         [contexts, Q, results] = bic_WCT(X, Alphabet, options.MaxTreeHeight, options.ParameterValue, df, 0, Y, options.BicPrecomputedStats);
     end
-elseif any(strcmpi(options.EstimationMethod, {'context','emp_distribution'}))
+elseif any(strcmpi(options.EstimationMethod, {'context_empD','context_cL'}))
     if isequal(options.CtxCompleteTree, -1)
         [contexts, Q] = CTestimator(X, Alphabet, options.MaxTreeHeight, options.EstimationMethod, options.ParameterValue, Y);
     else

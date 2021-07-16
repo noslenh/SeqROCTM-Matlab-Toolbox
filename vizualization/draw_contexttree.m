@@ -8,7 +8,7 @@ function draw_contexttree(contexts, A, varargin)
 %   varargin(1) : color for drawing the tree
 %   varargin(2) : height that the figure will reserve for the design
 
-%Author : Aline Duarte, Noslen Hernandez
+%Author : Noslen Hernandez, Aline Duarte
 %Date   : 02/2019
 
 % convert the set of contexts to a tree class

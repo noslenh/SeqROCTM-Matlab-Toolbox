@@ -153,7 +153,7 @@ end
 
 function idx = node2index(w, powers, ps)
 %NODE2INDEX Get the index of the node w in the complete tree when the tree
-%           is travessed in level-order/breadth-first search (i.e., we
+%           is traversed in level-order/breadth-first search (i.e., we
 %           visit every node on a level before going to a lower level)
 % Inputs
 %

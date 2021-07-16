@@ -1,6 +1,6 @@
 function d = dissimilarity_th(ctx, P, est_ctx, est_P, A, varargin)
 %DISSIMILARITY_TH compute a dissimilarity between the two probabilistic context
-%              tree: (ctx,P) and (est_ctx,est_P)
+%                 tree: (ctx,P) and (est_ctx,est_P)
 % Input
 %
 % 	ctx           : contexts of the first probabilistic context tree
@@ -14,20 +14,16 @@ function d = dissimilarity_th(ctx, P, est_ctx, est_P, A, varargin)
 %
 % 	d             : dissimilarity value
 %
-% Usage
-%   
-%
-%
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 05/2019
+%Date   : 02/2021
 
 d = 0;
 if ~isempty(varargin)
     mu_ctx = varargin{1};
 else
     % compute the invariant measure
-    [~, ~, mu_ctx] = EntropyFiniteMarkovian(A, ctx, P);
+    [~, ~, mu_ctx] = EntropyRateCT(ctx, P, A);
 end
 
 emp1 = isempty(ctx);
@@ -68,42 +64,6 @@ else
 end
 
 end
-
-% function match = match_contexts(ctx, est_ctx)
-% %MATCH_CONTEXTS match the contexts in ctx with the corresponding
-% %               well_estimated, over_estimated or under_estimated contexts
-% %               in est_ctx
-% %
-% % ctx       : set of contexts of the true tree
-% % est_ctx   : set of contexts of the estimated tree
-% %
-% % match     : structure with the matching of contexts
-% 
-% %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-% %Date   : 04/2019
-% 
-% 
-% nv = length(est_ctx);
-% nw = length(ctx);
-% 
-% match = cell(nw,1);
-% 
-% for i = 1 : nv
-%     v = est_ctx{i};
-%     lv = length(v);
-%     for j = 1 : nw
-%         w = ctx{j};
-%         lw = length(w);
-%         if (lw <= lv) && isequal(w, v(end-lw+1 : end))
-%             match{j} = [match{j}, i];
-%             break;
-%         end
-%         if (lv <= lw) && isequal(v, w(end-length(v)+1 : end))
-%             match{j} = [match{j}, i];
-%         end
-%     end
-% end
-% end
 
 function p = get_prob(x, contexts, P, mu_ctx)
 %GET_PROB compute the invariant measure of the sub-sequence x  

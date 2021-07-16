@@ -12,7 +12,7 @@ function [F, P, I, log_V, Nw, Nwa, NODES, STATS, non_existing_nodes, global_idx]
 %   X                       : sequence
 %   lX                      : length of the sequence
 %   penalization_factor     : penalization (product of common terms in the penalization term)
-%   df                      : type of dregree of freedom (0: |A|-1; 1: number of possible transitions)
+%   df                      : type of degree of freedom (0: |A|-1; 1: number of possible transitions)
 %   global_idx              : index of the node visited before node w in the tree of all possible
 %                               nodes (including the ones with zero frequency)
 %
@@ -21,8 +21,8 @@ function [F, P, I, log_V, Nw, Nwa, NODES, STATS, non_existing_nodes, global_idx]
 %   F           : contexts
 %   log_V       : logarithm of V for the contexts (see definition of V in
 %                   the article)
-%   NODES       : nodes of the complete tree that were analised
-%   STATS       : the values [Phat, ProdV, V, Xi] for each of the analysed
+%   NODES       : nodes of the complete tree that were analyzed
+%   STATS       : the values [Phat, ProdV, V, Xi] for each of the analyzed
 %                   nodes
 %
 

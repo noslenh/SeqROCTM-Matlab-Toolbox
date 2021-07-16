@@ -42,7 +42,7 @@ if missing  %take into account that the data has missing values
         param_likhd_n2{b} = [param_likhd_n1{b}, n1+find(~isnan(bootsamples_n2(b,n1+1:end)))];
     end
 else
-    %initialize in such a way that allways call the likelihood function
+    %initialize in such a way that always call the likelihood function
     %with missing in false
     param_likhd_n1(1:B,1) = {0};
     param_likhd_n2(1:B,1) = {0};

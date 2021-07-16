@@ -24,9 +24,9 @@ classdef DrawTree < handle
     
     methods
         %constructor
-        function obj = DrawTree(tree, varargin) % parent, depth, number
+        function obj = DrawTree(tree, varargin)
             
-            % only want 3 optional inputs at most
+            % only want 3 optional inputs at most 
             numvarargs = length(varargin);
             if numvarargs > 3
                 error('DrawTree:TooManyInputs', ...
@@ -44,7 +44,7 @@ classdef DrawTree < handle
             obj.tree = tree;
             for i = 1 : numel(tree.children)
                 obj.children = [obj.children, ...
-                    DrawTree(tree.children(i), obj, depth + 0.5, i)]; % aqui estoy poniendo 0.5 entre las Y
+                    DrawTree(tree.children(i), obj, depth + 0.5, i)]; % this 0.5 can change
             end
             
             obj.thread = [];
@@ -111,8 +111,8 @@ classdef DrawTree < handle
             end
         end
         
-        function firstwalk(v, varargin) % distance
-            % only want 1 optional inputs at most
+        function firstwalk(v, varargin)
+            % only want 1 optional inputs at most (distance)
             numvarargs = length(varargin);
             if numvarargs > 1
                 error('DrawTree:firstwalk:TooManyInputs', ...
@@ -218,7 +218,7 @@ classdef DrawTree < handle
         function an = ancestor(vil, v, default_ancestor)
             found = false;
             ii = 1;
-            while ~found && (ii <= numel(v.parent.children))  %vil.ancestor in v.parent.children
+            while ~found && (ii <= numel(v.parent.children))  
                 found = (v.parent.children(ii) == vil.pancestor);
                 ii = ii+1;
             end
@@ -229,7 +229,7 @@ classdef DrawTree < handle
             end
         end
 
-        function [min, max, h] = second_walk(v, varargin) % m = 0, depth = 0, min = [], max = [], h = []
+        function [min, max, h] = second_walk(v, varargin) 
             
             numvarargs = length(varargin);
             if numvarargs > 5

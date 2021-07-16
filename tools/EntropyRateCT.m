@@ -7,16 +7,16 @@ function [H, Hmu, mu_ctx, Hmu_markovian] = EntropyRateCT(contexts, P, A)
 %
 % Input
 %
-% contexts      : set of contexts
-% P             : transition probabilities associated to the contexts
-% A             : alphabet
+% 	contexts      : set of contexts
+% 	P             : transition probabilities associated to the contexts
+% 	A             : alphabet
 %
 % Output
 %
-% H             : entropy rate of the process
-% Hmu           : entropy of the stationary distribution
-% mu_ctx        : probability of occurrence of contexts (stationary distribution)
-% Hmu_markovian : entropy of the stationary distribution of the Markovian system
+% 	H             : entropy rate of the process
+% 	Hmu           : entropy of the stationary distribution
+% 	mu_ctx        : probability of occurrence of contexts (stationary distribution)
+% 	Hmu_markovian : entropy of the stationary distribution of the Markovian system
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 08/2020

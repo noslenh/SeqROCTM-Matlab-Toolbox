@@ -16,14 +16,14 @@ function [tree, P, V, results] = bic_WCT(X, Alphabet, max_height, c, df, missing
 %   P           : distributions associated to the contexts
 %   V           : log(V) values for the contexts (see [2])
 %   results     : structure with the following fields:
-%       'nodes'             --  all posible nodes of the tree 
+%       'nodes'             --  all possible nodes of the tree 
 %       'stats'             --  statistics of the nodes [log_Ps, \sum log_Vas, log_Vs, \Xi_s, Nw, Nwa]
 %       'nonExistingNodes'  --  nodes of the tree that do not appear in the
 %                               sequence X
 %       'XlengthWithoutNaN' --  length of the sequence X discarding the Nan
 %                               values
 %       'nonanIndexes'      --  indexes of the non Nan elements in the
-%                               sequece X
+%                               sequence X
 
 %   References:  
 %      [1] I. Csiszar et al., IEEE Trans. Inform. Theory, 3, 52, 1007-1016 (2006)

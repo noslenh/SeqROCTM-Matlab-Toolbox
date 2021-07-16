@@ -1,9 +1,8 @@
-% Illustrative example presented in the article XXX
 
 % number of volunteers
 n_volunteers = 3;
 
-% probabilistic context tree defining the stimuli
+% alphabet and context tree model used to generate the stimuli
 A = [0,1,2];
 tau = {[0,0], [1,0], [2,0], [0,1], [1 1], [2,1], 2};
 p = [0, 0, 1 ; 0, 0, 1; 0.2, 0.8, 0; 0, 0, 1; 0, 0, 1; 0.2, 0.8, 0; 0.2, 0.8, 0];
@@ -11,14 +10,14 @@ p = [0, 0, 1 ; 0, 0, 1; 0.2, 0.8, 0; 0, 0, 1; 0, 0, 1; 0.2, 0.8, 0; 0.2, 0.8, 0]
 % length of the sequences of stimuli
 seq_length = 700;
 
+% Sequences of stimuli
 % matrix X of 3x700 containing on each row a sequence of stimuli
 Xdata = zeros(3,700);
 for v = 1 : n_volunteers
     Xdata(v,:) = generatesampleCTM(tau, p, A, seq_length);
 end
 
-
-% load EEG data for each volunteer
+% load stimuli and EEG data for each volunteer
 names_volunteer = {'V02', 'V09', 'V19'};
 
 X = [];
@@ -40,9 +39,9 @@ for v = 1 : n_volunteers
 end
 
 % visualize some symbols of the stimuli sequence and the corresponding EEG
-% chunks for volunteer V05
+% chunks for volunteer V02
 figure;
-id_cols = 88:96;
+id_cols = 760:768;
 for i = 1 : 9
     % plot the stimuli
     ax = subplot(2, 9, i);

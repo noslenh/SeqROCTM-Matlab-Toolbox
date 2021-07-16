@@ -21,14 +21,12 @@ for i = 1 : nc
     %to the root
     node = tree{i};
     while ~isempty(node)
-        nodes = [nodes; node];
+        nodes = [nodes, node];
         node = node(2:end);
     end
 end
 
 %delete the repeated nodes
-nodes = uniquecell(nodes);
-
 N = cellfun(@(x) num2str(x(:)'), nodes,'UniformOutput', false);
 [~, idx] = unique(N);
 nodes = nodes(idx);

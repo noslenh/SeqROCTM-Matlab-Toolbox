@@ -1,13 +1,26 @@
 function rp = is_renewal(pastlength, idw, T, height, nA, lcontexts)
 %IS_RENEWAL Recursive function to check if a context is a renewal point
+%
+% Inputs
+%
+%   pastlength  : length of the past being analyzed
+%   idw         : index of the current context
+%   T           : matrix with transitions context2context
+%   height      : height of the context tree
+%   nA          : number of elements of the alphabet
+%   lcontexts   : length of contexts
+%
+% Output
+%
+%   rp          : 1 if the context is a renewal, 0 otherwise.
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 01/2021
+%Date   : 02/2021
 
 rp = true;
 
 %if pastlength is greater or equal than height it is always possible to
-%generate next symbol
+%recover a context and generate next symbol
 if pastlength < height
     s = 1;
     while rp && s <= nA
@@ -31,7 +44,7 @@ if pastlength < height
                 rp = is_renewal(pastlength+1, idw_new(j), T, height, nA, lcontexts);
                 j = j + 1;
             end
-        else %if the new context is a suffix, check them
+        elseif nc > 0 %if the new context is a suffix, check them
              rp = is_renewal(pastlength+1, idw_new, T, height, nA, lcontexts);
         end
         s = s + 1;

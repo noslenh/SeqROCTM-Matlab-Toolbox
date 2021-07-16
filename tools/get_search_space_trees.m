@@ -57,7 +57,7 @@ function set_trees = get_trees(tree, max_height, nodes_complete_tree, A)
         l_leaves = cellfun(@length, tree);
         heigth_tree = max(l_leaves);
         
-        % if the height if the maximum heigth stop branching
+        % if the height if the maximum height stop branching
         if heigth_tree == max_height
             set_trees = {};
         else
