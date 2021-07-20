@@ -2,7 +2,7 @@
 % number of volunteers
 n_volunteers = 3;
 
-% alphabet and context tree model used to generate the stimuli
+% alphabet and context tree model used to generate the sequence of stimuli
 A = [0,1,2];
 tau = {[0,0], [1,0], [2,0], [0,1], [1 1], [2,1], 2};
 p = [0, 0, 1 ; 0, 0, 1; 0.2, 0.8, 0; 0, 0, 1; 0, 0, 1; 0.2, 0.8, 0; 0.2, 0.8, 0];
@@ -17,7 +17,7 @@ for v = 1 : n_volunteers
     Xdata(v,:) = generatesampleCTM(tau, p, A, seq_length);
 end
 
-% load stimuli and EEG data for each volunteer
+% load sequence of stimuli and EEG data for each volunteer
 names_volunteer = {'V02', 'V09', 'V19'};
 
 X = [];
@@ -38,7 +38,7 @@ for v = 1 : n_volunteers
     Y{v} = y;
 end
 
-% visualize some symbols of the stimuli sequence and the corresponding EEG
+% visualize some symbols of the stimuli sequence and its corresponding EEG
 % chunks for volunteer V02
 figure;
 id_cols = 760:768;

@@ -3,10 +3,10 @@
 % alphabet of three symbols
 A = [0,1,2];
 
-% context tree with four contexts
+% context tree containing four contexts 0, 2, 01, 11
 tau = {0, 2, [0,1], [1,1]};
 
-% distributions associated to the contexts in tau (4x3 matrix)
+% distributions associated to each contexts in tau (4x3 matrix)
 % p(0|0)=0, p(1|0)=1, p(2|0)=0 => distribution of context 0
 p = [0, 1, 0 ; 1, 0, 0; 0, 0.2, 0.8; 1, 0, 0 ];
 
@@ -42,7 +42,7 @@ ctx2 =  {0, 2, [0,1], [1,1]};
 q2 = [0, 1, 0 ; 1, 0, 0; 0, 0, 1; 1, 0, 0 ]; 
 [X2, Y2] = generatesampleYSeqROCTM(X, ctx2, q2, A);
 
-% strategy 3: The agent does not learn anything and plays randomly choosing
+% Strategy 3: The agent does not learn anything and plays randomly choosing
 % at each step any symbol from the alphabet independently and in a uniform
 % way.
 ctx3 =  {};
