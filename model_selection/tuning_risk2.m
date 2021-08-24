@@ -16,7 +16,7 @@ function [idx_opt_model, R] = tuning_risk2(param_set, Xbootsamples, Ybootsamples
 % R             : risk values corresponding to the parameter values 
 
 %   References:
-%      [1] N. Hernández et al., arXiv xxx, (2021).   
+%      [1] N. Hernández et al., arXiv:2009.06371, (2021).  
 %      [2] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)
 %
 

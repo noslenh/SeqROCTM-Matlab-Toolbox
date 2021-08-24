@@ -38,7 +38,7 @@ function [Trees, Q, ML, cutoff] = estimate_championTrees2(X, Y, A, varargin)
 
 %   References:
 %      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
-%      [2] N. Hernández et al., arXiv xxx, (2021).   
+%      [2] N. Hernández et al., arXiv:2009.06371, (2021).     
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
@@ -131,7 +131,6 @@ end
                 a = u;                                               % the complete tree is obtain when l_min=0 and for any value     
                 tau_a = tau_u; p_a = p_u;                            % greater than zero, a tree different from the complete tree is obtained   
                 u = (l_min + u)/2;                                      
-%                 [tau_u, p_u] = CTestimator(X, A, max_height, 'context', u, Y, {T, I}, TEST);  
                 [tau_u, p_u] = estimate_discreteSeqROCTM(X, Y, A, 'MaxTreeHeight', max_height, 'EstimationMethod', options.EstimationMethod, 'ParameterValue', u, 'CtxCompleteTree', ct_inf, 'CtxTestStructure', TEST, 'BicDegreeOfFreedom', df, 'BicPrecomputedStats', precomputed_stats);
             end
             l_min = u; tau_l = tau_u;

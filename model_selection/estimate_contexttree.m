@@ -59,7 +59,7 @@ function [contexts, P, results] = estimate_contexttree(X, A, varargin)
 %   References:
 %      [1] J. Rissanen, IEEE Trans. Inform. Theory 29, 656-664 (1983)
 %      [2] I. Csiszar et al., IEEE Trans. Inform. Theory, 3, 52, 1007-1016 (2006)
-%      [3] F. Leonardi
+%      [3] A. Galves et al., Progress in Probability 60, 257-269 (2008)
 
 %
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)

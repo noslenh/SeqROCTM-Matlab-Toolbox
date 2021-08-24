@@ -89,7 +89,7 @@ function [optTree, optQ, results] = tune_SeqROCTM(X, Y, A, varargin)
 
 %   References:
 %      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
-%      [2] N. Hernández et al., arXiv xxx, (2021).   
+%      [2] N. Hernández et al., arXiv:2009.06371, (2021).  
 %      [3] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)
 %
 

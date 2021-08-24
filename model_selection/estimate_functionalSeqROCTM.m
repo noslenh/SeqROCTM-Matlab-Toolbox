@@ -19,6 +19,10 @@ function contexts = estimate_functionalSeqROCTM(X, Y, Alphabet, max_height, n_BM
 %
 %   contexts      : estimated context tree
 
+%   References:
+%      [1] A. Duarte et al., Mathematic 7, 5 (2019). 
+%      [2] N. Hernández et al., arXiv:2009.06371, (2021).
+
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 

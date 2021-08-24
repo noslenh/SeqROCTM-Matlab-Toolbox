@@ -55,7 +55,7 @@ function [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, vara
 %                                Default value is [].
 
 %   References:
-%      [1] N. Hernández et al., arXiv xxx, (2021).   
+%      [1] N. Hernández et al., arXiv:2009.06371, (2021).  
 
 %
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)

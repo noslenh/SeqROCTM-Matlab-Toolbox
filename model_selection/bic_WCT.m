@@ -27,7 +27,7 @@ function [tree, P, V, results] = bic_WCT(X, Alphabet, max_height, c, df, missing
 
 %   References:  
 %      [1] I. Csiszar et al., IEEE Trans. Inform. Theory, 3, 52, 1007-1016 (2006)
-%      [2] N. Hernández et al., arXiv xxx, (2021). 
+%      [2] N. Hernández et al., arXiv:2009.06371, (2021). 
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
