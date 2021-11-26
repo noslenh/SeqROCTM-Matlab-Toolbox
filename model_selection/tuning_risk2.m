@@ -108,13 +108,6 @@ elseif strcmpi(options.EstimationMethod, 'bic')
                 'BicPrecomputedStats', precomputed_stats);
             
             % predict
-            %%% DELETE %%%%
-            try
-                a = ck{1};
-            catch
-                disp('here')
-            end
-            %%%%%%%%%%%%%%%
             Yhat = predictor_delta_loss(Xb, ck, Pk, A);
             
             % compute the loss
