@@ -88,7 +88,7 @@ function [optTree, optP, results] = tune_contextTreeModel(X, A, varargin)
 %
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 01/2021
+%Date   : 12/2022
 
 lX = length(X);
 

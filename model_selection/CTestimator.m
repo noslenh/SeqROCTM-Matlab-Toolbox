@@ -8,7 +8,7 @@ function [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, thresho
 %   Alphabet      : Alphabet 
 %   max_height    : maximum height of the complete tree
 %   statistic     : type of statistics used in the pruning criteria. It can
-%                   take the values 'context' or 'emp_distribution'
+%                   take the values 'context_cL' or 'context_empD'
 %   threshold     : threshold used in the context algorithm or in the
 %                   comparison of the empirical distributions
 %   varargin{1}   : Y sequence
@@ -23,7 +23,7 @@ function [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, thresho
 %
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 05/2019
+%Date   : 12/2022
 
 compute_complete_tree = true;
 compute_TEST = true;

@@ -44,7 +44,7 @@ function [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)
 %      [2] N. Hernández et al., arXiv:2009.06371, (2021).   
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 01/2021
+%Date   : 12/2022
 
 %%%%%%%% name-value pairs arguments
 % default values
@@ -124,7 +124,7 @@ upper_bound = u;
 Trees = {}; P = {}; ML = []; cutoff = [];
 
 if ~isempty(tau_upper)
-    disp('Warning: The empty tree is not obtain for the maximum value of the penalization constant given.')
+    disp('Warning: The empty tree is not obtain for the maximum value of the penalization constant/threshold given.')
 end
 
     tau_u = tau_upper;

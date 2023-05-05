@@ -22,9 +22,9 @@ function [contexts, P, results] = estimate_contexttree(X, A, varargin)
 %       Parameter                Value
 %       'EstimationMethod'       'bic' to estimate the context tree model
 %                                using the Bayesian Information Criteria.
-%                                'context' to estimate the context tree
+%                                'context_cL' to estimate the context tree
 %                                model using the Context Algorithm.
-%                                'emp_distribution' to estimate the context
+%                                'context_empD' to estimate the context
 %                                tree model using a pruning criterion based
 %                                on the comparison of the empirical
 %                                transition probabilities associated to the
@@ -63,7 +63,7 @@ function [contexts, P, results] = estimate_contexttree(X, A, varargin)
 
 %
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 01/2021
+%Date   : 12/2022
 
 %%%%%%%% name-value pairs arguments
 % default values
@@ -92,7 +92,7 @@ if strcmpi('bic', options.EstimationMethod)
     else
         [contexts, P, ~, results] = bic_WCT(X, A, options.MaxTreeHeight, options.ParameterValue, df, options.BicMissing, [], options.BicPrecomputedStats);
     end
-elseif any(strcmpi(options.EstimationMethod, {'context','emp_distribution'}))
+elseif any(strcmpi(options.EstimationMethod, {'context_cL','context_empD'}))
     if isequal(options.CtxCompleteTree, -1)
         [contexts, P] = CTestimator(X, A, options.MaxTreeHeight, options.EstimationMethod, options.ParameterValue);
     else

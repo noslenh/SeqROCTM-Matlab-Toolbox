@@ -5,7 +5,7 @@ function S = stat_discrete(Br, statistic, threshold)
 %
 %   Br               : branch to be tested 
 %   statistic        : type of statistics used in the pruning criteria. It can
-%                        take the values 'context' or 'emp_distribution'
+%                        take the values 'context_cL' or 'context_empD'
 %   threshold        : threshold used in the context algorithm or in the
 %                        comparison of the empirical distributions in the 
 %
@@ -15,7 +15,7 @@ function S = stat_discrete(Br, statistic, threshold)
 %
 
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
-%Date   : 05/2019
+%Date   : 12/2022
  
  S = true;
  
