@@ -12,8 +12,7 @@ function [pasts, indexes] = past_with_transitions(past, all_past, N)
 %  pasts 	: all pasts with transition from past
 %  indexes 	: indexes of pasts in all_past
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 08/2020
 
 L = length(past);

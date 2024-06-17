@@ -1,6 +1,6 @@
 %Class to model a tree
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2021
 
 classdef DrawTree < handle

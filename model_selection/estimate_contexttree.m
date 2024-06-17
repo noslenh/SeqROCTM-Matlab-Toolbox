@@ -55,14 +55,13 @@ function [contexts, P, results] = estimate_contexttree(X, A, varargin)
 %                                is [].
 %       'BicMissing'             1 if it is required treatment of Nan
 %                                values, 0 otherwise
-
+%
 %   References:
 %      [1] J. Rissanen, IEEE Trans. Inform. Theory 29, 656-664 (1983)
 %      [2] I. Csiszar et al., IEEE Trans. Inform. Theory, 3, 52, 1007-1016 (2006)
 %      [3] A. Galves et al., Progress in Probability 60, 257-269 (2008)
-
 %
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 12/2022
 
 %%%%%%%% name-value pairs arguments

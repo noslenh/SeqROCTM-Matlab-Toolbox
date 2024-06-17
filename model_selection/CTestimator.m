@@ -1,11 +1,11 @@
-function [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, threshold, varargin)
-%CTESTIMATOR estimate a context tree from the sequence X or from the SeqROCTM (X,Y)
+function [contexts, P] = CTestimator(X, A, max_height, statistic, threshold, varargin)
+%CTESTIMATOR Estimate a context tree from a sequence or from a SeqROCTM.
+%
 % Inputs
 %
-%   X             : sequence of symbols taking values in Alphabet
-%   Y             : response sequence (sequence of symbols). A vector of the
-%                   same dimension that X (it is optionally given in varargin)
-%   Alphabet      : Alphabet 
+%   X             : input sequence
+%   Y             : response sequence. A vector of the same dimension of X (it is optionally given in varargin)
+%   A             : alphabet in wich the elements of the sequences take values
 %   max_height    : maximum height of the complete tree
 %   statistic     : type of statistics used in the pruning criteria. It can
 %                   take the values 'context_cL' or 'context_empD'
@@ -20,9 +20,7 @@ function [contexts, P] = CTestimator(X, Alphabet, max_height, statistic, thresho
 % contexts      : estimated context tree
 % P             : estimated family of probability distribution
 %
-%
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 12/2022
 
 compute_complete_tree = true;
@@ -53,18 +51,18 @@ length_X = length(X);
 
 % compute the complete tree
 if compute_complete_tree
-    [T, I] = completetree(X, max_height, Alphabet);
+    [T, I] = completetree(X, max_height, A);
 end
 
 if isempty(Y), Y = X; end
 
 if isempty(T)   % if the complete tree is the empty tree
     contexts = T;
-    counts = histc(Y, Alphabet);
+    counts = histc(Y, A);
     P = counts / sum(counts); 	% return the frequency of each symbol
 %     P = P';
 else
-    la = length(Alphabet);
+    la = length(A);
     br_not_test =  {};
     
     % organize the information in a structure called TEST to facilitate the
@@ -240,7 +238,7 @@ else
     end
     if isempty(br_not_test)
         contexts = {};
-        counts = histc(Y, Alphabet);
+        counts = histc(Y, A);
         P = counts / sum(counts); % return the frequency of each symbol
 %         P = P';
     else
@@ -254,7 +252,7 @@ end
 end
 
 function [have_sibling, internal_nodes] = sibling_in_internal_nodes(internal_nodes, str_node, flag)
-% check if a sibling of [str_node] exist in the [internal_nodes] list.
+% Check if a sibling of [str_node] exist in the [internal_nodes] list.
 % have_sibling = true if it exists, otherwise have_sibling = false.
 
 % If flag = 1: node is added to internal_nodes when have_sibling = false
@@ -275,7 +273,7 @@ if ~have_sibling && flag, internal_nodes = [internal_nodes; str_node]; end
 end
 
 function [br, br_test] = delete_branch_from_br_test(br_test, str_node)
-% check if there exist a branch in br_test with siblings of [str_node]. If it
+% Check if there exist a branch in br_test with siblings of [str_node]. If it
 % exists, then such branch is deleted from [br_test] and return in [br].
 % Otherwise, br = [];
 
@@ -294,7 +292,7 @@ end
 end
 
 function br_test = add_node_to_br_test(br_test, node)
-% add a node to the corresponding branch in br_test. If there is no branch
+% Add a node to the corresponding branch in br_test. If there is no branch
 % of sibling, create a new branch with node
     
 nr = size(br_test,2);
@@ -334,8 +332,8 @@ function [Nw, Nwa] = get_counts(w, ind, X, length_alphabet)
 %   Nw              : Number of occurrences of w in X
 %   Nwa             : Number of occurrences of each symbol in the alphabet
 %                     after w 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2019
 
     Nwa = zeros(length_alphabet,1);

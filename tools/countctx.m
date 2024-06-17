@@ -24,8 +24,8 @@ function [count, Nwa] = countctx(contexts, X, A, idx_without_NaN, Y)
 %              positions in X where the context appears. 
 %   Nwa      : a matrix containing in each row the transitions from a
 %              context to each symbol of the alphabet. 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2021
 
 

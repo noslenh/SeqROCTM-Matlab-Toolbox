@@ -1,5 +1,5 @@
 function match = match_contexts(ctx, est_ctx)
-%MATCH_CONTEXTS match the contexts in ctx with the corresponding
+%MATCH_CONTEXTS Match the contexts in ctx with the corresponding
 %               well_estimated, over_estimated or under_estimated contexts
 %               in est_ctx
 % Inputs
@@ -13,8 +13,8 @@ function match = match_contexts(ctx, est_ctx)
 %             first column contains the contexts of est_ctx that matches
 %             the i-th context in ctx and the second row the differences in
 %             level.
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2019
  
  

@@ -1,6 +1,5 @@
 function [opt_tree, idx] = tuning_SMC2(championTrees, A, n1, n2, alpha, Xbootsamples, Ybootsamples)
-%MODELTUNNING_SMC Context tree selection using the Smallest Maximizer
-%                 Criterion for SeqROCTM 
+%MODELTUNNING_SMC Context tree selection using the Smallest Maximizer Criterion for SeqROCTM 
 %
 % Inputs
 %
@@ -21,11 +20,11 @@ function [opt_tree, idx] = tuning_SMC2(championTrees, A, n1, n2, alpha, Xbootsam
 %  opt_tree         : optimal context tree
 %  idx              : index of the optimal context tree in the set of
 %                       Champion Trees
-
+%
 %   References:
 %      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
 %      [2] N. Hernández et al., arXiv:2009.06371, (2021).  
-
+%
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 

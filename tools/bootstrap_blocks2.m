@@ -16,7 +16,6 @@ function [BX, BY] = bootstrap_blocks2(X, Y, renewal_block, seq_length, nB)
 %   BY            : matrix containing on each row a corresponding bootstrap
 %                   sample of Y 
 %
-
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 06/2021
 

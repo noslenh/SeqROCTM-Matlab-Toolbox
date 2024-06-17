@@ -1,6 +1,5 @@
 function [xsampled, indices] = samplediscretedist(x, prob, nsamples)
-%SAMPLEDISCRETEDIST Sample from a discrete distribution with domain in x
-%					defined by prob
+%SAMPLEDISCRETEDIST Sample from a discrete distribution.
 %
 % Inputs
 %   x         : domain of the distribution 
@@ -10,8 +9,8 @@ function [xsampled, indices] = samplediscretedist(x, prob, nsamples)
 % Outputs
 %   xsampled  : sampled values
 %   idx       : index of the sampled values
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2020
 
 xsampled = zeros(nsamples,1);

@@ -1,9 +1,10 @@
 function [F, I, Fidx, Nwa] = find_context(w, lA, ind_father, X, contexts, ncontexts, max_height, Y)
-%FIND_CONTEXT recursive function to 
+%FIND_CONTEXT Recursive function to find a context 
+%
 % Inputs
 %
 %   w          : sequence of symbols
-%   A          : alphabet
+%   lA         : number of elelents in the alphabet
 %   max_height : height of the complete tree
 %   ind_father : indexes where the father of w appears in the sequence X
 %   X          : sequence of data
@@ -15,12 +16,8 @@ function [F, I, Fidx, Nwa] = find_context(w, lA, ind_father, X, contexts, nconte
 %                  tree in the sequence X
 %   Iidx       : total number of pairs of siblings in the complete tree (useful
 %                  when the prune is based on statistical testing)
-% 
-% Usage
 %
-% 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2020
 
     F = {};
@@ -82,10 +79,17 @@ function [ind, Nwa] = is_in_sample(w, ind_father, lA, X, Y)  % if ind = [], w is
 end
 
 function [d, c] = is_context(w, contexts, ncontexts)
-%IS_CONTEXT check if w belong to the set of contexts
-
-% d : true if w belong to contexts
-% c : index of the context in the list (0 if d=false)
+%IS_CONTEXT Check if w belong to the set of contexts
+%
+% Inputs
+%   w         : string to ckeck if belong to the set of contexts  
+%   contexts  : set of contexts
+%   ncontexts : number of contexts
+%
+% Outputs
+%
+%   d         : true if w belong to contexts
+%   c         : index of the context in the list (0 if d=false)
 
     d = false;
     c = 1;

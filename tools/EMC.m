@@ -12,8 +12,8 @@ function compl = EMC(contexts, P, A)
 %
 %  compl    : Effective measure complexity
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 08/2020
 
 order = max(cellfun(@(x) length(x), contexts, 'uniformoutput', 1));

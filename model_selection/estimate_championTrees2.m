@@ -35,12 +35,12 @@ function [Trees, Q, ML, cutoff] = estimate_championTrees2(X, Y, A, varargin)
 %                                penalization in the BIC algorithm. 'fix'
 %                                => (|A|-1), 'variable' => \sum_{a \in A}
 %                                1{Q(a|w)~=0}. Default value is 'fix'.
-
+%
 %   References:
 %      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
 %      [2] N. Hernández et al., arXiv:2009.06371, (2021).     
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 

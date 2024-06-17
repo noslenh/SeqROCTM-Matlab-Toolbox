@@ -1,7 +1,6 @@
 function [X, Y, qemp] = generatesampleXYSeqROCTM(ctx_X, p, ctx_Y, q, A, n)
 %GENERATESAMPLEYSEQROCTM Generates a SeqROCTM using a CTM to generate the
-%                        input sequence and a context tree with the
-%                        distributions to generate the response sequence
+%input sequence and a context tree with associated distributions to generate the response sequence.
 %
 % Inputs
 %
@@ -18,8 +17,7 @@ function [X, Y, qemp] = generatesampleXYSeqROCTM(ctx_X, p, ctx_Y, q, A, n)
 % Y        : sequence of responses
 % qemp     : empirical distributions computed on the simulated samples
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 06/2020
     
     % generate the input sequence

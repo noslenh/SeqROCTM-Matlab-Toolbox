@@ -14,13 +14,12 @@ function [idx_opt_model, R] = tuning_risk2(param_set, Xbootsamples, Ybootsamples
 %
 % idx_opt_model : index of the optimal parameter value
 % R             : risk values corresponding to the parameter values 
-
+%
 %   References:
 %      [1] N. Hernández et al., arXiv:2009.06371, (2021).  
 %      [2] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 lA = length(A);

@@ -1,7 +1,6 @@
 function [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)
 %GENERATESAMPLEYSEQROCTM Generates the response sequence of a SeqROCTM from
-%                        the sequence of inputs, the context tree and the
-%                        distributions associated to the contexts
+%a sequence of inputs, the context tree and the distributions associated to the contexts.
 %
 % Inputs
 %
@@ -16,8 +15,7 @@ function [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)
 %   Y           : sequence of responses
 %   qemp        : empirical distributions computed on the simulated samples
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2021
 
 n = length(X);

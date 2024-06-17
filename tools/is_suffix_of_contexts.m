@@ -11,8 +11,8 @@ function [ctxs, index] = is_suffix_of_contexts(ss, contexts)
 % 	ctxs      : contexts from which ss is a suffix
 % 	index     : indexes of such contexts in the array contexts
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2020
 
 ncontexts = length(contexts);

@@ -1,6 +1,5 @@
 function S = stat_discrete(Br, statistic, threshold)
-%STAT_DISCRETE  Test if the branch should be pruned using different
-%               statistical criteria
+%STAT_DISCRETE  Test if the branch should be pruned using different statistical criteria
 % Inputs 
 %
 %   Br               : branch to be tested 
@@ -13,7 +12,6 @@ function S = stat_discrete(Br, statistic, threshold)
 %
 %   S   			 : true (prune), H0 is not rejected 
 %
-
 %Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
 %Date   : 12/2022
  

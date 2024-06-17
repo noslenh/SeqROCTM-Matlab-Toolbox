@@ -1,4 +1,3 @@
-
 % number of volunteers
 n_volunteers = 3;
 

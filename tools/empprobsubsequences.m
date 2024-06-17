@@ -26,8 +26,8 @@ function [est_P, est_transP, iT, empHH] = empprobsubsequences(contexts, P, A, se
 %                  past and a symbol
 %  empHH         : empirical entropy (entropy rate computed using the
 %                  estimates obtained form a realization of size 1,...,N)
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 08/2020
 
 if ~exist('seq_length', 'var')

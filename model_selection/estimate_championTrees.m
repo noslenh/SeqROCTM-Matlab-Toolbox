@@ -42,8 +42,8 @@ function [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)
 %   References:
 %      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
 %      [2] N. Hernández et al., arXiv:2009.06371, (2021).   
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 12/2022
 
 %%%%%%%% name-value pairs arguments

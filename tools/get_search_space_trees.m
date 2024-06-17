@@ -1,17 +1,16 @@
 function all_trees = get_search_space_trees(complete_tree, A)
-%GET_SEARCH_SPACE_TREES compute all the context trees that could result
+%GET_SEARCH_SPACE_TREES Compute all the context trees that could result
 %                       from the estimation process (search space). 
 % Inputs
 %
 %   complete_tree : all nodes of the complete tree
-%   A                   : alphabet
+%   A             : alphabet
 %
 % Output
 %
 %  all_trees : cell array with all possible context trees
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2021
 
  % get the nodes of the complete tree

@@ -11,8 +11,7 @@ function logL = treeloglikelihood2(X, Y, tree, alphabet)
 %
 %   logL        : log likelihood
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 ncontexts = length(tree);

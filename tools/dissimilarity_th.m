@@ -1,5 +1,5 @@
 function d = dissimilarity_th(ctx, P, est_ctx, est_P, A, varargin)
-%DISSIMILARITY_TH compute a dissimilarity between the two probabilistic context
+%DISSIMILARITY_TH Compute a dissimilarity between the two probabilistic context
 %                 tree: (ctx,P) and (est_ctx,est_P)
 % Input
 %
@@ -14,8 +14,7 @@ function d = dissimilarity_th(ctx, P, est_ctx, est_P, A, varargin)
 %
 % 	d             : dissimilarity value
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2021
 
 d = 0;
@@ -66,16 +65,20 @@ end
 end
 
 function p = get_prob(x, contexts, P, mu_ctx)
-%GET_PROB compute the invariant measure of the sub-sequence x  
+%GET_PROB Compute the invariant measure of the sub-sequence x  
+%
+% Input
 %
 % x         : sub-sequence to compute the invariant measure
 % contexts  : contexts of the probabilistic context tree
 % P         : distributions associated to contexts
 % mu_ctx    : invariant measure of contexts
 %
+% Output
+%
 % p         : invariant measure for x
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2019
 
     stop = false;
@@ -102,14 +105,18 @@ function p = get_prob(x, contexts, P, mu_ctx)
 end
 
 function d = D_Bhattacharyya(p, q)
-%D_Bhattacharyya compute the Bhattacharyya distance between two distributions
+%D_Bhattacharyya Compute the Bhattacharyya distance between two distributions
+%
+% Input
 %
 % p : first distribution
 % q : second distribution
 %
+% Output
+%
 % d : Bhattacharyya distance
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2019
 
 BC = sum(sqrt(p.*q));
@@ -118,14 +125,18 @@ d = - log(BC);
 end
 
 function d = D_Hellinger(p, q)
-%D_Hellinger compute the Hellinger distance between two distributions
+%D_Hellinger Compute the Hellinger distance between two distributions
+%
+% Input
 %
 % p : first distribution
 % q : second distribution
 %
+% Output
+%
 % d : Hellinger distance
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2019
 
 BC = sum(sqrt(p.*q));
@@ -134,14 +145,18 @@ d = sqrt(1 - BC);
 end
 
 function d = D_TotalVariation(p, q)
-%D_TotalVariation compute the Total Variation distance between two distributions
+%D_TotalVariation Compute the Total Variation distance between two distributions
+%
+% Input
 %
 % p : first distribution
 % q : second distribution
 %
+% Output
+%
 % d : Total variation distance
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2019
 
 d = 0.5 * sum(abs(p - q));

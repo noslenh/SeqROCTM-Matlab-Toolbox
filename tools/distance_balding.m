@@ -11,8 +11,8 @@ function d = distance_balding(tree1, tree2, all_nodes)
 % Outputs
 %
 %	d			: value of the distance
-
-%Author : Noslen Hernandez (noslenh@gmail.com)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr)
 %Date   : 10/2020
 
 % compute the weights corresponding to the nodes of the complete tree

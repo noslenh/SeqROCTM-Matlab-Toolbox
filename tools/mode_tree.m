@@ -1,21 +1,20 @@
-function leaves = mode_tree(Trees, Alphabet)
+function leaves = mode_tree(Trees, A)
 %MODE_TREE Computes the mode context tree of a set of context trees 
 %
 % Inputs
 %
 %   Trees      : cell array with the context tree used to compute the mode
-%   Alphabet   : alphabet
+%   A          : alphabet
 %
 % Outputs
 %
 %   leaves     : set of contexts of the mode tree
 % 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2020
 
 
-    length_alphabet = numel(Alphabet);
+    length_alphabet = numel(A);
     
     % maximum height of the trees in Trees
     nTrees = length(Trees);
@@ -61,14 +60,14 @@ function leaves = mode_tree(Trees, Alphabet)
     end
     
     % identify the leaves of the mode tree from the array of frequencies
-    leaves = is_leaf_in_mode_tree([], freq_contexts(1), Alphabet, freq_contexts, powers, partial_sum, max_height);
+    leaves = is_leaf_in_mode_tree([], freq_contexts(1), A, freq_contexts, powers, partial_sum, max_height);
 
 
 end
 
 function T = is_leaf_in_mode_tree(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)
-%IS_LEAF_IN_MODE_TREE recursive function to compute the context of the mode
-%                     tree from the frequency
+%IS_LEAF_IN_MODE_TREE Recursive function to compute the context of the mode tree from the frequency
+%
 % Inputs
 %
 %   node        : sequence of symbols
@@ -111,8 +110,8 @@ function T = is_leaf_in_mode_tree(node, freq, Alphabet, frequencies, powers, par
 end
 
 function found = greater_than(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)
-%GREATER_THAN check if there is any node in the branch induced by "node"
-%             with greater or equal frequency that "node"
+%GREATER_THAN check if there is any node in the branch induced by "node" with greater or equal frequency that "node"
+%
 % Inputs
 %
 %   node        : sequence of symbols

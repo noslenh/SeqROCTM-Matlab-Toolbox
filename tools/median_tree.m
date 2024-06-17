@@ -1,5 +1,17 @@
 function [leaves, mt_contexts] = median_tree(Trees)
-% compute median tree of a list of trees
+%MEDIAN_TREE Compute the median tree from a list of trees.
+%
+% Inputs
+%
+%   Trees       : list of trees
+%
+% Outputs
+%
+%   leaves      : leaves of the median tree
+%   mt_contexts : structure with additional information
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+%Date   : 04/2019
 
 % fix parameters (ToDo: put this as parameters of the function)
 max_height = 4;

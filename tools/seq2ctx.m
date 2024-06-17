@@ -1,12 +1,15 @@
 function ctx = seq2ctx(X, tau)
 %SEG2CTX Converts a sequence X in the corresponding sequence of indices of contexts
 %
-%   X   : a sequence of symbols (context tree model)
-%   tau : context tree compatible with X
+% INPUT
+%       X   : a sequence of symbols (context tree model)
+%       tau : context tree compatible with X
 %
-%   ctx : sequence with the indices of the contexts
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+% OUTPUT
+%
+%       ctx : sequence with the indices of the contexts
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2020
 
 max_length = max(cellfun(@(x) length(x), tau));

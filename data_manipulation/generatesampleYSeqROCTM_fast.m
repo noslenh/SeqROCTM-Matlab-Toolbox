@@ -1,23 +1,20 @@
 function [Y, qemp] = generatesampleYSeqROCTM_fast(idx_contexts_X, q, A)
-%GENERATESAMPLEYSEQROCTM_FAST Generates the response sequence of a SeqROCTM from
-%                             the sequence of indexes corresponding to the context
-%                             on each position of the inputs sequence, and the 
-%                             distributions associated to the contexts
+%GENERATESAMPLEYSEQROCTM_FAST Generates the response sequence of a SeqROCTM
+%from a sequence of indexes of the context at each position of the inputs sequence, and the distributions associated to the contexts.
 %
 % Inputs
 %
-% idx_contexts : sequence of indexes of the contexts on each position in
-%                the input sequence
-% q            : distributions associated to the contexts
-% A            : alphabet
+% idx_contexts  : sequence of indexes of the contexts on each position in
+%                 the input sequence
+% q             : distributions associated to the contexts
+% A             : alphabet
 %
 % Outputs
 %
-% Y        : sequence of responses
-% qemp     : empirical distributions computed on the simulated samples
+% Y             : sequence of responses
+% qemp          : empirical distributions computed on the simulated samples
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 06/2020
 
 n = length(idx_contexts_X);

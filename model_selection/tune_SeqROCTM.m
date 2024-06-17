@@ -86,14 +86,12 @@ function [optTree, optQ, results] = tune_SeqROCTM(X, Y, A, varargin)
 %                                BootYModel{2} the distributions. Default
 %                                value is [] (in this case the largest
 %                                model in the Champion Trees is used). 
-
 %   References:
 %      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
 %      [2] N. Hernández et al., arXiv:2009.06371, (2021).  
 %      [3] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2021
 
 lX = length(X);

@@ -1,5 +1,5 @@
 function [c, idx] = contextfunction(past, contexts)
-%CONTEXTFUNCTION return the context associated to a given sequence (past sequence)
+%CONTEXTFUNCTION Return the context associated to a given sequence (past sequence)
 % 
 % Inputs
 %
@@ -11,15 +11,13 @@ function [c, idx] = contextfunction(past, contexts)
 % 	c         : context associated to the sequence [past]
 % 	idx       : index (position) of the context [c] in [contexts]. If do
 %               not exist, idx=-1
-
 %
 % Usage
 %			ctxs = {0, [0 1], [1 1], 2};
 %			past = [0 1 1 0 1 2 0 1];
 %			[c, idx] = contextfunction(past, ctxs);
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2020
 
 

@@ -1,5 +1,5 @@
 function count = countstr(contexts, X)
-% COUNTSTR counts the number of times and positions where the strings in [contexts]
+% COUNTSTR Counts the number of times and positions where the strings in [contexts]
 %          appears in the sequence X. 
 %
 % Inputs
@@ -13,8 +13,8 @@ function count = countstr(contexts, X)
 %   count    : cell array containing in the first row the number of times
 %              the contexts appear in the sequence. In the second row the
 %              positions and in the 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2020
 
 

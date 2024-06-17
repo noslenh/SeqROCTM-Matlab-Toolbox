@@ -7,8 +7,7 @@ function nodes = tree2nodes(tree)
 % Outputs
 %   nodes  : the set of nodes
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2021
 
 nodes = {};

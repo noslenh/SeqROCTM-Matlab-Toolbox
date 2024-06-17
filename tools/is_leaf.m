@@ -1,5 +1,6 @@
 function [F, I, nT] = is_leaf(w, Alphabet, max_height, ind_father, X)
-%IS_LEAF recursive function to compute the complete tree
+%IS_LEAF Recursive function to compute the complete tree.
+%
 % Inputs
 %
 %   w          : sequence of symbols
@@ -15,12 +16,8 @@ function [F, I, nT] = is_leaf(w, Alphabet, max_height, ind_father, X)
 %                  tree in the sequence X
 %   nT         : total number of pairs of siblings in the complete tree (useful
 %                  when the prune is based on statistical testing)
-% 
-% Usage
 %
-% 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2020
 
     F = {};

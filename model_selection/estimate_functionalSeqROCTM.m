@@ -1,14 +1,14 @@
-function contexts = estimate_functionalSeqROCTM(X, Y, Alphabet, max_height, n_BM, alpha, beta)
-%ESTIMATE_FUNCTIONALSEQROCTM estimate a context tree from the sequence of
-%                            random objects driven by context tree model (X,Y),
-%                            where X is a context tree model and Y is a sequence of functional data
+function contexts = estimate_functionalSeqROCTM(X, Y, A, max_height, n_BM, alpha, beta)
+%ESTIMATE_FUNCTIONALSEQROCTM Estimate a context tree from a SeqROCTM with
+%functional data as elements of the response sequence.
+%           
 % Inputs
 %
 %   X             : context tree model taking values in A
 %   Y             : response sequence (sequence of chunk of functions). A matrix of
 %                   dimension D x length_X. Each column has a function/vector of
 %                   dimension D
-%   Alphabet      : alphabet 
+%   A             : alphabet 
 %   max_height    : maximum height of the complete tree
 %   n_BM          : number of Brownian bridges used in the statistical test
 %                   or a matrix with the Brownian bridges
@@ -18,12 +18,12 @@ function contexts = estimate_functionalSeqROCTM(X, Y, Alphabet, max_height, n_BM
 % Outputs
 %
 %   contexts      : estimated context tree
-
+%
 %   References:
 %      [1] A. Duarte et al., Mathematic 7, 5 (2019). 
 %      [2] N. Hernández et al., arXiv:2009.06371, (2021).
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 length_X = size(X,2);
@@ -35,7 +35,7 @@ if length_X ~= Yc
 end
 
 % complete tree
-[T, I] = completetree(X, max_height, Alphabet);
+[T, I] = completetree(X, max_height, A);
 
 if isempty(T)
     contexts = T;

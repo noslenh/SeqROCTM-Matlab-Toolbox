@@ -1,10 +1,10 @@
-function [tree, P, V, results] = bic_WCT(X, Alphabet, max_height, c, df, missing, varargin)
-%BIC_WCT Estimate a context tree model from a sequence X using the BIC
-%        criterion
+function [tree, P, V, results] = bic_WCT(X, A, max_height, c, df, missing, varargin)
+%BIC_WCT Estimate a context tree model from a sequence using the BIC
+%criterion.
 %
 % Inputs
-%   X           : sequence of symbols taking values in the alphabet
-%   Alphabet    : alphabet
+%   X           : sequence used to estimate the CTM
+%   A           : alphabet in which the elements of X take values
 %   height      : height of the complete tree
 %   c           : penalization constant of the BIC criteria
 %   df          : type of degree of freedom function
@@ -28,8 +28,8 @@ function [tree, P, V, results] = bic_WCT(X, Alphabet, max_height, c, df, missing
 %   References:  
 %      [1] I. Csiszar et al., IEEE Trans. Inform. Theory, 3, 52, 1007-1016 (2006)
 %      [2] N. Hernández et al., arXiv:2009.06371, (2021). 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 fast = false;
@@ -51,7 +51,7 @@ if fast
     penalization_factor = -1 * c * log(lX_no_nan);
     
     % call the estimation algorithm
-    [tree, P, V, NODES, STATS] = get_maximizingTree_fast([], length(Alphabet), max_height, penalization_factor, df, precomputed_stats{1}, 0, 0, precomputed_stats{2});
+    [tree, P, V, NODES, STATS] = get_maximizingTree_fast([], length(A), max_height, penalization_factor, df, precomputed_stats{1}, 0, 0, precomputed_stats{2});
     
     % create the structure 'outputs' with some useful additional outputs
     results.nodes = NODES;
@@ -81,7 +81,7 @@ else
     penalization_factor = -1 * c * log(lX_no_nan);
     
     % estimation algorithm
-    [tree, P, ~, V, ~, ~, NODES, STATS, non_existing_nodes] = get_maximizingTree([], length(Alphabet), max_height, ind_father, X, penalization_factor, df, 0, Y);
+    [tree, P, ~, V, ~, ~, NODES, STATS, non_existing_nodes] = get_maximizingTree([], length(A), max_height, ind_father, X, penalization_factor, df, 0, Y);
     
     % create the structure 'outputs' with some useful additional outputs
     results.nodes = NODES;

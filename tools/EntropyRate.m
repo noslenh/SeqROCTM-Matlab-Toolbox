@@ -13,9 +13,8 @@ function [H, Hmu, mu] = EntropyRate(S)
 % H    : entropy rate of the process
 % Hmu  : entropy of the stationary distribution
 % mu   : probability of occurrence of each state (stationary distribution)
-
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 08/2020
     
 no_states = size(S,1);

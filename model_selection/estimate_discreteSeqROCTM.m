@@ -1,5 +1,5 @@
 function [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, varargin)
-%ESTIMATE_DISCRETESEQROCTM Model selection for a SeqROCTM (X,Y)
+%ESTIMATE_DISCRETESEQROCTM Model selection for a SeqROCTM.
 %   [CONTEXTS, Q] = ESTIMATE_DISCRETESEQROCTM(X,Y,A) estimates a context
 %   tree and a family of distributions Q (parameters of a SeqROCTM model)
 %   from the sequences X,Y taking values in the alphabet A. The estimate
@@ -53,12 +53,11 @@ function [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, vara
 %                                appear in the sequence and in the last
 %                                position the length of X (used to speed-up).
 %                                Default value is [].
-
+%
 %   References:
 %      [1] N. Hernández et al., arXiv:2009.06371, (2021).  
-
 %
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 

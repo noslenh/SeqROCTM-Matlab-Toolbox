@@ -11,8 +11,8 @@ function T = admissiblecontexttree(X, max_height, alphabet)
 %
 %   T           : admissible context tree
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2021
 
 % get the complete tree

@@ -1,12 +1,11 @@
 function print_tree(tree)
-%PRINT_TREE print a context tree
+%PRINT_TREE Print a context tree in the console
 %
 % Inputs
 %
 %   tree : context tree
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 

@@ -1,5 +1,5 @@
 function B = brownianbrigde(N)
-%BROWNIANBRIDGE Generate a Brownian Bridge of dimension N
+%BROWNIANBRIDGE Generate a Brownian Bridge of dimension N.
 %
 % Input
 %   N : dimension of the Brownian bridge
@@ -10,8 +10,8 @@ function B = brownianbrigde(N)
 % Usage:
 %   B = brownianbrigde(100);
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2019
 
 % create Brownian Motion

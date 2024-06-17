@@ -13,8 +13,8 @@ function rp = is_renewal(pastlength, idw, T, height, nA, lcontexts)
 % Output
 %
 %   rp          : 1 if the context is a renewal, 0 otherwise.
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2021
 
 rp = true;

@@ -1,6 +1,5 @@
 function [idx_opt_model, R] = tuning_risk(param_set, bootsamples, A, options)
-%MODELTUNNING_RISK Model selection using a risk function for a Context tree
-%                  model
+%MODELTUNNING_RISK Model selection using a risk function for a Context tree model
 %
 % Inputs
 %
@@ -9,18 +8,16 @@ function [idx_opt_model, R] = tuning_risk(param_set, bootsamples, A, options)
 %   A             : alphabet
 %   options       : structure with the values to be passed to the
 %                      estimation functions
-
 %
 % Outputs
 %
 %   idx_opt_model : index of the optimal parameter value
 %   R             : risk values corresponding to the parameter values 
-
+%
 %   References:
 %      [1] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 lA = length(A);

@@ -1,7 +1,7 @@
 function S = stat_ks_projective(Br, n_BM, alpha, C)
 %STAT_KS_PROJECTIVE  Test if the branch should be pruned using a KS test on
-%                    the projections of the functional data using n_BM
-%                    Brownian motion
+%                    the projections of functional data in a Brownian
+%                    motion
 % Inputs
 %
 %   Br    : branch to be tested
@@ -14,8 +14,7 @@ function S = stat_ks_projective(Br, n_BM, alpha, C)
 %
 %   S     : true (prune), H0 is not rejected 
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
  S = true;      % true => prune 

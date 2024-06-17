@@ -1,5 +1,5 @@
 function s = similarityCT(tree_ref, tree, weights_ref)
-%SIMILARITYCT compute a similarity between the two context trees
+%SIMILARITYCT Compute a similarity between the two context trees
 %             tree_reference and tree (comparing only the contexts) by
 %             counting which context of tree_reference appears in tree and
 %             penalizing by a corresponding weight. 
@@ -12,10 +12,9 @@ function s = similarityCT(tree_ref, tree, weights_ref)
 %
 % Outputs
 %             s : similarity value
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 10/2020
-
 
 s = 0;
 nc = length(tree_ref);

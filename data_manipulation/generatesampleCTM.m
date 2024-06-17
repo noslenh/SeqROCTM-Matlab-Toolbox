@@ -1,20 +1,20 @@
 function [seq, sP] = generatesampleCTM(contexts, P, A, lengthSeq, initStrategy)
-%GENERATESAMPLECTM generates a sample of context tree model according to
-%                  the probabilistic context tree defined by contexts and P
+%GENERATESAMPLECTM Generates a sample of context tree model.
+%
 % Inputs
 %
-%   contexts        : set of contexts
+%   contexts        : set of contexts used to generate the CTM
 %   P               : probability distributions associated to the contexts. Each
 %                     row contains the distribution of the corresponding context
-%   A               : Alphabet
+%   A               : alphabet
 %   lengthSeq       : length of the sequence to be generated
-%   initStrategy    : strategy to begin generating the chain. This can take the 
+%   initStrategy    : strategy used to start generating the chain. This can take the 
 %                     values 'max_length_context' or 'any_string'.
 %
 % Outputs
 %
-%   seq       : generated sequence
-%   sP        : empirical transition probabilities computed on the generated sample
+%   seq             : generated sequence
+%   sP              : empirical transition probabilities computed on the generated sequence
 %
 % Usage
 %	
@@ -28,8 +28,7 @@ function [seq, sP] = generatesampleCTM(contexts, P, A, lengthSeq, initStrategy)
 %
 %			X = generatesampleCTM(ctxs, P, A, 100);
 %	
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 07/2020
 
 % initialization

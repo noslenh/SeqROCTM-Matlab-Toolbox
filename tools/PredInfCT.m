@@ -1,5 +1,5 @@
 function [predinf, H, mu_ctx] = PredInfCT(contexts, P, A)
-%IPRED Compute Predictive Information of a context tree model (see Bialek
+%PREDINFCT Compute Predictive Information of a context tree model (see Bialek
 %      et.al, Neural Computation 13, 2409-2463, 2001)
 %
 % Inputs
@@ -13,8 +13,7 @@ function [predinf, H, mu_ctx] = PredInfCT(contexts, P, A)
 %  predinf  : Predictive information
 %  H        : Entropy rate 
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 08/2020
 
 % height of the context tree

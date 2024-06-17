@@ -21,12 +21,10 @@ function [opt_tree, idx] = tuning_SMC(championTrees, A, n1, n2, alpha, bootsampl
 %  idx              : index of the optimal context tree in the set of
 %                       Champion Trees
 %
-
 %   References:
 %      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
-
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 nTrees = length(championTrees);

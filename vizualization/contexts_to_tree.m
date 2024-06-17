@@ -10,8 +10,7 @@ function tree = contexts_to_tree(contexts, A)
 %
 %   tree      : tree class with the contexts as leaves
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 02/2020
 
 %TO-DO: compute the total nodes given the contexts

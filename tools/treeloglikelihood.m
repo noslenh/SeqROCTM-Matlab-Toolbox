@@ -25,8 +25,8 @@ function logL = treeloglikelihood(X, tree, alphabet, missing)
 %			X = generatesampleCTM(ctxs, P, A, 100);  
 %			logL = completetree(ctxs, A, X);
 % 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
 ncontexts = length(tree);

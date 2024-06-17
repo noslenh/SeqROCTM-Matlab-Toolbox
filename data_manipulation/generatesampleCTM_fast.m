@@ -1,7 +1,5 @@
 function B = generatesampleCTM_fast(contexts, P, A, lengthSeq, nsamples)
-%GENERATESAMPLECTM_FAST generates samples of a context tree model given
-%                       the context tree and the transition probabilities
-%                       associated to the contexts
+%GENERATESAMPLECTM_FAST Generates samples of a context tree model.
 %                       
 % Inputs
 %
@@ -28,8 +26,7 @@ function B = generatesampleCTM_fast(contexts, P, A, lengthSeq, nsamples)
 %
 %			B = generatesampleCTM_fast(ctxs, P, A, 100, 300);
 %	
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 04/2020
 
 % initialization

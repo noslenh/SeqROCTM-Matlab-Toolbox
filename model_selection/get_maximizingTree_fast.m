@@ -30,8 +30,7 @@ function [F, P, log_V, NODES, STATS, global_idx, local_idx] = get_maximizingTree
 %                               the ones with zero frequency)
 %   local_idx               : index of w in the complete tree
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
     % initialize the variables

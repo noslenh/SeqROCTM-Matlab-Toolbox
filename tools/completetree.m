@@ -27,8 +27,7 @@ function [T, I, nT] = completetree(X, max_height, alphabet)
 %			X = generatesampleCTM(ctxs, P, A, 100);  
 %			[T, I, nT] = completetree(X, 4, A);
 % 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2020
 
 

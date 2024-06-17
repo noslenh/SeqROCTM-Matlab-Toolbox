@@ -15,8 +15,8 @@ function [past, M, Mc, iT, past2ctx] = contextTree_to_FiniteMarkov(contexts, P, 
 % Mc      	: transition probabilities of a symbol given a past
 % iT      	: matrix with the index of past that is formed given a past and a symbol
 % past2ctx	: array with the index of the context that corresponds to each past
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 08/2020
 
 n_symbols = size(A, 2);

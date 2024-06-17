@@ -25,8 +25,8 @@ function [F, P, I, log_V, Nw, Nwa, NODES, STATS, non_existing_nodes, global_idx]
 %   STATS       : the values [Phat, ProdV, V, Xi] for each of the analyzed
 %                   nodes
 %
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021
 
     % initialize the variables
@@ -168,8 +168,8 @@ function [Nw, Nwa] = get_counts(w, ind, X, length_alphabet)
 %   Nw              : Number of occurrences of w in X
 %   Nwa             : Number of occurrences of each symbol in the alphabet
 %                     after w 
-
-%Author : Noslen Hernandez (noslenh@gmail.com), Aline Duarte (alineduarte@usp.br)
+%
+%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 05/2019
 
     Nwa = zeros(1, length_alphabet);
