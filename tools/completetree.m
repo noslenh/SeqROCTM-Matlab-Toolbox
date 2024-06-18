@@ -1,11 +1,12 @@
-function [T, I, nT] = completetree(X, max_height, alphabet)
-%COMPLETETREE  Compute the complete tree of height max_height compatible
-%               with the data X
+function [T, I, nT] = completetree(X, max_height, A)
+%COMPLETETREE  Compute the complete tree.
+%              This function computes a complete tree of height max_height
+%              compatible with the data X.
 % Inputs
 %
-%   X           : sequence of symbols taking values in the alphabet
+%   X           : sequence of symbols taking values in the alphabet A
 %   max_height  : height of the complete tree
-%   alphabet    : alphabet 
+%   A           : alphabet 
 %
 % Outputs
 %
@@ -39,8 +40,8 @@ function [T, I, nT] = completetree(X, max_height, alphabet)
     % this will take into account all possible past occurring in the sequence
     % X including the past associated to step length(X) (this is the reason
     % why it is written length(X)+1)
-    for a = alphabet
-        [f, id, nt] = is_leaf(a, alphabet, max_height, 2:length(X)+1, X);
+    for a = A
+        [f, id, nt] = is_leaf(a, A, max_height, 2:length(X)+1, X);
         T = [T, f];
         I = [I, id];
 		% update number of pairs of sibling

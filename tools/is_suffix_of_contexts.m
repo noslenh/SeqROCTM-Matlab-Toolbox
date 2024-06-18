@@ -1,6 +1,6 @@
 function [ctxs, index] = is_suffix_of_contexts(ss, contexts)
-%IS_SUFFIX_OF_CONTEXTS Get all the contexts from which the sequence 'ss' is
-%                      a suffix
+%IS_SUFFIX_OF_CONTEXTS Get all the contexts from which a given sequence is a suffix.
+%
 % Inputs
 %
 % 	ss        : sequence

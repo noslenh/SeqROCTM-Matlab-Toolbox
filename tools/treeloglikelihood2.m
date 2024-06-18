@@ -1,5 +1,5 @@
 function logL = treeloglikelihood2(X, Y, tree, alphabet)
-%TREELOGLIKELIHOOD  Compute the likelihood of a context tree for the SeqROCTM (X,Y)
+%TREELOGLIKELIHOOD  Compute the likelihood of a context tree for the SeqROCTM (X,Y).
 % Inputs
 %
 %   X           : sequence of inputs

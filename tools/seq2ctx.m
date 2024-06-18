@@ -1,5 +1,5 @@
 function ctx = seq2ctx(X, tau)
-%SEG2CTX Converts a sequence X in the corresponding sequence of indices of contexts
+%SEG2CTX Converts a sequence in the corresponding sequence of indices of contexts.
 %
 % INPUT
 %       X   : a sequence of symbols (context tree model)

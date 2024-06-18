@@ -1,6 +1,6 @@
 function logL = treeloglikelihood(X, tree, alphabet, missing)
 %TREELOGLIKELIHOOD  Compute the likelihood of a context tree for the data X
-%                   or for the SeqROCTM (X,Y)
+% 
 % Inputs
 %
 %   X           : sequence of inputs
@@ -12,19 +12,6 @@ function logL = treeloglikelihood(X, tree, alphabet, missing)
 % Outputs
 %
 %   logL        : log likelihood
-%
-% Usage
-%			A = [0,1,2];
-%
-%			ctxs = {0, [0 1], [1 1], 2}
-%			P = [0,   1,   0; ...                  
-%     			 0,   0.25,   0.75;
-%     			 1,   0,   0;
-%     			 1,   0,   0 ];
-%
-%			X = generatesampleCTM(ctxs, P, A, 100);  
-%			logL = completetree(ctxs, A, X);
-% 
 %
 %Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 01/2021

@@ -1,20 +1,19 @@
 function [past, M, Mc, iT, past2ctx] = contextTree_to_FiniteMarkov(contexts, P, A)
-%CONTEXTTREE_TO_FINITEMARKOV Compute the representation of a context tree
-%                            model as a k-order Markov process (k refers to the
-%                            height of the tree)
+%CONTEXTTREE_TO_FINITEMARKOV Compute the representation of a context tree model as a k-order Markov process.
+%                            (k refers to the height of the tree)
 % Inputs
 %
-% contexts	: contexts of the context tree model
-% P       	: transition probabilities (each row is the distribution of a context)
-% A       	: alphabet
+%   contexts	: contexts of the context tree model
+%   P       	: transition probabilities (each row is the distribution of a context)
+%   A       	: alphabet
 %
 % Outputs
 %
-% past    	: past sequences that the context tree model can generate
-% M       	: transition probabilities from one past to another 
-% Mc      	: transition probabilities of a symbol given a past
-% iT      	: matrix with the index of past that is formed given a past and a symbol
-% past2ctx	: array with the index of the context that corresponds to each past
+%   past    	: past sequences that the context tree model can generate
+%   M       	: transition probabilities from one past to another 
+%   Mc      	: transition probabilities of a symbol given a past
+%   iT      	: matrix with the index of past that is formed given a past and a symbol
+%   past2ctx	: array with the index of the context that corresponds to each past
 %
 %Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 08/2020

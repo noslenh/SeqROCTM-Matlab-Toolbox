@@ -1,6 +1,7 @@
 function T = admissiblecontexttree(X, max_height, alphabet)
-%COMPLETETREE  Compute the complete tree of height max_height compatible
-%               with the data X
+%COMPLETETREE  Compute the complete tree. 
+%              This function computes the complete context tree of height
+%              max_height compatible with the data X.
 % Inputs
 %
 %   X           : sequence of symbols taking values in the alphabet

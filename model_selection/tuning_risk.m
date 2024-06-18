@@ -1,5 +1,5 @@
 function [idx_opt_model, R] = tuning_risk(param_set, bootsamples, A, options)
-%MODELTUNNING_RISK Model selection using a risk function for a Context tree model
+%MODELTUNNING_RISK Model selection using a risk function for a Context tree model.
 %
 % Inputs
 %

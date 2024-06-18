@@ -1,5 +1,5 @@
 function leaves = mode_tree(Trees, A)
-%MODE_TREE Computes the mode context tree of a set of context trees 
+%MODE_TREE Computes the mode context tree of a set of context tree. 
 %
 % Inputs
 %

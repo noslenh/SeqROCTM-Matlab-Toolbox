@@ -1,6 +1,5 @@
 function [F, P, I, log_V, Nw, Nwa, NODES, STATS, non_existing_nodes, global_idx] = get_maximizingTree(w, lA, max_height, ind_father, X, penalization_factor, df, global_idx, Y)
-% GET_MAXIMIZINGTREE Recursive function to compute the maximizing tree (see
-%                    the definition in Csiszar 2005 IEEE Trans. Inf. Theory)
+% GET_MAXIMIZINGTREE Recursive function to compute the maximizing tree (see the definition in Csiszar 2005 IEEE Trans. Inf. Theory)
 %
 % Inputs
 %

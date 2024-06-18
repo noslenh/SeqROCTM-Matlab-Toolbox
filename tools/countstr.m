@@ -1,12 +1,10 @@
 function count = countstr(contexts, X)
-% COUNTSTR Counts the number of times and positions where the strings in [contexts]
-%          appears in the sequence X. 
+% COUNTSTR Counts the number of times and positions where some subsequences appear in a sequence.
 %
 % Inputs
 %
 %   X        : sequence
-%   contexts : set of contexts
-%   alphabet : alphabet
+%   contexts : set of contexts (subsequences) to be found in X
 %
 % Output
 % 

@@ -1,6 +1,5 @@
 function TEST = getTESTstructure(T, I, la, Y)
-%GETTESTSTRUCTURE Gives an structure to be used in the function CTestimator. This function is used only to speed-up
-%                 other functions. 
+%GETTESTSTRUCTURE Gives an structure to be used in the function CTestimator. This function is used only to speed-up other functions. 
 %
 % Inputs
 %

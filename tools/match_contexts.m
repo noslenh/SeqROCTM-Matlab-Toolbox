@@ -1,5 +1,6 @@
 function match = match_contexts(ctx, est_ctx)
-%MATCH_CONTEXTS Match the contexts in ctx with the corresponding
+%MATCH_CONTEXTS Stablish the correspondence between the contexts of a tree and an estimated tree. 
+%               This function matches the contexts in ctx with the corresponding
 %               well_estimated, over_estimated or under_estimated contexts
 %               in est_ctx
 % Inputs

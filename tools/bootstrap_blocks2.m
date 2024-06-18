@@ -1,6 +1,7 @@
 function [BX, BY] = bootstrap_blocks2(X, Y, renewal_block, seq_length, nB)
-%BOOTSTRAP_BLOCKS2 Create nB bootstrap samples from the seqROCTM (X,Y)
-%                  using a renewal block/context of X. 
+%BOOTSTRAP_BLOCKS2 Generate bootstrap samples of a ReqROCTM.
+%                  This funcion creates nB bootstrap samples from the
+%                  seqROCTM (X,Y) using a renewal block/context of X. 
 %
 % Inputs
 %

@@ -1,3 +1,5 @@
+% Similations from A. Galves et. al., Ann. Appl. Stat., Volume 6, Number 1 (2012), 186-209
+%
 % This script reproduces the simulations done in the article [A. Galves
 % et. al., Ann. Appl. Stat., Volume 6, Number 1 (2012), 186-209] using the
 % Matlab SeqROCTM package.

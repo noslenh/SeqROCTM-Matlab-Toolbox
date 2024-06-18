@@ -1,8 +1,8 @@
 function d = distanceCT(tree1, tree2, A)
-%DISTANCECT Compute a distance between context trees (comparing only the
-%           contexts). This distance penalizes the nodes that are in tree1
-%           and aren't in tree2 and vice versa according to a weight given
-%           to each node.
+%DISTANCECT Compute a distance between context trees.
+%           This function takes into account only the contexts). It
+%           penalizes the nodes that are in tree1 and aren't in tree2 and
+%           vice versa according to a weight given to each node.
 %
 % Inputs   
 %

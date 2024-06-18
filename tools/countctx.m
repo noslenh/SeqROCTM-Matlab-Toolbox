@@ -1,9 +1,9 @@
 function [count, Nwa] = countctx(contexts, X, A, idx_without_NaN, Y)
-%COUNTCTXT Gives the number of times and positions where the contexts in [contexts]
-%          appears in the sequence X. If the sequence contains a past sequence which 
-%          have no context associated to it, it is also returned in count.
-%          Besides the number of transitions from each context to each
-%          symbol of the alphabet is returned.
+%COUNTCTXT Gives the number of times and positions where the contexts appear in a sequence.
+%          If the sequence X contains a past sequence which have no context
+%          associated to it, it is also returned in count. Besides the
+%          number of transitions from each context to each symbol of the
+%          alphabet is returned.
 %
 % Inputs
 %

@@ -1,3 +1,5 @@
+% Examples on tuning procedures.
+%
 % Using the scenarios simulated in A. Galves et. al., Ann. Appl. Stat., 6,
 % 1, 186-209 (2012) this script execute the different tuning procedures
 % implemented in the SeqROCTM toolbox.

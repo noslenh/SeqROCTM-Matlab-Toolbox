@@ -1,6 +1,6 @@
 function all_trees = get_search_space_trees(complete_tree, A)
-%GET_SEARCH_SPACE_TREES Compute all the context trees that could result
-%                       from the estimation process (search space). 
+%GET_SEARCH_SPACE_TREES Compute all the context trees that ccan result from the estimation process (search space). 
+%
 % Inputs
 %
 %   complete_tree : all nodes of the complete tree

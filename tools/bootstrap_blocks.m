@@ -1,5 +1,7 @@
 function B = bootstrap_blocks(X, renewal_block, seq_length, nB)
-%BOOTSTRAP_BLOCKS Create nB bootstrap samples from a sequence X and a renewal point 
+%BOOTSTRAP_BLOCKS Generate bootstrap samples of a CTM.
+%                 This function creates nB bootstrap samples from a
+%                 sequence X and a renewal point of X. 
 %
 % Inputs
 %

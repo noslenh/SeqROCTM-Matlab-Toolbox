@@ -1,3 +1,5 @@
+%This script presents examples on how to use the basic funcionalities of the SeqROCTM toolbox.
+
 %% Definition of a context tree model
 
 % alphabet of three symbols

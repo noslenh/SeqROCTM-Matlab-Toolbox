@@ -1,9 +1,9 @@
 function [leaves, mt_contexts] = median_tree(Trees)
-%MEDIAN_TREE Compute the median tree from a list of trees.
+%MEDIAN_TREE Compute the median tree from a set of context trees.
 %
 % Inputs
 %
-%   Trees       : list of trees
+%   Trees       : list of context trees
 %
 % Outputs
 %

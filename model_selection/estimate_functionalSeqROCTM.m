@@ -1,6 +1,5 @@
 function contexts = estimate_functionalSeqROCTM(X, Y, A, max_height, n_BM, alpha, beta)
-%ESTIMATE_FUNCTIONALSEQROCTM Estimate a context tree from a SeqROCTM with
-%functional data as elements of the response sequence.
+%ESTIMATE_FUNCTIONALSEQROCTM Estimate a context tree from a SeqROCTM with functional data as elements of the response sequence.
 %           
 % Inputs
 %

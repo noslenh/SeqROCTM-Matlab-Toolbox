@@ -1,6 +1,5 @@
 function compl = EMC(contexts, P, A)
-%EMC Compute the Effective Measure Complexity of a context tree model (see
-%    Grassberger, International Journal of Theoretical Physics 25, 1986) 
+%EMC Compute the Effective Measure Complexity of a context tree model.
 %
 % Inputs
 %
@@ -12,6 +11,8 @@ function compl = EMC(contexts, P, A)
 %
 %  compl    : Effective measure complexity
 %
+% Reference:
+%   Grassberger et. al., International Journal of Theoretical Physics 25, 1986.
 %
 %Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
 %Date   : 08/2020

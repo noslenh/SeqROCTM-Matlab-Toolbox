@@ -1,5 +1,5 @@
 function rp = is_renewal(pastlength, idw, T, height, nA, lcontexts)
-%IS_RENEWAL Recursive function to check if a context is a renewal point
+%IS_RENEWAL Recursive function to check if a context is a renewal point.
 %
 % Inputs
 %

@@ -1,3 +1,5 @@
+%This scipt presents an example on how to use SeqROCTM when the objects in the response sequence are functional data.
+
 % number of volunteers
 n_volunteers = 3;
 

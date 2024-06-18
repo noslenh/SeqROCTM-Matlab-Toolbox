@@ -1,9 +1,8 @@
 function [H, Hmu, mu_ctx, Hmu_markovian] = EntropyRateCT(contexts, P, A)
-%ENTROPYRATECT Compute the entropy rate of the stochastic process
-%              represented by the context tree model. This is done by
-%              representing the context tree model as a finite order Markov
-%              chain and computing the entropy rate of such a Markovian
-%              system
+%ENTROPYRATECT Compute the entropy rate of the stochastic process represented by the context tree model.
+%              This is done by representing the context tree model as a
+%              finite order Markov chain and computing the entropy rate of
+%              such Markovian system.
 %
 % Input
 %

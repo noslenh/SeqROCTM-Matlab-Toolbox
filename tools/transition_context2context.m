@@ -1,7 +1,9 @@
 function Tw = transition_context2context(contexts, P, A)
-%TRANSITION_CONTEXT2CONTEXT Create a cell array of dimension number_of_context x number_of_symbols
-%                           containing the index of the context(s) that can be
-%                           generated given a context and a symbol
+%TRANSITION_CONTEXT2CONTEXT Gives the possible transitions from contexts to contexts.
+%                           This function creates a cell array of dimension
+%                           number_of_context x number_of_symbols containing
+%                           the index of the context(s) that can be generated
+%                           given a context and a symbol
 %
 % Inputs
 %

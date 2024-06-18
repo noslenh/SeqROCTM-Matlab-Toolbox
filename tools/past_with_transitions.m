@@ -1,6 +1,7 @@
 function [pasts, indexes] = past_with_transitions(past, all_past, N)
-%PAST_WITH_TRANSITIONS Return all the pasts (and its indexes) from all_past
-%					   that can be generated from past
+%PAST_WITH_TRANSITIONS Return from a list of pasts the ones that can be generated from a given past.
+%                      This function gives all the pasts (and its indexes)
+%                      from all_past that can be generated from past.
 % Inputs
 %  
 %  past 	: past sequence	

@@ -1,5 +1,5 @@
 function S = stat_discrete(Br, statistic, threshold)
-%STAT_DISCRETE  Test if the branch should be pruned using different statistical criteria
+%STAT_DISCRETE  Test if the branch should be pruned using different statistical criteria.
 % Inputs 
 %
 %   Br               : branch to be tested 

@@ -1,5 +1,5 @@
 function [F, I, Fidx, Nwa] = find_context(w, lA, ind_father, X, contexts, ncontexts, max_height, Y)
-%FIND_CONTEXT Recursive function to find a context 
+%FIND_CONTEXT Recursive function to find a context. 
 %
 % Inputs
 %

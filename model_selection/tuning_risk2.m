@@ -1,5 +1,5 @@
 function [idx_opt_model, R] = tuning_risk2(param_set, Xbootsamples, Ybootsamples, A, options)
-%MODELTUNNING_RISK2 Model selection using a risk function for a SeqROCTM
+%MODELTUNNING_RISK2 Model selection using a risk function for a SeqROCTM.
 %
 % Inputs
 %

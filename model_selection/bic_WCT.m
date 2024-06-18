@@ -1,6 +1,5 @@
 function [tree, P, V, results] = bic_WCT(X, A, max_height, c, df, missing, varargin)
-%BIC_WCT Estimate a context tree model from a sequence using the BIC
-%criterion.
+%BIC_WCT Estimate a context tree model from a sequence using the BIC criterion.
 %
 % Inputs
 %   X           : sequence used to estimate the CTM

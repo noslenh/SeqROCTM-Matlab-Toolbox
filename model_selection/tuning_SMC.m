@@ -1,5 +1,5 @@
 function [opt_tree, idx] = tuning_SMC(championTrees, A, n1, n2, alpha, bootsamples_n2, missing)
-%MODELTUNNING_SMC Context tree selection using the Smallest Maximizer Criterion 
+%MODELTUNNING_SMC Context tree selection using the Smallest Maximizer Criterion. 
 %
 % Inputs
 %

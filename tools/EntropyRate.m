@@ -1,7 +1,5 @@
 function [H, Hmu, mu] = EntropyRate(S)
-%ENTROPYRATE Compute the entropy rate of a finite order Markov process
-%            with transition probabilities between the states specified by
-%            the matrix S
+%ENTROPYRATE Compute the entropy rate of a finite order Markov process.
 %
 % Inputs
 %

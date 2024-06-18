@@ -1,5 +1,5 @@
 function d = distance_balding(tree1, tree2, all_nodes) 
-%DISTANCE Compute the distance introduced in Balding et. al. [1] between two context trees. 
+%DISTANCE Compute the distance of Balding between two context trees. 
 %
 % Inputs
 %
@@ -11,6 +11,9 @@ function d = distance_balding(tree1, tree2, all_nodes)
 % Outputs
 %
 %	d			: value of the distance
+%
+% Reference:
+%   Balding et. al. 
 %
 %Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr)
 %Date   : 10/2020

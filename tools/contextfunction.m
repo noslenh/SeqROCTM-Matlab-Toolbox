@@ -1,5 +1,5 @@
 function [c, idx] = contextfunction(past, contexts)
-%CONTEXTFUNCTION Return the context associated to a given sequence (past sequence)
+%CONTEXTFUNCTION Return the context associated to a given (past) sequence.
 % 
 % Inputs
 %

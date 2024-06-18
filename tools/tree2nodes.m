@@ -1,5 +1,5 @@
 function nodes = tree2nodes(tree)
-%TREE2NODES Gives the set of nodes corresponding to a context tree
+%TREE2NODES Gives the set of nodes corresponding to a context tree.
 %
 % Inputs
 %   tree   : a context tree
