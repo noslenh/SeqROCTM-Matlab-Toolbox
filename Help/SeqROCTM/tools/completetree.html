@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of completetree</title>
+  <meta name="keywords" content="completetree">
+  <meta name="description" content=" Compute the complete tree.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">tools</a> &gt; completetree.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\tools&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>completetree
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> Compute the complete tree.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> [T, I, nT] = completetree(X, max_height, A) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">COMPLETETREE  Compute the complete tree.
+              This function computes a complete tree of height max_height
+              compatible with the data X.
+ Inputs
+
+   X           : sequence of symbols taking values in the alphabet A
+   max_height  : height of the complete tree
+   A           : alphabet 
+
+ Outputs
+
+   T           : complete tree
+   I           : indexes indicating the position of the contexts of the complete
+                  tree in the sequence X
+   nT          : total number of pairs of siblings in the complete tree (useful
+                  when the prune is based on statistical testing)
+
+ Usage
+            A = [0,1,2];
+
+            ctxs = {0, [0 1], [1 1], 2}
+            P = [0,   1,   0; ...                  
+                  0,   0.25,   0.75;
+                  1,   0,   0;
+                  1,   0,   0 ];
+
+            X = generatesampleCTM(ctxs, P, A, 100);  
+            [T, I, nT] = completetree(X, 4, A);
+ 
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 05/2020</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="is_leaf.html" class="code" title=" [F, I, nT] = is_leaf(w, Alphabet, max_height, ind_father, X)">is_leaf</a>	Recursive function to compute the complete tree.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/model_selection/CTestimator.html" class="code" title=" [contexts, P] = CTestimator(X, A, max_height, statistic, threshold, varargin)">CTestimator</a>	Estimate a context tree from a sequence or from a SeqROCTM.</li><li><a href="../../SeqROCTM/model_selection/estimate_championTrees.html" class="code" title=" [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)">estimate_championTrees</a>	Compute the Champion Trees.</li><li><a href="../../SeqROCTM/model_selection/estimate_championTrees2.html" class="code" title=" [Trees, Q, ML, cutoff] = estimate_championTrees2(X, Y, A, varargin)">estimate_championTrees2</a>	Compute the Champion Trees.</li><li><a href="../../SeqROCTM/model_selection/estimate_functionalSeqROCTM.html" class="code" title=" contexts = estimate_functionalSeqROCTM(X, Y, A, max_height, n_BM, alpha, beta)">estimate_functionalSeqROCTM</a>	Estimate a context tree from a SeqROCTM with functional data as elements of the response sequence.</li><li><a href="../../SeqROCTM/model_selection/tuning_risk.html" class="code" title=" [idx_opt_model, R] = tuning_risk(param_set, bootsamples, A, options)">tuning_risk</a>	Model selection using a risk function for a Context tree model.</li><li><a href="../../SeqROCTM/model_selection/tuning_risk2.html" class="code" title=" [idx_opt_model, R] = tuning_risk2(param_set, Xbootsamples, Ybootsamples, A, options)">tuning_risk2</a>	Model selection using a risk function for a SeqROCTM.</li><li><a href="admissiblecontexttree.html" class="code" title=" T = admissiblecontexttree(X, max_height, alphabet)">admissiblecontexttree</a>	 Compute the complete tree.</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [T, I, nT] = completetree(X, max_height, A)</a>
+0002 <span class="comment">%COMPLETETREE  Compute the complete tree.</span>
+0003 <span class="comment">%              This function computes a complete tree of height max_height</span>
+0004 <span class="comment">%              compatible with the data X.</span>
+0005 <span class="comment">% Inputs</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%   X           : sequence of symbols taking values in the alphabet A</span>
+0008 <span class="comment">%   max_height  : height of the complete tree</span>
+0009 <span class="comment">%   A           : alphabet</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Outputs</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%   T           : complete tree</span>
+0014 <span class="comment">%   I           : indexes indicating the position of the contexts of the complete</span>
+0015 <span class="comment">%                  tree in the sequence X</span>
+0016 <span class="comment">%   nT          : total number of pairs of siblings in the complete tree (useful</span>
+0017 <span class="comment">%                  when the prune is based on statistical testing)</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">% Usage</span>
+0020 <span class="comment">%            A = [0,1,2];</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%            ctxs = {0, [0 1], [1 1], 2}</span>
+0023 <span class="comment">%            P = [0,   1,   0; ...</span>
+0024 <span class="comment">%                  0,   0.25,   0.75;</span>
+0025 <span class="comment">%                  1,   0,   0;</span>
+0026 <span class="comment">%                  1,   0,   0 ];</span>
+0027 <span class="comment">%</span>
+0028 <span class="comment">%            X = generatesampleCTM(ctxs, P, A, 100);</span>
+0029 <span class="comment">%            [T, I, nT] = completetree(X, 4, A);</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0032 <span class="comment">%Date   : 05/2020</span>
+0033 
+0034 
+0035     T = {};
+0036     I = {};
+0037     nT = 0;
+0038     nson = 0;
+0039     
+0040     <span class="comment">% this will take into account all possible past occurring in the sequence</span>
+0041     <span class="comment">% X including the past associated to step length(X) (this is the reason</span>
+0042     <span class="comment">% why it is written length(X)+1)</span>
+0043     <span class="keyword">for</span> a = A
+0044         [f, id, nt] = <a href="is_leaf.html" class="code" title=" [F, I, nT] = is_leaf(w, Alphabet, max_height, ind_father, X)">is_leaf</a>(a, A, max_height, 2:length(X)+1, X);
+0045         T = [T, f];
+0046         I = [I, id];
+0047         <span class="comment">% update number of pairs of sibling</span>
+0048         nT = nT + nt;
+0049         <span class="comment">% counting the sons at the first level</span>
+0050         <span class="keyword">if</span> ~isempty(f), nson = nson + 1; <span class="keyword">end</span>
+0051     <span class="keyword">end</span>
+0052     <span class="keyword">if</span> nson &gt; 1
+0053         nT = nT + nchoosek(nson, 2);
+0054     <span class="keyword">end</span>
+0055 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

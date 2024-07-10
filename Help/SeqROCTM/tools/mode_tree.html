@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of mode_tree</title>
+  <meta name="keywords" content="mode_tree">
+  <meta name="description" content="Computes the mode context tree of a set of context tree.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">tools</a> &gt; mode_tree.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\tools&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>mode_tree
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Computes the mode context tree of a set of context tree.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> leaves = mode_tree(Trees, A) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">MODE_TREE Computes the mode context tree of a set of context tree. 
+
+ Inputs
+
+   Trees      : cell array with the context tree used to compute the mode
+   A          : alphabet
+
+ Outputs
+
+   leaves     : set of contexts of the mode tree
+ 
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 01/2020</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>	Class to model a node of a tree</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function T = is_leaf_in_mode_tree(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)</a></li><li><a href="#_sub2" class="code">function found = greater_than(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)</a></li><li><a href="#_sub3" class="code">function idx = node2index(w, powers, ps)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function leaves = mode_tree(Trees, A)</a>
+0002 <span class="comment">%MODE_TREE Computes the mode context tree of a set of context tree.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%   Trees      : cell array with the context tree used to compute the mode</span>
+0007 <span class="comment">%   A          : alphabet</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Outputs</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%   leaves     : set of contexts of the mode tree</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0014 <span class="comment">%Date   : 01/2020</span>
+0015 
+0016 
+0017     length_alphabet = numel(A);
+0018     
+0019     <span class="comment">% maximum height of the trees in Trees</span>
+0020     nTrees = length(Trees);
+0021     
+0022     max_height = 0;
+0023     <span class="keyword">for</span> t = 1 : nTrees
+0024         tree = Trees{t};
+0025         <span class="keyword">if</span> ~isempty(tree)
+0026             h = max(cellfun(@(x) length(x), tree, <span class="string">'uniformOutput'</span>, true));
+0027             <span class="keyword">if</span>  h &gt; max_height, max_height = h; <span class="keyword">end</span>
+0028         <span class="keyword">end</span>
+0029     <span class="keyword">end</span>
+0030 
+0031     <span class="comment">% auxiliary variables</span>
+0032     powers = length_alphabet.^(0:max_height);
+0033     partial_sum = [0, 0, cumsum(powers(2:end))];
+0034     max_num_nodes = sum(powers);
+0035 
+0036     <span class="comment">% variable to store the number of times each node of the complete tree appear as a context</span>
+0037     <span class="comment">% (the root have index zero and its frequency is store in the first</span>
+0038     <span class="comment">% position of the array)</span>
+0039     freq_contexts = zeros(max_num_nodes, 1);
+0040 
+0041     <span class="keyword">for</span> t = 1 : nTrees
+0042         tree = Trees{t};
+0043         ncontexts = length(tree);
+0044         
+0045         <span class="keyword">if</span> ncontexts == 0   <span class="comment">% if the tree is the empty tree, increase the frequency of the root node</span>
+0046             freq_contexts(1) = freq_contexts(1) + 1;
+0047         <span class="keyword">else</span>
+0048             <span class="keyword">for</span> c = 1 : ncontexts
+0049                 <span class="comment">% initialize node with a context</span>
+0050                 <a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a> = tree{c};
+0051                 l_node = length(<a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>);
+0052                 
+0053                 <span class="comment">% get the index of that context in the complete tree</span>
+0054                 idx_node = <a href="#_sub3" class="code" title="subfunction idx = node2index(w, powers, ps)">node2index</a>(<a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>, powers(1:l_node), partial_sum(l_node+1));
+0055 
+0056                 <span class="comment">% update its frequency as a context</span>
+0057                 freq_contexts(idx_node+1) = freq_contexts(idx_node+1) + 1;  
+0058             <span class="keyword">end</span>
+0059         <span class="keyword">end</span>
+0060     <span class="keyword">end</span>
+0061     
+0062     <span class="comment">% identify the leaves of the mode tree from the array of frequencies</span>
+0063     leaves = <a href="#_sub1" class="code" title="subfunction T = is_leaf_in_mode_tree(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)">is_leaf_in_mode_tree</a>([], freq_contexts(1), A, freq_contexts, powers, partial_sum, max_height);
+0064 
+0065 
+0066 <span class="keyword">end</span>
+0067 
+0068 <a name="_sub1" href="#_subfunctions" class="code">function T = is_leaf_in_mode_tree(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)</a>
+0069 <span class="comment">%IS_LEAF_IN_MODE_TREE Recursive function to compute the context of the mode tree from the frequency</span>
+0070 <span class="comment">%</span>
+0071 <span class="comment">% Inputs</span>
+0072 <span class="comment">%</span>
+0073 <span class="comment">%   node        : sequence of symbols</span>
+0074 <span class="comment">%   freq        : frequency associated to node</span>
+0075 <span class="comment">%   alphabet    : alphabet</span>
+0076 <span class="comment">%   frequencies : frequencies of all nodes in the complete tree</span>
+0077 <span class="comment">%   power       : auxiliary variable</span>
+0078 <span class="comment">%   partial_sum : auxiliary variable</span>
+0079 <span class="comment">%   max_height  : height of the complete tree</span>
+0080 <span class="comment">%</span>
+0081 <span class="comment">% Outputs</span>
+0082 <span class="comment">%</span>
+0083 <span class="comment">%   T          : set of contexts of the mode tree</span>
+0084 <span class="comment">%</span>
+0085     T = {};
+0086     
+0087     <span class="keyword">if</span> (max_height == length(<a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>))  <span class="comment">% if &quot;node&quot; is a leave, and its frequency is not zero, &quot;node&quot; is a context</span>
+0088         <span class="keyword">if</span> freq ~= 0
+0089             T = <a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>;
+0090         <span class="keyword">end</span>
+0091     <span class="keyword">else</span>  
+0092         <span class="comment">% if there is no node in the branch induced by &quot;node&quot; with greater</span>
+0093         <span class="comment">% or equal frequency than &quot;node&quot;, and the frequency of &quot;node&quot; is not zero, then &quot;node&quot; is a context</span>
+0094         <span class="keyword">if</span> ~<a href="#_sub2" class="code" title="subfunction found = greater_than(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)">greater_than</a>(<a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>, freq, Alphabet, frequencies, powers, partial_sum, max_height)
+0095             <span class="keyword">if</span> freq ~= 0
+0096                 T = <a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>;
+0097             <span class="keyword">end</span>
+0098         <span class="keyword">else</span>
+0099             <span class="comment">% ask if the sons of &quot;node&quot; are contexts</span>
+0100             <span class="keyword">for</span> a = Alphabet
+0101                 new_node = [a <a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>];
+0102                 l_node = length(new_node);
+0103                 idx = <a href="#_sub3" class="code" title="subfunction idx = node2index(w, powers, ps)">node2index</a>(new_node, powers(1:l_node), partial_sum(l_node+1));
+0104                 t = <a href="#_sub1" class="code" title="subfunction T = is_leaf_in_mode_tree(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)">is_leaf_in_mode_tree</a>(new_node, frequencies(idx+1), Alphabet, frequencies, powers, partial_sum, max_height); 
+0105                 T = [T, t];
+0106             <span class="keyword">end</span>
+0107         <span class="keyword">end</span>
+0108     <span class="keyword">end</span>
+0109 
+0110 <span class="keyword">end</span>
+0111 
+0112 <a name="_sub2" href="#_subfunctions" class="code">function found = greater_than(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)</a>
+0113 <span class="comment">%GREATER_THAN check if there is any node in the branch induced by &quot;node&quot; with greater or equal frequency that &quot;node&quot;</span>
+0114 <span class="comment">%</span>
+0115 <span class="comment">% Inputs</span>
+0116 <span class="comment">%</span>
+0117 <span class="comment">%   node        : sequence of symbols</span>
+0118 <span class="comment">%   freq        : frequency associated to node</span>
+0119 <span class="comment">%   alphabet    : alphabet</span>
+0120 <span class="comment">%   frequencies : frequencies of all nodes in the complete tree</span>
+0121 <span class="comment">%   power       : auxiliary variable</span>
+0122 <span class="comment">%   ps          : auxiliary variable</span>
+0123 <span class="comment">%</span>
+0124 <span class="comment">% Outputs</span>
+0125 <span class="comment">%</span>
+0126 <span class="comment">%   found       : true if there is a node with greater or equal frequency than</span>
+0127 <span class="comment">%                 &quot;node&quot;, false otherwise</span>
+0128 <span class="comment">%</span>
+0129     found = false;    
+0130     l_node = length(<a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>);    
+0131 
+0132     <span class="keyword">if</span> l_node &lt; max_height
+0133         found = false;
+0134         a = 1;
+0135         <span class="keyword">while</span> ~found &amp;&amp; a &lt;= numel(Alphabet)
+0136             <span class="comment">% check if the sons of node have greater or equal frequency</span>
+0137             new_node = [Alphabet(a) <a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>];
+0138             l_new_node = length(new_node);
+0139             idx_new_node = <a href="#_sub3" class="code" title="subfunction idx = node2index(w, powers, ps)">node2index</a>(new_node, powers(1:l_new_node), partial_sum(l_new_node+1));
+0140             
+0141             <span class="keyword">if</span> frequencies(idx_new_node + 1) &gt;= freq
+0142                 found = true;
+0143             <span class="keyword">else</span>
+0144                 <span class="comment">% check in the sons of new_node</span>
+0145                 found = <a href="#_sub2" class="code" title="subfunction found = greater_than(node, freq, Alphabet, frequencies, powers, partial_sum, max_height)">greater_than</a>(new_node, freq, Alphabet, frequencies, powers, partial_sum, max_height);
+0146             <span class="keyword">end</span>
+0147             a = a + 1;
+0148         <span class="keyword">end</span>
+0149     <span class="keyword">end</span>
+0150     
+0151 <span class="keyword">end</span>
+0152 
+0153 <a name="_sub3" href="#_subfunctions" class="code">function idx = node2index(w, powers, ps)</a>
+0154 <span class="comment">%NODE2INDEX Get the index of the node w in the complete tree when the tree</span>
+0155 <span class="comment">%           is traversed in level-order/breadth-first search (i.e., we</span>
+0156 <span class="comment">%           visit every node on a level before going to a lower level)</span>
+0157 <span class="comment">% Inputs</span>
+0158 <span class="comment">%</span>
+0159 <span class="comment">%   w           : sequence of symbols</span>
+0160 <span class="comment">%   power       : auxiliary variable</span>
+0161 <span class="comment">%   ps          : auxiliary variable</span>
+0162 <span class="comment">%</span>
+0163 <span class="comment">% Outputs</span>
+0164 <span class="comment">%</span>
+0165 <span class="comment">%   idx         : global index</span>
+0166 <span class="comment">%</span>
+0167    <span class="keyword">if</span> isempty(w)
+0168        idx = 0;
+0169    <span class="keyword">else</span>
+0170        level_idx = sum(w.*powers) + 1;
+0171        idx = level_idx + ps;
+0172    <span class="keyword">end</span>
+0173 <span class="keyword">end</span>
+0174 
+0175 
+0176    
+0177</pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

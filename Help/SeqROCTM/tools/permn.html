@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of permn</title>
+  <meta name="keywords" content="permn">
+  <meta name="description" content="- permutations with repetition">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">tools</a> &gt; permn.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\tools&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>permn
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>- permutations with repetition</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> [M, I] = permn(V, N, K) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment"> PERMN - permutations with repetition
+   Using two input variables V and N, M = PERMN(V,N) returns all
+   permutations of N elements taken from the vector V, with repetitions.
+   V can be any type of array (numbers, cells etc.) and M will be of the
+   same type as V.  If V is empty or N is 0, M will be empty.  M has the
+   size numel(V).^N-by-N. 
+
+   When only a subset of these permutations is needed, you can call PERMN
+   with 3 input variables: M = PERMN(V,N,K) returns only the K-ths
+   permutations.  The output is the same as M = PERMN(V,N) ; M = M(K,:),
+   but it avoids memory issues that may occur when there are too many
+   combinations.  This is particularly useful when you only need a few
+   permutations at a given time. If V or K is empty, or N is zero, M will
+   be empty. M has the size numel(K)-by-N. 
+
+   [M, I] = PERMN(...) also returns an index matrix I so that M = V(I).
+
+   Examples:
+     M = permn([1 2 3],2) % returns the 9-by-2 matrix:
+              1     1
+              1     2
+              1     3
+              2     1
+              2     2
+              2     3
+              3     1
+              3     2
+              3     3
+
+     M = permn([99 7],4) % returns the 16-by-4 matrix:
+              99     99    99    99
+              99     99    99     7
+              99     99     7    99
+              99     99     7     7
+              ...
+               7      7     7    99
+               7      7     7     7
+
+     M = permn({'hello!' 1:3},2) % returns the 4-by-2 cell array
+             'hello!'        'hello!'
+             'hello!'        [1x3 double]
+             [1x3 double]    'hello!'
+             [1x3 double]    [1x3 double]
+
+     V = 11:15, N = 3, K = [2 124 21 99]
+     M = permn(V, N, K) % returns the 4-by-3 matrix:
+     %        11  11  12
+     %        15  15  14
+     %        11  15  11
+     %        14  15  14
+     % which are the 2nd, 124th, 21st and 99th permutations
+     % Check with PERMN using two inputs
+     M2 = permn(V,N) ; isequal(M2(K,:),M)
+     % Note that M2 is a 125-by-3 matrix
+
+     % PERMN can be used generate a binary table, as in
+     B = permn([0 1],5)  
+
+   NB Matrix sizes increases exponentially at rate (n^N)*N.
+
+   See also PERMS, NCHOOSEK
+            ALLCOMB, PERMPOS on the File Exchange</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="contextTree_to_FiniteMarkov.html" class="code" title=" [past, M, Mc, iT, past2ctx] = contextTree_to_FiniteMarkov(contexts, P, A)">contextTree_to_FiniteMarkov</a>	Compute the representation of a context tree model as a k-order Markov process.</li><li><a href="empprobsubsequences.html" class="code" title=" [est_P, est_transP, iT, empHH] = empprobsubsequences(contexts, P, A, seq_length)">empprobsubsequences</a>	Estimate the probability of occurrences of all the sequences</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [M, I] = permn(V, N, K)</a>
+0002 <span class="comment">% PERMN - permutations with repetition</span>
+0003 <span class="comment">%   Using two input variables V and N, M = PERMN(V,N) returns all</span>
+0004 <span class="comment">%   permutations of N elements taken from the vector V, with repetitions.</span>
+0005 <span class="comment">%   V can be any type of array (numbers, cells etc.) and M will be of the</span>
+0006 <span class="comment">%   same type as V.  If V is empty or N is 0, M will be empty.  M has the</span>
+0007 <span class="comment">%   size numel(V).^N-by-N.</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">%   When only a subset of these permutations is needed, you can call PERMN</span>
+0010 <span class="comment">%   with 3 input variables: M = PERMN(V,N,K) returns only the K-ths</span>
+0011 <span class="comment">%   permutations.  The output is the same as M = PERMN(V,N) ; M = M(K,:),</span>
+0012 <span class="comment">%   but it avoids memory issues that may occur when there are too many</span>
+0013 <span class="comment">%   combinations.  This is particularly useful when you only need a few</span>
+0014 <span class="comment">%   permutations at a given time. If V or K is empty, or N is zero, M will</span>
+0015 <span class="comment">%   be empty. M has the size numel(K)-by-N.</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%   [M, I] = PERMN(...) also returns an index matrix I so that M = V(I).</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%   Examples:</span>
+0020 <span class="comment">%     M = permn([1 2 3],2) % returns the 9-by-2 matrix:</span>
+0021 <span class="comment">%              1     1</span>
+0022 <span class="comment">%              1     2</span>
+0023 <span class="comment">%              1     3</span>
+0024 <span class="comment">%              2     1</span>
+0025 <span class="comment">%              2     2</span>
+0026 <span class="comment">%              2     3</span>
+0027 <span class="comment">%              3     1</span>
+0028 <span class="comment">%              3     2</span>
+0029 <span class="comment">%              3     3</span>
+0030 <span class="comment">%</span>
+0031 <span class="comment">%     M = permn([99 7],4) % returns the 16-by-4 matrix:</span>
+0032 <span class="comment">%              99     99    99    99</span>
+0033 <span class="comment">%              99     99    99     7</span>
+0034 <span class="comment">%              99     99     7    99</span>
+0035 <span class="comment">%              99     99     7     7</span>
+0036 <span class="comment">%              ...</span>
+0037 <span class="comment">%               7      7     7    99</span>
+0038 <span class="comment">%               7      7     7     7</span>
+0039 <span class="comment">%</span>
+0040 <span class="comment">%     M = permn({'hello!' 1:3},2) % returns the 4-by-2 cell array</span>
+0041 <span class="comment">%             'hello!'        'hello!'</span>
+0042 <span class="comment">%             'hello!'        [1x3 double]</span>
+0043 <span class="comment">%             [1x3 double]    'hello!'</span>
+0044 <span class="comment">%             [1x3 double]    [1x3 double]</span>
+0045 <span class="comment">%</span>
+0046 <span class="comment">%     V = 11:15, N = 3, K = [2 124 21 99]</span>
+0047 <span class="comment">%     M = permn(V, N, K) % returns the 4-by-3 matrix:</span>
+0048 <span class="comment">%     %        11  11  12</span>
+0049 <span class="comment">%     %        15  15  14</span>
+0050 <span class="comment">%     %        11  15  11</span>
+0051 <span class="comment">%     %        14  15  14</span>
+0052 <span class="comment">%     % which are the 2nd, 124th, 21st and 99th permutations</span>
+0053 <span class="comment">%     % Check with PERMN using two inputs</span>
+0054 <span class="comment">%     M2 = permn(V,N) ; isequal(M2(K,:),M)</span>
+0055 <span class="comment">%     % Note that M2 is a 125-by-3 matrix</span>
+0056 <span class="comment">%</span>
+0057 <span class="comment">%     % PERMN can be used generate a binary table, as in</span>
+0058 <span class="comment">%     B = permn([0 1],5)</span>
+0059 <span class="comment">%</span>
+0060 <span class="comment">%   NB Matrix sizes increases exponentially at rate (n^N)*N.</span>
+0061 <span class="comment">%</span>
+0062 <span class="comment">%   See also PERMS, NCHOOSEK</span>
+0063 <span class="comment">%            ALLCOMB, PERMPOS on the File Exchange</span>
+0064 
+0065 <span class="comment">% tested in Matlab 2016a</span>
+0066 <span class="comment">% version 6.1 (may 2016)</span>
+0067 <span class="comment">% (c) Jos van der Geest</span>
+0068 <span class="comment">% Matlab File Exchange Author ID: 10584</span>
+0069 <span class="comment">% email: samelinoa@gmail.com</span>
+0070 
+0071 <span class="comment">% History</span>
+0072 <span class="comment">% 1.1 updated help text</span>
+0073 <span class="comment">% 2.0 new faster algorithm</span>
+0074 <span class="comment">% 3.0 (aug 2006) implemented very fast algorithm</span>
+0075 <span class="comment">% 3.1 (may 2007) Improved algorithm Roger Stafford pointed out that for some values, the floor</span>
+0076 <span class="comment">%   operation on floating points, according to the IEEE 754 standard, could return</span>
+0077 <span class="comment">%   erroneous values. His excellent solution was to add (1/2) to the values</span>
+0078 <span class="comment">%   of A.</span>
+0079 <span class="comment">% 3.2 (may 2007) changed help and error messages slightly</span>
+0080 <span class="comment">% 4.0 (may 2008) again a faster implementation, based on ALLCOMB, suggested on the</span>
+0081 <span class="comment">%   newsgroup comp.soft-sys.matlab on May 7th 2008 by &quot;Helper&quot;. It was</span>
+0082 <span class="comment">%   pointed out that COMBN(V,N) equals ALLCOMB(V,V,V...) (V repeated N</span>
+0083 <span class="comment">%   times), ALLCMOB being faster. Actually version 4 is an improvement</span>
+0084 <span class="comment">%   over version 1 ...</span>
+0085 <span class="comment">% 4.1 (jan 2010) removed call to FLIPLR, using refered indexing N:-1:1</span>
+0086 <span class="comment">%   (is faster, suggestion of Jan Simon, jan 2010), removed REPMAT, and</span>
+0087 <span class="comment">%   let NDGRID handle this</span>
+0088 <span class="comment">% 4.2 (apr 2011) corrrectly return a column vector for N = 1 (error pointed</span>
+0089 <span class="comment">%    out by Wilson).</span>
+0090 <span class="comment">% 4.3 (apr 2013) make a reference to COMBNSUB</span>
+0091 <span class="comment">% 5.0 (may 2015) NAME CHANGED (COMBN -&gt; PERMN) and updated description,</span>
+0092 <span class="comment">%   following comment by Stephen Obeldick that this function is misnamed</span>
+0093 <span class="comment">%   as it produces permutations with repetitions rather then combinations.</span>
+0094 <span class="comment">% 5.1 (may 2015) always calculate M via indices</span>
+0095 <span class="comment">% 6.0 (may 2015) merged the functionaly of permnsub (aka combnsub) and this</span>
+0096 <span class="comment">%   function</span>
+0097 <span class="comment">% 6.1 (may 2016) fixed spelling errors</span>
+0098 
+0099 narginchk(2,3) ;
+0100 
+0101 <span class="keyword">if</span> fix(N) ~= N || N &lt; 0 || numel(N) ~= 1 ;
+0102     error(<span class="string">'permn:negativeN'</span>,<span class="string">'Second argument should be a positive integer'</span>) ;
+0103 <span class="keyword">end</span>
+0104 nV = numel(V) ;
+0105 
+0106 <span class="keyword">if</span> nargin==2, <span class="comment">% PERMN(V,N) - return all permutations</span>
+0107     
+0108     <span class="keyword">if</span> nV==0 || N == 0,
+0109         M = zeros(nV,N) ;
+0110         I = zeros(nV,N) ;
+0111         
+0112     <span class="keyword">elseif</span> N == 1,
+0113         <span class="comment">% return column vectors</span>
+0114         M = V(:) ;
+0115         I = (1:nV).' ;
+0116     <span class="keyword">else</span>
+0117         <span class="comment">% this is faster than the math trick used for the call with three</span>
+0118         <span class="comment">% arguments.</span>
+0119         [Y{N:-1:1}] = ndgrid(1:nV) ;
+0120         I = reshape(cat(N+1,Y{:}),[],N) ;
+0121         M = V(I) ;
+0122     <span class="keyword">end</span>
+0123 <span class="keyword">else</span> <span class="comment">% PERMN(V,N,K) - return a subset of all permutations</span>
+0124     nK = numel(K) ;
+0125     <span class="keyword">if</span> nV == 0 || N == 0 || nK == 0
+0126         M = zeros(numel(K), N) ;
+0127         I = zeros(numel(K), N) ;
+0128     <span class="keyword">elseif</span> nK &lt; 1 || any(K&lt;1) || any(K ~= fix(K))
+0129         error(<span class="string">'permn:InvalidIndex'</span>,<span class="string">'Third argument should contain positive integers.'</span>) ;
+0130     <span class="keyword">else</span>
+0131         
+0132         V = reshape(V,1,[]) ; <span class="comment">% v1.1 make input a row vector</span>
+0133         nV = numel(V) ;
+0134         Npos = nV^N ;
+0135         <span class="keyword">if</span> any(K &gt; Npos)
+0136             warning(<span class="string">'permn:IndexOverflow'</span>, <span class="keyword">...</span>
+0137                 <span class="string">'Values of K exceeding the total number of combinations are saturated.'</span>)
+0138             K = min(K, Npos) ;
+0139         <span class="keyword">end</span>
+0140              
+0141         <span class="comment">% The engine is based on version 3.2 with the correction</span>
+0142         <span class="comment">% suggested by Roger Stafford. This approach uses a single matrix</span>
+0143         <span class="comment">% multiplication.</span>
+0144         B = nV.^(1-N:0) ;
+0145         I = ((K(:)-.5) * B) ; <span class="comment">% matrix multiplication</span>
+0146         I = rem(floor(I),nV) + 1 ;
+0147         M = V(I) ;
+0148     <span class="keyword">end</span>
+0149 <span class="keyword">end</span>
+0150 
+0151 <span class="comment">% Algorithm using for-loops</span>
+0152 <span class="comment">% which can be implemented in C or VB</span>
+0153 <span class="comment">%</span>
+0154 <span class="comment">% nv = length(V) ;</span>
+0155 <span class="comment">% C = zeros(nv^N,N) ; % declaration</span>
+0156 <span class="comment">% for ii=1:N,</span>
+0157 <span class="comment">%     cc = 1 ;</span>
+0158 <span class="comment">%     for jj=1:(nv^(ii-1)),</span>
+0159 <span class="comment">%         for kk=1:nv,</span>
+0160 <span class="comment">%             for mm=1:(nv^(N-ii)),</span>
+0161 <span class="comment">%                 C(cc,ii) = V(kk) ;</span>
+0162 <span class="comment">%                 cc = cc + 1 ;</span>
+0163 <span class="comment">%             end</span>
+0164 <span class="comment">%         end</span>
+0165 <span class="comment">%     end</span>
+0166 <span class="comment">% end</span>
+0167</pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

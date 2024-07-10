@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of generatesampleXYSeqROCTM</title>
+  <meta name="keywords" content="generatesampleXYSeqROCTM">
+  <meta name="description" content="Generates a SeqROCTM using a CTM to generate the input sequence and a context tree with associated distributions to generate the response sequence.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">data_manipulation</a> &gt; generatesampleXYSeqROCTM.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\data_manipulation&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>generatesampleXYSeqROCTM
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Generates a SeqROCTM using a CTM to generate the input sequence and a context tree with associated distributions to generate the response sequence.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> [X, Y, qemp] = generatesampleXYSeqROCTM(ctx_X, p, ctx_Y, q, A, n) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">GENERATESAMPLEXYSEQROCTM Generates a SeqROCTM using a CTM to generate the input sequence and a context tree with associated distributions to generate the response sequence.
+
+ Inputs
+
+ ctx_X    : set of contexts to generate the input sequence X
+ p        : distributions associated to contexts in ctx_X
+ ctx_Y    : set of contexts to generate the response sequence Y
+ q        : distributions associated to contexts in ctx_Y
+ A        : alphabet
+ n        : length of the sequences to be generated
+
+ Outputs
+
+ X        : sequence of inputs
+ Y        : sequence of responses
+ qemp     : empirical distributions computed on the simulated samples
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 06/2020</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="generatesampleCTM.html" class="code" title=" [seq, sP] = generatesampleCTM(contexts, P, A, lengthSeq, initStrategy)">generatesampleCTM</a>	Generates a sample of context tree model.</li><li><a href="generatesampleYSeqROCTM.html" class="code" title=" [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)">generatesampleYSeqROCTM</a>	Generates the response sequence of a SeqROCTM from a sequence of inputs, the context tree and the distributions associated to the contexts.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [X, Y, qemp] = generatesampleXYSeqROCTM(ctx_X, p, ctx_Y, q, A, n)</a>
+0002 <span class="comment">%GENERATESAMPLEXYSEQROCTM Generates a SeqROCTM using a CTM to generate the input sequence and a context tree with associated distributions to generate the response sequence.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% ctx_X    : set of contexts to generate the input sequence X</span>
+0007 <span class="comment">% p        : distributions associated to contexts in ctx_X</span>
+0008 <span class="comment">% ctx_Y    : set of contexts to generate the response sequence Y</span>
+0009 <span class="comment">% q        : distributions associated to contexts in ctx_Y</span>
+0010 <span class="comment">% A        : alphabet</span>
+0011 <span class="comment">% n        : length of the sequences to be generated</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Outputs</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% X        : sequence of inputs</span>
+0016 <span class="comment">% Y        : sequence of responses</span>
+0017 <span class="comment">% qemp     : empirical distributions computed on the simulated samples</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0020 <span class="comment">%Date   : 06/2020</span>
+0021     
+0022     <span class="comment">% generate the input sequence</span>
+0023     max_lengthX = max(cellfun(@(x) length(x), ctx_X));
+0024     X = <a href="generatesampleCTM.html" class="code" title=" [seq, sP] = generatesampleCTM(contexts, P, A, lengthSeq, initStrategy)">generatesampleCTM</a>(ctx_X, p, A, n + max_lengthX, <span class="string">'max_length_context'</span>);
+0025     
+0026     <span class="comment">% generate the response sequence</span>
+0027     [X, Y, qemp] = <a href="generatesampleYSeqROCTM.html" class="code" title=" [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)">generatesampleYSeqROCTM</a>(X, ctx_Y, q, A);
+0028     
+0029 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

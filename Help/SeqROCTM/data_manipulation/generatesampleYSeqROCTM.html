@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of generatesampleYSeqROCTM</title>
+  <meta name="keywords" content="generatesampleYSeqROCTM">
+  <meta name="description" content="Generates the response sequence of a SeqROCTM from a sequence of inputs, the context tree and the distributions associated to the contexts.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">data_manipulation</a> &gt; generatesampleYSeqROCTM.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\data_manipulation&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>generatesampleYSeqROCTM
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Generates the response sequence of a SeqROCTM from a sequence of inputs, the context tree and the distributions associated to the contexts.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">GENERATESAMPLEYSEQROCTM Generates the response sequence of a SeqROCTM from a sequence of inputs, the context tree and the distributions associated to the contexts.
+
+ Inputs
+
+   X           : sequence of inputs
+   contexts    : set of contexts
+   q           : distributions indexes by the contexts
+   A           : alphabet
+
+ Outputs
+
+   Xnew        : sequence of inputs
+   Y           : sequence of responses
+   qemp        : empirical distributions computed on the simulated samples
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 02/2021</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="samplediscretedist.html" class="code" title=" [xsampled, indices] = samplediscretedist(x, prob, nsamples)">samplediscretedist</a>	Sample from a discrete distribution.</li><li><a href="../../SeqROCTM/tools/contextfunction.html" class="code" title=" [c, idx] = contextfunction(past, contexts)">contextfunction</a>	Return the context associated to a given (past) sequence.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="generatesampleXYSeqROCTM.html" class="code" title=" [X, Y, qemp] = generatesampleXYSeqROCTM(ctx_X, p, ctx_Y, q, A, n)">generatesampleXYSeqROCTM</a>	Generates a SeqROCTM using a CTM to generate the input sequence and a context tree with associated distributions to generate the response sequence.</li><li><a href="../../SeqROCTM/demos/illustrativeExampleI.html" class="code" title="">illustrativeExampleI</a>	This script presents examples on how to use the basic funcionalities of the SeqROCTM toolbox.</li><li><a href="../../SeqROCTM/model_selection/tune_SeqROCTM.html" class="code" title=" [optTree, optQ, results] = tune_SeqROCTM(X, Y, A, varargin)">tune_SeqROCTM</a>	Tune a SeqROCTM estimation algorithm.</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)</a>
+0002 <span class="comment">%GENERATESAMPLEYSEQROCTM Generates the response sequence of a SeqROCTM from a sequence of inputs, the context tree and the distributions associated to the contexts.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%   X           : sequence of inputs</span>
+0007 <span class="comment">%   contexts    : set of contexts</span>
+0008 <span class="comment">%   q           : distributions indexes by the contexts</span>
+0009 <span class="comment">%   A           : alphabet</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Outputs</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%   Xnew        : sequence of inputs</span>
+0014 <span class="comment">%   Y           : sequence of responses</span>
+0015 <span class="comment">%   qemp        : empirical distributions computed on the simulated samples</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0018 <span class="comment">%Date   : 02/2021</span>
+0019 
+0020 n = length(X);
+0021 
+0022 <span class="keyword">if</span> isempty(contexts)
+0023     Xnew = X;
+0024     Y = <a href="samplediscretedist.html" class="code" title=" [xsampled, indices] = samplediscretedist(x, prob, nsamples)">samplediscretedist</a>(A, q, n);
+0025     qemp = histc(Y, A); <span class="comment">%counts in same order than the alphabet</span>
+0026 <span class="keyword">else</span>
+0027     <span class="comment">% length of the context of maximum length</span>
+0028     max_length = max(cellfun(@(x) length(x), contexts));
+0029     
+0030     <span class="comment">% initialize the empirical distributions</span>
+0031     qemp = zeros(size(q));
+0032     
+0033     <span class="comment">% initialize the response sequence</span>
+0034     Y = zeros(1, n - max_length);
+0035     
+0036     <span class="comment">% delete from the input sequence the positions for which there won´t be</span>
+0037     <span class="comment">% a corresponding Y value</span>
+0038     Xnew = X(max_length + 1 : end);
+0039     
+0040     <span class="keyword">for</span> i = 1 : n - max_length
+0041         <span class="comment">% find the context</span>
+0042         [~, idx_ctx] = <a href="../../SeqROCTM/tools/contextfunction.html" class="code" title=" [c, idx] = contextfunction(past, contexts)">contextfunction</a>(X(i:i+max_length-1), contexts);
+0043         <span class="comment">% use the distribution indexed by the context to generate the</span>
+0044         <span class="comment">% response</span>
+0045         <span class="keyword">if</span> idx_ctx ~= -1
+0046             [Y(i), idx] = <a href="samplediscretedist.html" class="code" title=" [xsampled, indices] = samplediscretedist(x, prob, nsamples)">samplediscretedist</a>(A, q(idx_ctx,:), 1);
+0047             <span class="comment">% update the distribution associated to that context</span>
+0048             qemp(idx_ctx, idx) = qemp(idx_ctx, idx) + 1;
+0049         <span class="keyword">else</span>
+0050             error(<span class="string">'The context tree used to generate the sequence Y is not compatible with the sequence X'</span>);
+0051         <span class="keyword">end</span>
+0052     <span class="keyword">end</span>    
+0053 <span class="keyword">end</span>
+0054 
+0055 <span class="comment">% normalize probabilities</span>
+0056 qemp = bsxfun(@rdivide,qemp,sum(qemp,2));
+0057 
+0058 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

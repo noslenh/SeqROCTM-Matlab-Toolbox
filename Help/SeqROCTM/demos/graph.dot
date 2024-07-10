@@ -1,0 +1,8 @@
+/* Created by mdot for Matlab */
+digraph m2html {
+
+  illustrativeExampleI [URL="illustrativeExampleI.html"];
+  illustrativeExampleII [URL="illustrativeExampleII.html"];
+  simulationsAnnApplStat [URL="simulationsAnnApplStat.html"];
+  tuningContextTreeModels [URL="tuningContextTreeModels.html"];
+}

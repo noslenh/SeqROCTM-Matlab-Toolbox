@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of tuning_risk</title>
+  <meta name="keywords" content="tuning_risk">
+  <meta name="description" content="Model selection using a risk function for a Context tree model.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">model_selection</a> &gt; tuning_risk.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\model_selection&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>tuning_risk
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Model selection using a risk function for a Context tree model.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> [idx_opt_model, R] = tuning_risk(param_set, bootsamples, A, options) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">MODELTUNNING_RISK Model selection using a risk function for a Context tree model.
+
+ Inputs
+
+   param_set     : set of values of the parameter to be tuned
+   bootsamples   : bootstrap samples
+   A             : alphabet
+   options       : structure with the values to be passed to the
+                      estimation functions
+
+ Outputs
+
+   idx_opt_model : index of the optimal parameter value
+   R             : risk values corresponding to the parameter values 
+
+   References:
+      [1] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 01/2021</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="bic_WCT.html" class="code" title=" [tree, P, V, results] = bic_WCT(X, A, max_height, c, df, missing, varargin)">bic_WCT</a>	Estimate a context tree model from a sequence using the BIC criterion.</li><li><a href="estimate_contexttree.html" class="code" title=" [contexts, P, results] = estimate_contexttree(X, A, varargin)">estimate_contexttree</a>	Estimate a context tree from the sequence X.</li><li><a href="getTESTstructure.html" class="code" title=" TEST = getTESTstructure(T, I, la, Y)">getTESTstructure</a>	Gives an structure to be used in the function CTestimator. This function is used only to speed-up other functions.</li><li><a href="../../SeqROCTM/tools/completetree.html" class="code" title=" [T, I, nT] = completetree(X, max_height, A)">completetree</a>	 Compute the complete tree.</li><li><a href="../../SeqROCTM/tools/contextfunction.html" class="code" title=" [c, idx] = contextfunction(past, contexts)">contextfunction</a>	Return the context associated to a given (past) sequence.</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/demos/tuningContextTreeModels.html" class="code" title="">tuningContextTreeModels</a>	Examples on tuning procedures.</li><li><a href="tune_contextTreeModel.html" class="code" title=" [optTree, optP, results] = tune_contextTreeModel(X, A, varargin)">tune_contextTreeModel</a>	Tune a context tree estimation algorithm.</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function Xhat = predictor_delta_loss(X, contexts, P, A)</a></li><li><a href="#_sub2" class="code">function L = delta_loss(X, Xhat)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [idx_opt_model, R] = tuning_risk(param_set, bootsamples, A, options)</a>
+0002 <span class="comment">%MODELTUNNING_RISK Model selection using a risk function for a Context tree model.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%   param_set     : set of values of the parameter to be tuned</span>
+0007 <span class="comment">%   bootsamples   : bootstrap samples</span>
+0008 <span class="comment">%   A             : alphabet</span>
+0009 <span class="comment">%   options       : structure with the values to be passed to the</span>
+0010 <span class="comment">%                      estimation functions</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">% Outputs</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%   idx_opt_model : index of the optimal parameter value</span>
+0015 <span class="comment">%   R             : risk values corresponding to the parameter values</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%   References:</span>
+0018 <span class="comment">%      [1] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0021 <span class="comment">%Date   : 01/2021</span>
+0022 
+0023 lA = length(A);
+0024 B = size(bootsamples,1);
+0025 
+0026 <span class="comment">% index of the bootstrap sample with some incompatibility</span>
+0027 bad_bootstrap_sample = [];
+0028 
+0029 np = length(param_set);
+0030 L = zeros(B, np);
+0031 
+0032 <span class="keyword">if</span> strcmpi(options.EstimationMethod, <span class="string">'context'</span>)
+0033     <span class="comment">%%% Context Algorithm</span>
+0034     <span class="keyword">for</span> b = 1 : B
+0035         
+0036         Xb = bootsamples(b,1:end-1);
+0037         
+0038         <span class="comment">% some computations to speed-up</span>
+0039         <span class="comment">% compute the complete tree and the TEST structure only once (for speed-up)</span>
+0040         [T, I] = <a href="../../SeqROCTM/tools/completetree.html" class="code" title=" [T, I, nT] = completetree(X, max_height, A)">completetree</a>(Xb, options.MaxTreeHeight, A);
+0041         TEST = <a href="getTESTstructure.html" class="code" title=" TEST = getTESTstructure(T, I, la, Y)">getTESTstructure</a>(T, I, lA, Xb);
+0042         ct_inf = {T, I};
+0043         <span class="comment">%BIC-info</span>
+0044         precomputed_stats = [];
+0045         
+0046         <span class="comment">% for each value param_set(k) of the parameter and each bootstrap</span>
+0047         <span class="comment">% sample</span>
+0048         <span class="keyword">for</span> k = 1 : np
+0049             <span class="comment">%estimate the context tree model</span>
+0050             [ck, Pk] = <a href="estimate_contexttree.html" class="code" title=" [contexts, P, results] = estimate_contexttree(X, A, varargin)">estimate_contexttree</a>(Xb, A, <span class="keyword">...</span>
+0051                 <span class="string">'MaxTreeHeight'</span>, options.MaxTreeHeight,             <span class="keyword">...</span>
+0052                 <span class="string">'EstimationMethod'</span>, options.EstimationMethod,       <span class="keyword">...</span>
+0053                 <span class="string">'ParameterValue'</span>, param_set(k),                     <span class="keyword">...</span>
+0054                 <span class="string">'CtxCompleteTree'</span>, ct_inf,                          <span class="keyword">...</span>
+0055                 <span class="string">'CtxTestStructure'</span>, TEST,                           <span class="keyword">...</span>
+0056                 <span class="string">'BicDegreeOfFreedom'</span>, options.BicDegreeOfFreedom,   <span class="keyword">...</span>
+0057                 <span class="string">'BicPrecomputedStats'</span>, precomputed_stats,           <span class="keyword">...</span>
+0058                 <span class="string">'BicMissing'</span>, options.BicMissing);
+0059             
+0060             <span class="comment">% predict</span>
+0061             Yhat = <a href="#_sub1" class="code" title="subfunction Xhat = predictor_delta_loss(X, contexts, P, A)">predictor_delta_loss</a>(Xb, ck, Pk, A);
+0062             
+0063             <span class="comment">% compute the loss</span>
+0064             <span class="keyword">if</span> Yhat == -1
+0065                 <span class="comment">% get the index of this bootstrap sample (this can happens if</span>
+0066                 <span class="comment">% the length of the sequences is small)</span>
+0067                 bad_bootstrap_sample = [bad_bootstrap_sample; b];
+0068                 disp([<span class="string">'Warning: The estimated model using Bootstrap sample '</span> int2str(b)<span class="keyword">...</span>
+0069                     <span class="string">' was incompatible with the bootstrap sample generated for prediction.'</span>]);
+0070             <span class="keyword">else</span>
+0071                 <span class="comment">% loss</span>
+0072                 L(b,k) = <a href="#_sub2" class="code" title="subfunction L = delta_loss(X, Xhat)">delta_loss</a>(Yhat, bootsamples(b,end));
+0073             <span class="keyword">end</span>
+0074         <span class="keyword">end</span>
+0075     <span class="keyword">end</span>
+0076 <span class="keyword">elseif</span> strcmpi(options.EstimationMethod, <span class="string">'bic'</span>)
+0077     <span class="comment">%%% BIC Algorithm</span>
+0078     <span class="keyword">for</span> b = 1 : B
+0079         
+0080         Xb = bootsamples(b,1:end-1);
+0081         
+0082         <span class="comment">% some computations to speed-up</span>
+0083         <span class="comment">% compute the statistics Nw and Nwa used in BIC only once (for speed-up)</span>
+0084         df1 = ~strcmpi(options.BicDegreeOfFreedom,<span class="string">'fix'</span>);
+0085         [~, ~, ~, outps] = <a href="bic_WCT.html" class="code" title=" [tree, P, V, results] = bic_WCT(X, A, max_height, c, df, missing, varargin)">bic_WCT</a>(Xb, A, options.MaxTreeHeight, param_set(1), df1, options.BicMissing);
+0086         precomputed_stats{1} = outps.stats(:,5:6+lA-1);
+0087         precomputed_stats{2} = outps.nonExistingNodes;
+0088         precomputed_stats{3} = outps.XlengthWithoutNaN;
+0089         <span class="comment">%ctx-info</span>
+0090         TEST = -1;
+0091         ct_inf = -1;
+0092         
+0093         <span class="comment">% for each value param_set(k) of the parameter and each bootstrap</span>
+0094         <span class="comment">% sample</span>
+0095         <span class="keyword">for</span> k = 1 : np
+0096             <span class="comment">%estimate the context tree model</span>
+0097             [ck, Pk] = <a href="estimate_contexttree.html" class="code" title=" [contexts, P, results] = estimate_contexttree(X, A, varargin)">estimate_contexttree</a>(Xb, A, <span class="keyword">...</span>
+0098                 <span class="string">'MaxTreeHeight'</span>, options.MaxTreeHeight,             <span class="keyword">...</span>
+0099                 <span class="string">'EstimationMethod'</span>, options.EstimationMethod,       <span class="keyword">...</span>
+0100                 <span class="string">'ParameterValue'</span>, param_set(k),                     <span class="keyword">...</span>
+0101                 <span class="string">'CtxCompleteTree'</span>, ct_inf,                          <span class="keyword">...</span>
+0102                 <span class="string">'CtxTestStructure'</span>, TEST,                           <span class="keyword">...</span>
+0103                 <span class="string">'BicDegreeOfFreedom'</span>, options.BicDegreeOfFreedom,   <span class="keyword">...</span>
+0104                 <span class="string">'BicPrecomputedStats'</span>, precomputed_stats,           <span class="keyword">...</span>
+0105                 <span class="string">'BicMissing'</span>, options.BicMissing);
+0106             
+0107             <span class="comment">% predict</span>
+0108             Yhat = <a href="#_sub1" class="code" title="subfunction Xhat = predictor_delta_loss(X, contexts, P, A)">predictor_delta_loss</a>(Xb, ck, Pk, A);
+0109             
+0110             <span class="comment">% compute the loss</span>
+0111             <span class="keyword">if</span> Yhat == -1
+0112                 <span class="comment">% get the index of this bootstrap sample (this can happens if</span>
+0113                 <span class="comment">% the length of the sequences is small)</span>
+0114                 bad_bootstrap_sample = [bad_bootstrap_sample; b];
+0115                 disp([<span class="string">'Warning: The estimated model using Bootstrap sample '</span> int2str(b)<span class="keyword">...</span>
+0116                     <span class="string">' was incompatible with the bootstrap sample generated for prediction.'</span>]);
+0117             <span class="keyword">else</span>
+0118                 <span class="comment">% loss</span>
+0119                 L(b,k) = <a href="#_sub2" class="code" title="subfunction L = delta_loss(X, Xhat)">delta_loss</a>(Yhat, bootsamples(b,end));
+0120             <span class="keyword">end</span>
+0121         <span class="keyword">end</span>
+0122     <span class="keyword">end</span>
+0123 <span class="keyword">else</span>
+0124     error(<span class="string">'The estimation method %s is not implemented to be tunned'</span>, options.EstimationMethod);
+0125 <span class="keyword">end</span>
+0126 
+0127 <span class="comment">% bootstrap approximation of the Risk for each model</span>
+0128 L(bad_bootstrap_sample,:) = []; <span class="comment">%delete the information for the bootstrap samples with problem</span>
+0129 R = sum(L)/(B-length(bad_bootstrap_sample));
+0130 
+0131 <span class="comment">% index of the best model</span>
+0132 [~, tmp_idx] = min(R(end:-1:1));
+0133 idx_opt_model = np - tmp_idx + 1; 
+0134 <span class="keyword">end</span>
+0135 
+0136 <a name="_sub1" href="#_subfunctions" class="code">function Xhat = predictor_delta_loss(X, contexts, P, A)</a>
+0137 <span class="comment">%PREDICTOR_DELTA_LOSS optimal predictor for the zero-one loss function</span>
+0138  
+0139  <span class="keyword">if</span> isempty(contexts)
+0140      <span class="comment">% i.i.d model, so return the most probable symbol</span>
+0141      [~, idxs] = max(P);
+0142      Xhat = A(idxs);
+0143  <span class="keyword">else</span>
+0144      <span class="comment">% get the index of the context associated to the past</span>
+0145      [~, idxc] = <a href="../../SeqROCTM/tools/contextfunction.html" class="code" title=" [c, idx] = contextfunction(past, contexts)">contextfunction</a>(X, contexts);
+0146      <span class="keyword">if</span> idxc == -1
+0147         <span class="comment">% the context was not found, so the model is not compatible</span>
+0148         <span class="comment">% with the sample</span>
+0149         Xhat = -1;
+0150      <span class="keyword">else</span>
+0151         <span class="comment">% get the mode of the distribution associated to that context</span>
+0152         [~, idxs] = max(P(idxc,:));
+0153         Xhat = A(idxs);
+0154      <span class="keyword">end</span>
+0155  <span class="keyword">end</span>
+0156 <span class="keyword">end</span>
+0157 
+0158 <a name="_sub2" href="#_subfunctions" class="code">function L = delta_loss(X, Xhat)</a>
+0159     L = (X ~= Xhat);
+0160 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

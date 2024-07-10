@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of tune_contextTreeModel</title>
+  <meta name="keywords" content="tune_contextTreeModel">
+  <meta name="description" content="Tune a context tree estimation algorithm.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">model_selection</a> &gt; tune_contextTreeModel.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\model_selection&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>tune_contextTreeModel
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Tune a context tree estimation algorithm.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> [optTree, optP, results] = tune_contextTreeModel(X, A, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">TUNE_CONTEXTTREEMODEL Tune a context tree estimation algorithm.
+   [OPTTREE, OPTP] = TUNE_CONTEXTTREEMODEL(X,A) tunes a context tree model
+   using the sequence X of values in the alphabet A. The optimal context
+   tree is returned in OPTTREE and the probability distributions
+   associated to the contexts are returned in OPTP.
+
+   [OPTTREE, OPTP, RESULTS] = TUNE_CONTEXTTREEMODEL(...) returns a structure with the following fields:
+       'champions'     -- the Champion Trees
+       'Ps'            -- the family of probability distributions for each champion tree
+       'fvalues'       -- likelihood or risk function values for the champion trees
+       'prmvalues'     -- the parameter value 
+       'idxOptTree'    -- index of the optimal model in the champion trees
+       'bootsamples'   -- bootstrap samples generated to tune the model
+
+   TUNE_CONTEXTTREEMODEL treats NaNs as missing values. The computational
+   cost of the algorithm can increase. 
+
+   [...] = TUNE_CONTEXTTREEMODEL(X,A,'PARAM1',val1,'PARAM2',val2,...)
+   specifies one or more of the following name/value pairs:
+
+       Parameter                Value
+       'TuningMethod'          'smc' to perform the Smaller Maximizer
+                                Criteria or 'risk' to use a risk function.
+                                Default is 'smc'.
+       'EstimationMethod'       'bic' to estimate the context tree models
+                                using the Bayesian Information Criteria
+                                and tune the penalization constant.
+                                'context_cL' to estimate the context tree
+                                models using the Context Algorithm based
+                                on the comparison of likelihoods and tune
+                                the threshold.
+                                'context_empD' to estimate the context tree
+                                models using the Context Algorithm based
+                                on the comparison of distribution and tune
+                                the threshold. Default is 'bic'.
+       'MaxTreeHeight'          Maximum height of the context tree.
+                                Default is log(length(X)).
+       'ParameterLowerBound'    Minimum value of the parameter to be
+                                tuned. Default is 0.
+       'ParameterUpperBound'    Maximum value of the parameter to be
+                                tuned. Default is 100.
+       'Tolerance'              Minimum distance between parameter values.
+                                Default value is 10^-5.
+       'BicDegreeOfFreedom'     Degree of freedom used during the
+                                penalization in the BIC algorithm. 'fix'
+                                =&gt; (|A|-1), 'variable' =&gt; \sum_{a \in A}
+                                1{P(a|w)~=0}. Default value is 'fix'.
+       'BicMissing'             0 if there are no missing values in the
+                                sample, 1 is there are missing values.
+                                Default value is 0.
+       'n1'                     minimum sample length of bootstrap samples
+                                in SMC. Default value is floor(0.3*length(X)).
+       'n2'                     maximum sample length of bootstrap samples 
+                                in SMC. Default value is floor(0.9*length(X)).
+       'Alpha'                  Statistical significance of the t-test in
+                                SMC. Default value is 0.01.
+       'BootNSamples'           Number of bootstrap samples. Default is 200.
+       'BootStrategy'           bootstrap procedure. 'parametric': the
+                                largest tree in the set of Champion Trees
+                                is used to generate the bootstrap samples
+                                or a model given in 'BootModel'. 
+                                'blocks': a renewal point is used to
+                                create independent blocks and these blocks
+                                are sampled to create the bootstrap
+                                samples. Default value is 'blocks'.
+       'BootRenewalPoint'       the renewal point to be used with the
+                                bootstrap strategy 'blocks'. This can be a
+                                subsequence or the string 'compute'. When
+                                it equals 'compute' a renewal point is
+                                compute from the largest context tree in
+                                the Champion Trees. Default value is
+                                'compute'.
+       'BootModel'              context tree model used to generate the
+                                bootstrap samples when the bootstrap
+                                strategy is 'parametric'. A cell array
+                                that contains in BootModel{1} a context
+                                tree and in BootModel{2} the transition
+                                probabilities. Default value is [] (in
+                                this case the largest model in the
+                                champion trees is used).
+       
+   References:
+      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
+      [2] N. Hernández et al., arXiv:2009.06371, (2021).   
+      [3] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 12/2022</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/data_manipulation/generatesampleCTM_fast.html" class="code" title=" B = generatesampleCTM_fast(contexts, P, A, lengthSeq, nsamples)">generatesampleCTM_fast</a>	Generates samples of a context tree model.</li><li><a href="estimate_championTrees.html" class="code" title=" [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)">estimate_championTrees</a>	Compute the Champion Trees.</li><li><a href="tuning_SMC.html" class="code" title=" [opt_tree, idx] = tuning_SMC(championTrees, A, n1, n2, alpha, bootsamples_n2, missing)">tuning_SMC</a>	Context tree selection using the Smallest Maximizer Criterion.</li><li><a href="tuning_risk.html" class="code" title=" [idx_opt_model, R] = tuning_risk(param_set, bootsamples, A, options)">tuning_risk</a>	Model selection using a risk function for a Context tree model.</li><li><a href="../../SeqROCTM/tools/bootstrap_blocks.html" class="code" title=" B = bootstrap_blocks(X, renewal_block, seq_length, nB)">bootstrap_blocks</a>	Generate bootstrap samples of a CTM.</li><li><a href="../../SeqROCTM/tools/tree_renewalpoint.html" class="code" title=" [renwpoint, renewals] = tree_renewalpoint(contexts, P, A, X)">tree_renewalpoint</a>	Among all the contexts that are renewal points, select the most frequents</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/demos/simulationsAnnApplStat.html" class="code" title="">simulationsAnnApplStat</a>	Similations from A. Galves et. al., Ann. Appl. Stat., Volume 6, Number 1 (2012), 186-209</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [optTree, optP, results] = tune_contextTreeModel(X, A, varargin)</a>
+0002 <span class="comment">%TUNE_CONTEXTTREEMODEL Tune a context tree estimation algorithm.</span>
+0003 <span class="comment">%   [OPTTREE, OPTP] = TUNE_CONTEXTTREEMODEL(X,A) tunes a context tree model</span>
+0004 <span class="comment">%   using the sequence X of values in the alphabet A. The optimal context</span>
+0005 <span class="comment">%   tree is returned in OPTTREE and the probability distributions</span>
+0006 <span class="comment">%   associated to the contexts are returned in OPTP.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%   [OPTTREE, OPTP, RESULTS] = TUNE_CONTEXTTREEMODEL(...) returns a structure with the following fields:</span>
+0009 <span class="comment">%       'champions'     -- the Champion Trees</span>
+0010 <span class="comment">%       'Ps'            -- the family of probability distributions for each champion tree</span>
+0011 <span class="comment">%       'fvalues'       -- likelihood or risk function values for the champion trees</span>
+0012 <span class="comment">%       'prmvalues'     -- the parameter value</span>
+0013 <span class="comment">%       'idxOptTree'    -- index of the optimal model in the champion trees</span>
+0014 <span class="comment">%       'bootsamples'   -- bootstrap samples generated to tune the model</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%   TUNE_CONTEXTTREEMODEL treats NaNs as missing values. The computational</span>
+0017 <span class="comment">%   cost of the algorithm can increase.</span>
+0018 <span class="comment">%</span>
+0019 <span class="comment">%   [...] = TUNE_CONTEXTTREEMODEL(X,A,'PARAM1',val1,'PARAM2',val2,...)</span>
+0020 <span class="comment">%   specifies one or more of the following name/value pairs:</span>
+0021 <span class="comment">%</span>
+0022 <span class="comment">%       Parameter                Value</span>
+0023 <span class="comment">%       'TuningMethod'          'smc' to perform the Smaller Maximizer</span>
+0024 <span class="comment">%                                Criteria or 'risk' to use a risk function.</span>
+0025 <span class="comment">%                                Default is 'smc'.</span>
+0026 <span class="comment">%       'EstimationMethod'       'bic' to estimate the context tree models</span>
+0027 <span class="comment">%                                using the Bayesian Information Criteria</span>
+0028 <span class="comment">%                                and tune the penalization constant.</span>
+0029 <span class="comment">%                                'context_cL' to estimate the context tree</span>
+0030 <span class="comment">%                                models using the Context Algorithm based</span>
+0031 <span class="comment">%                                on the comparison of likelihoods and tune</span>
+0032 <span class="comment">%                                the threshold.</span>
+0033 <span class="comment">%                                'context_empD' to estimate the context tree</span>
+0034 <span class="comment">%                                models using the Context Algorithm based</span>
+0035 <span class="comment">%                                on the comparison of distribution and tune</span>
+0036 <span class="comment">%                                the threshold. Default is 'bic'.</span>
+0037 <span class="comment">%       'MaxTreeHeight'          Maximum height of the context tree.</span>
+0038 <span class="comment">%                                Default is log(length(X)).</span>
+0039 <span class="comment">%       'ParameterLowerBound'    Minimum value of the parameter to be</span>
+0040 <span class="comment">%                                tuned. Default is 0.</span>
+0041 <span class="comment">%       'ParameterUpperBound'    Maximum value of the parameter to be</span>
+0042 <span class="comment">%                                tuned. Default is 100.</span>
+0043 <span class="comment">%       'Tolerance'              Minimum distance between parameter values.</span>
+0044 <span class="comment">%                                Default value is 10^-5.</span>
+0045 <span class="comment">%       'BicDegreeOfFreedom'     Degree of freedom used during the</span>
+0046 <span class="comment">%                                penalization in the BIC algorithm. 'fix'</span>
+0047 <span class="comment">%                                =&gt; (|A|-1), 'variable' =&gt; \sum_{a \in A}</span>
+0048 <span class="comment">%                                1{P(a|w)~=0}. Default value is 'fix'.</span>
+0049 <span class="comment">%       'BicMissing'             0 if there are no missing values in the</span>
+0050 <span class="comment">%                                sample, 1 is there are missing values.</span>
+0051 <span class="comment">%                                Default value is 0.</span>
+0052 <span class="comment">%       'n1'                     minimum sample length of bootstrap samples</span>
+0053 <span class="comment">%                                in SMC. Default value is floor(0.3*length(X)).</span>
+0054 <span class="comment">%       'n2'                     maximum sample length of bootstrap samples</span>
+0055 <span class="comment">%                                in SMC. Default value is floor(0.9*length(X)).</span>
+0056 <span class="comment">%       'Alpha'                  Statistical significance of the t-test in</span>
+0057 <span class="comment">%                                SMC. Default value is 0.01.</span>
+0058 <span class="comment">%       'BootNSamples'           Number of bootstrap samples. Default is 200.</span>
+0059 <span class="comment">%       'BootStrategy'           bootstrap procedure. 'parametric': the</span>
+0060 <span class="comment">%                                largest tree in the set of Champion Trees</span>
+0061 <span class="comment">%                                is used to generate the bootstrap samples</span>
+0062 <span class="comment">%                                or a model given in 'BootModel'.</span>
+0063 <span class="comment">%                                'blocks': a renewal point is used to</span>
+0064 <span class="comment">%                                create independent blocks and these blocks</span>
+0065 <span class="comment">%                                are sampled to create the bootstrap</span>
+0066 <span class="comment">%                                samples. Default value is 'blocks'.</span>
+0067 <span class="comment">%       'BootRenewalPoint'       the renewal point to be used with the</span>
+0068 <span class="comment">%                                bootstrap strategy 'blocks'. This can be a</span>
+0069 <span class="comment">%                                subsequence or the string 'compute'. When</span>
+0070 <span class="comment">%                                it equals 'compute' a renewal point is</span>
+0071 <span class="comment">%                                compute from the largest context tree in</span>
+0072 <span class="comment">%                                the Champion Trees. Default value is</span>
+0073 <span class="comment">%                                'compute'.</span>
+0074 <span class="comment">%       'BootModel'              context tree model used to generate the</span>
+0075 <span class="comment">%                                bootstrap samples when the bootstrap</span>
+0076 <span class="comment">%                                strategy is 'parametric'. A cell array</span>
+0077 <span class="comment">%                                that contains in BootModel{1} a context</span>
+0078 <span class="comment">%                                tree and in BootModel{2} the transition</span>
+0079 <span class="comment">%                                probabilities. Default value is [] (in</span>
+0080 <span class="comment">%                                this case the largest model in the</span>
+0081 <span class="comment">%                                champion trees is used).</span>
+0082 <span class="comment">%</span>
+0083 <span class="comment">%   References:</span>
+0084 <span class="comment">%      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)</span>
+0085 <span class="comment">%      [2] N. Hernández et al., arXiv:2009.06371, (2021).</span>
+0086 <span class="comment">%      [3] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)</span>
+0087 <span class="comment">%</span>
+0088 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0089 <span class="comment">%Date   : 12/2022</span>
+0090 
+0091 lX = length(X);
+0092 
+0093 <span class="comment">% name-value pairs arguments</span>
+0094 <span class="comment">% default values</span>
+0095 options = struct(   <span class="string">'TuningMethod'</span>, <span class="string">'smc'</span>,              <span class="keyword">...</span>
+0096                     <span class="string">'EstimationMethod'</span>, <span class="string">'bic'</span>,          <span class="keyword">...</span><span class="comment">  </span>
+0097                     <span class="string">'MaxTreeHeight'</span>, floor(log(lX)),    <span class="keyword">...</span>
+0098                     <span class="string">'ParameterLowerBound'</span>, 0,           <span class="keyword">...</span>
+0099                     <span class="string">'ParameterUpperBound'</span>, 100,         <span class="keyword">...</span>
+0100                     <span class="string">'Tolerance'</span>, 10^-5,                 <span class="keyword">...</span>
+0101                     <span class="string">'BicDegreeOfFreedom'</span>, <span class="string">'fix'</span>,        <span class="keyword">...</span>
+0102                     <span class="string">'BicMissing'</span>, 0,                    <span class="keyword">...</span>
+0103                     <span class="string">'n1'</span>, floor(0.3*lX),                <span class="keyword">...</span><span class="comment">                        </span>
+0104                     <span class="string">'n2'</span>, floor(0.9*lX),                <span class="keyword">...</span>
+0105                     <span class="string">'Alpha'</span>, 0.01,                      <span class="keyword">...</span>
+0106                     <span class="string">'BootNSamples'</span>, 200,                <span class="keyword">...</span>
+0107                     <span class="string">'BootStrategy'</span>, <span class="string">'blocks'</span>,           <span class="keyword">...</span>
+0108                     <span class="string">'BootRenewalPoint'</span>, <span class="string">'compute'</span>,      <span class="keyword">...</span>
+0109                     <span class="string">'BootModel'</span>, []                     <span class="keyword">...</span>
+0110                     );
+0111 
+0112 <span class="comment">% acceptable names</span>
+0113 optionNames = fieldnames(options);
+0114 
+0115 <span class="keyword">for</span> pair = reshape(varargin, 2, [])
+0116     inpName = pair{1};
+0117     
+0118     <span class="keyword">if</span> any(strcmpi(inpName, optionNames))
+0119         
+0120         <span class="keyword">if</span> strcmpi(inpName, <span class="string">'estimationmethod'</span>)
+0121             <span class="keyword">if</span> any(strcmpi(pair{2}, {<span class="string">'bic'</span>,<span class="string">'context_empD'</span>, <span class="string">'context_cL'</span>}))
+0122                 options.(inpName) = pair{2};
+0123             <span class="keyword">else</span>
+0124                 error(<span class="string">'%s is not a recognized parameter value'</span>, pair{2})
+0125             <span class="keyword">end</span>
+0126         <span class="keyword">else</span>
+0127             options.(inpName) = pair{2};
+0128         <span class="keyword">end</span>
+0129         
+0130     <span class="keyword">else</span>
+0131         error(<span class="string">'%s is not a recognized parameter name'</span>, inpName);
+0132     <span class="keyword">end</span>
+0133 <span class="keyword">end</span>
+0134 
+0135 <span class="comment">% compute the Champion Trees</span>
+0136 [results.champions, results.Ps, results.fvalues, results.prmvalues] = <a href="estimate_championTrees.html" class="code" title=" [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)">estimate_championTrees</a>(X, A, <span class="keyword">...</span>
+0137                                                                 <span class="string">'MaxTreeHeight'</span>, options.MaxTreeHeight,             <span class="keyword">...</span>
+0138                                                                 <span class="string">'ParameterLowerBound'</span>, options.ParameterLowerBound, <span class="keyword">...</span>
+0139                                                                 <span class="string">'ParameterUpperBound'</span>, options.ParameterUpperBound, <span class="keyword">...</span>
+0140                                                                 <span class="string">'EstimationMethod'</span>, options.EstimationMethod,       <span class="keyword">...</span>
+0141                                                                 <span class="string">'Tolerance'</span>, options.Tolerance,                     <span class="keyword">...</span>
+0142                                                                 <span class="string">'BicDegreeOfFreedom'</span>, options.BicDegreeOfFreedom,   <span class="keyword">...</span>
+0143                                                                 <span class="string">'BicMissing'</span>, options.BicMissing                    <span class="keyword">...</span>
+0144                                                                 );
+0145 
+0146 smc = 1;
+0147 <span class="keyword">if</span> strcmpi(options.TuningMethod, <span class="string">'smc'</span>)
+0148     lengthbootsamples = options.n2;
+0149 <span class="keyword">elseif</span> strcmpi(options.TuningMethod, <span class="string">'risk'</span>)
+0150     smc = 0;
+0151     lengthbootsamples = lX+1;
+0152 <span class="keyword">else</span>
+0153     error(<span class="string">'%s is not a recognized tunning method'</span>, options.TuningMethod);
+0154 <span class="keyword">end</span>
+0155                                                                     
+0156 <span class="comment">% generate the Bootstrap samples</span>
+0157 <span class="keyword">switch</span> options.BootStrategy
+0158     <span class="keyword">case</span> <span class="string">'blocks'</span>
+0159         <span class="comment">%compute a renewal point from the largest model in the champion</span>
+0160         <span class="comment">%trees ('compute') or use the specified renewal point</span>
+0161         <span class="keyword">if</span> strcmpi(options.BootRenewalPoint, <span class="string">'compute'</span>)
+0162             renewal_point = <a href="../../SeqROCTM/tools/tree_renewalpoint.html" class="code" title=" [renwpoint, renewals] = tree_renewalpoint(contexts, P, A, X)">tree_renewalpoint</a>(results.champions{1}, results.Ps{1}, A, X);
+0163         <span class="keyword">else</span>
+0164             renewal_point = options.BootRenewalPoint;
+0165         <span class="keyword">end</span>
+0166         results.bootsamples = <a href="../../SeqROCTM/tools/bootstrap_blocks.html" class="code" title=" B = bootstrap_blocks(X, renewal_block, seq_length, nB)">bootstrap_blocks</a>(X, renewal_point, lengthbootsamples, options.BootNSamples);
+0167         bootstrap_missing = options.BicMissing;
+0168     <span class="keyword">case</span> <span class="string">'parametric'</span>
+0169         <span class="comment">%if no model was specified through 'BootModel' use the largest</span>
+0170         <span class="comment">%model in the Champion Trees. Otherwise, use the model in 'BootModel'</span>
+0171         <span class="keyword">if</span> isempty(options.BootModel)
+0172             tau0 = results.champions{1};
+0173             p0 = results.Ps{1};
+0174         <span class="keyword">else</span>
+0175             tau0 = options.BootModel{1};
+0176             p0 = options.BootModel{2};
+0177         <span class="keyword">end</span>
+0178         results.bootsamples = <a href="../../SeqROCTM/data_manipulation/generatesampleCTM_fast.html" class="code" title=" B = generatesampleCTM_fast(contexts, P, A, lengthSeq, nsamples)">generatesampleCTM_fast</a>(tau0, p0, A, lengthbootsamples, options.BootNSamples);
+0179         bootstrap_missing = 0;
+0180     <span class="keyword">otherwise</span>
+0181         error(<span class="string">'%s is not a recognized bootstrap strategy'</span>, options.bootStrategy);
+0182 <span class="keyword">end</span>
+0183                                                                                                                         
+0184 <span class="keyword">if</span> smc
+0185     <span class="comment">%choose the optimal model using smc</span>
+0186     [optTree, results.idxOptTree] = <a href="tuning_SMC.html" class="code" title=" [opt_tree, idx] = tuning_SMC(championTrees, A, n1, n2, alpha, bootsamples_n2, missing)">tuning_SMC</a>(results.champions, A, options.n1, options.n2,<span class="keyword">...</span>
+0187                                                       options.Alpha, results.bootsamples, bootstrap_missing);
+0188 <span class="keyword">else</span>
+0189     <span class="comment">%choose the optimal model using a risk function</span>
+0190     [results.idxOptTree, results.fvalues] = <a href="tuning_risk.html" class="code" title=" [idx_opt_model, R] = tuning_risk(param_set, bootsamples, A, options)">tuning_risk</a>(results.prmvalues, results.bootsamples, A, options);
+0191     
+0192     optTree = results.champions{results.idxOptTree};
+0193 <span class="keyword">end</span>
+0194 optP = results.Ps{results.idxOptTree};
+0195     
+0196 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

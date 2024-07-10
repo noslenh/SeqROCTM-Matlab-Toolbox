@@ -1,0 +1,406 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of tune_SeqROCTM</title>
+  <meta name="keywords" content="tune_SeqROCTM">
+  <meta name="description" content="Tune a SeqROCTM estimation algorithm.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">model_selection</a> &gt; tune_SeqROCTM.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\model_selection&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>tune_SeqROCTM
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Tune a SeqROCTM estimation algorithm.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> [optTree, optQ, results] = tune_SeqROCTM(X, Y, A, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">TUNE_CONTEXTTREEMODEL Tune a SeqROCTM estimation algorithm.
+   [OPTTREE, OPTP] = TUNE_SEQROCTM(X, Y, A) tunes a SeqROCTM using the
+   sequences X,Y with values in the alphabet A. The optimal model model
+   (i.e., context tree and its associated family of distributions) is
+   returned in OPTTREE and OPTQ respectively. 
+
+   [OPTTREE, OPTP, RESULTS] = TUNE_SEQROCTM(...) returns a structure with the following fields:
+       'champions'     -- the Champion Trees
+       'Qs'            -- the family of probability distributions corresponding to each champion tree
+       'fvalues'       -- likelihood or risk function values for the champion trees
+       'prmvalues'     -- the parameter values corresponding to each champion tree 
+       'idxOptTree'    -- index of the optimal model in the champion trees
+       'Xbootsamples'  -- bootstrap samples X generated to tune the model
+       'Ybootsamples'  -- bootstrap samples Y generated to tune the model
+
+   [...] = TUNE_SEQROCTM(X,A,'PARAM1',val1,'PARAM2',val2,...)
+   specifies one or more of the following name/value pairs:
+
+       Parameter                Value
+       'TuningMethod'          'smc' to perform the Smaller Maximizer
+                                Criteria or 'risk' to use a risk function.
+                                Default is 'smc'.
+       'EstimationMethod'       'bic' to estimate the SeqROCTM using
+                                Bayesian Information Criteria and tune the
+                                BIC penalization constant. 
+                               'context_cL' to estimate the SeqROCTM
+                                using the Context Algorithm based on
+                                comparison of likelihoods.
+                                'context_empD' to estimate the SeqROCTM
+                                using the Context Algorithm based on
+                                comparison of distributions. 
+                                Default is 'bic'.
+       'MaxTreeHeight'          Maximum height of the context tree.
+                                Default is log(length(X)).
+       'ParameterLowerBound'    Minimum value of the parameter to be
+                                tuned. Default is 0.
+       'ParameterUpperBound'    Maximum value of the parameter to be
+                                tuned. Default is 100.
+       'Tolerance'              Minimum distance between parameter values.
+                                Default value is 10^-5.
+       'BicDegreeOfFreedom'     Degree of freedom used during the
+                                penalization in the BIC algorithm. 'fix'
+                                =&gt; (|A|-1), 'variable' =&gt; \sum_{a \in A}
+                                1{P(a|w)~=0}. Default value is 'fix'.
+       'n1'                     Minimum sample length of bootstrap samples
+                                in SMC. Default value is floor(0.3*length(X)).
+       'n2'                     Maximum sample length of bootstrap samples 
+                                in SMC. Default value is floor(0.9*length(X)).
+       'Alpha'                  Statistical significance of the t-test in
+                                SMC. Default value is 0.01.
+       'BootNSamples'           Number of bootstrap samples. Default is 200.
+       'BootStrategy'           Bootstrap procedure to re-sample the
+                                bivariate sequence (X,Y). 'blocks': a
+                                renewal context is used to create
+                                independent blocks of the sequence (X,Y)
+                                and these blocks are used to create the
+                                bootstrap samples. 'parametric': a model is
+                                used to generate the Y bootstrap samples
+                                from the X bootstrap samples. When this
+                                option is chosen, a bootstrap strategy to
+                                generate the X sequences must be
+                                specified. Default value is 'blocks'.
+       'BootXStrategy'          Bootstrap procedure to re-sample the
+                                sequence X. 'parametric': a model
+                                specified in 'BootXParametricModel' is
+                                used to generate the bootstrap samples.
+                                'blocks': a renewal point is used to
+                                create independent blocks and then sample
+                                from this blocks to generate the bootstrap
+                                samples of the sequence X. 'none': no
+                                bootstrap samples are generate for the
+                                sequence X. Default value is 'none'.
+       'BootXRenewalPoint'      A renewal point to be used when the
+                                'BootXStrategy' is 'block'.
+       'BootXModel'             Context tree model used to generate the
+                                bootstrap samples of the sequence X when
+                                'XBootStrategy' is 'parametric'. A cell
+                                array that contains in BootXModel{1} a
+                                context tree and in BootXModel{2} the
+                                associated transition probabilities. 
+       'BootYModel'             Context tree and distributions used to
+                                generate the bootstrap samples of the
+                                sequence Y. A cell array containing in
+                                BootYModel{1} a context tree and in
+                                BootYModel{2} the distributions. Default
+                                value is [] (in this case the largest
+                                model in the Champion Trees is used). 
+   References:
+      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
+      [2] N. Hernández et al., arXiv:2009.06371, (2021).  
+      [3] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 02/2021</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/data_manipulation/generatesampleCTM_fast.html" class="code" title=" B = generatesampleCTM_fast(contexts, P, A, lengthSeq, nsamples)">generatesampleCTM_fast</a>	Generates samples of a context tree model.</li><li><a href="../../SeqROCTM/data_manipulation/generatesampleYSeqROCTM.html" class="code" title=" [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)">generatesampleYSeqROCTM</a>	Generates the response sequence of a SeqROCTM from a sequence of inputs, the context tree and the distributions associated to the contexts.</li><li><a href="estimate_championTrees2.html" class="code" title=" [Trees, Q, ML, cutoff] = estimate_championTrees2(X, Y, A, varargin)">estimate_championTrees2</a>	Compute the Champion Trees.</li><li><a href="tuning_SMC2.html" class="code" title=" [opt_tree, idx] = tuning_SMC2(championTrees, A, n1, n2, alpha, Xbootsamples, Ybootsamples)">tuning_SMC2</a>	Context tree selection using the Smallest Maximizer Criterion for SeqROCTM.</li><li><a href="tuning_risk2.html" class="code" title=" [idx_opt_model, R] = tuning_risk2(param_set, Xbootsamples, Ybootsamples, A, options)">tuning_risk2</a>	Model selection using a risk function for a SeqROCTM.</li><li><a href="../../SeqROCTM/tools/bootstrap_blocks.html" class="code" title=" B = bootstrap_blocks(X, renewal_block, seq_length, nB)">bootstrap_blocks</a>	Generate bootstrap samples of a CTM.</li><li><a href="../../SeqROCTM/tools/bootstrap_blocks2.html" class="code" title=" [BX, BY] = bootstrap_blocks2(X, Y, renewal_block, seq_length, nB)">bootstrap_blocks2</a>	Generate bootstrap samples of a ReqROCTM.</li><li><a href="../../SeqROCTM/tools/countctx.html" class="code" title=" [count, Nwa] = countctx(contexts, X, A, idx_without_NaN, Y)">countctx</a>	Gives the number of times and positions where the contexts appear in a sequence.</li><li><a href="../../SeqROCTM/tools/tree_renewalpoint.html" class="code" title=" [renwpoint, renewals] = tree_renewalpoint(contexts, P, A, X)">tree_renewalpoint</a>	Among all the contexts that are renewal points, select the most frequents</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/demos/illustrativeExampleI.html" class="code" title="">illustrativeExampleI</a>	This script presents examples on how to use the basic funcionalities of the SeqROCTM toolbox.</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [optTree, optQ, results] = tune_SeqROCTM(X, Y, A, varargin)</a>
+0002 <span class="comment">%TUNE_CONTEXTTREEMODEL Tune a SeqROCTM estimation algorithm.</span>
+0003 <span class="comment">%   [OPTTREE, OPTP] = TUNE_SEQROCTM(X, Y, A) tunes a SeqROCTM using the</span>
+0004 <span class="comment">%   sequences X,Y with values in the alphabet A. The optimal model model</span>
+0005 <span class="comment">%   (i.e., context tree and its associated family of distributions) is</span>
+0006 <span class="comment">%   returned in OPTTREE and OPTQ respectively.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%   [OPTTREE, OPTP, RESULTS] = TUNE_SEQROCTM(...) returns a structure with the following fields:</span>
+0009 <span class="comment">%       'champions'     -- the Champion Trees</span>
+0010 <span class="comment">%       'Qs'            -- the family of probability distributions corresponding to each champion tree</span>
+0011 <span class="comment">%       'fvalues'       -- likelihood or risk function values for the champion trees</span>
+0012 <span class="comment">%       'prmvalues'     -- the parameter values corresponding to each champion tree</span>
+0013 <span class="comment">%       'idxOptTree'    -- index of the optimal model in the champion trees</span>
+0014 <span class="comment">%       'Xbootsamples'  -- bootstrap samples X generated to tune the model</span>
+0015 <span class="comment">%       'Ybootsamples'  -- bootstrap samples Y generated to tune the model</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%   [...] = TUNE_SEQROCTM(X,A,'PARAM1',val1,'PARAM2',val2,...)</span>
+0018 <span class="comment">%   specifies one or more of the following name/value pairs:</span>
+0019 <span class="comment">%</span>
+0020 <span class="comment">%       Parameter                Value</span>
+0021 <span class="comment">%       'TuningMethod'          'smc' to perform the Smaller Maximizer</span>
+0022 <span class="comment">%                                Criteria or 'risk' to use a risk function.</span>
+0023 <span class="comment">%                                Default is 'smc'.</span>
+0024 <span class="comment">%       'EstimationMethod'       'bic' to estimate the SeqROCTM using</span>
+0025 <span class="comment">%                                Bayesian Information Criteria and tune the</span>
+0026 <span class="comment">%                                BIC penalization constant.</span>
+0027 <span class="comment">%                               'context_cL' to estimate the SeqROCTM</span>
+0028 <span class="comment">%                                using the Context Algorithm based on</span>
+0029 <span class="comment">%                                comparison of likelihoods.</span>
+0030 <span class="comment">%                                'context_empD' to estimate the SeqROCTM</span>
+0031 <span class="comment">%                                using the Context Algorithm based on</span>
+0032 <span class="comment">%                                comparison of distributions.</span>
+0033 <span class="comment">%                                Default is 'bic'.</span>
+0034 <span class="comment">%       'MaxTreeHeight'          Maximum height of the context tree.</span>
+0035 <span class="comment">%                                Default is log(length(X)).</span>
+0036 <span class="comment">%       'ParameterLowerBound'    Minimum value of the parameter to be</span>
+0037 <span class="comment">%                                tuned. Default is 0.</span>
+0038 <span class="comment">%       'ParameterUpperBound'    Maximum value of the parameter to be</span>
+0039 <span class="comment">%                                tuned. Default is 100.</span>
+0040 <span class="comment">%       'Tolerance'              Minimum distance between parameter values.</span>
+0041 <span class="comment">%                                Default value is 10^-5.</span>
+0042 <span class="comment">%       'BicDegreeOfFreedom'     Degree of freedom used during the</span>
+0043 <span class="comment">%                                penalization in the BIC algorithm. 'fix'</span>
+0044 <span class="comment">%                                =&gt; (|A|-1), 'variable' =&gt; \sum_{a \in A}</span>
+0045 <span class="comment">%                                1{P(a|w)~=0}. Default value is 'fix'.</span>
+0046 <span class="comment">%       'n1'                     Minimum sample length of bootstrap samples</span>
+0047 <span class="comment">%                                in SMC. Default value is floor(0.3*length(X)).</span>
+0048 <span class="comment">%       'n2'                     Maximum sample length of bootstrap samples</span>
+0049 <span class="comment">%                                in SMC. Default value is floor(0.9*length(X)).</span>
+0050 <span class="comment">%       'Alpha'                  Statistical significance of the t-test in</span>
+0051 <span class="comment">%                                SMC. Default value is 0.01.</span>
+0052 <span class="comment">%       'BootNSamples'           Number of bootstrap samples. Default is 200.</span>
+0053 <span class="comment">%       'BootStrategy'           Bootstrap procedure to re-sample the</span>
+0054 <span class="comment">%                                bivariate sequence (X,Y). 'blocks': a</span>
+0055 <span class="comment">%                                renewal context is used to create</span>
+0056 <span class="comment">%                                independent blocks of the sequence (X,Y)</span>
+0057 <span class="comment">%                                and these blocks are used to create the</span>
+0058 <span class="comment">%                                bootstrap samples. 'parametric': a model is</span>
+0059 <span class="comment">%                                used to generate the Y bootstrap samples</span>
+0060 <span class="comment">%                                from the X bootstrap samples. When this</span>
+0061 <span class="comment">%                                option is chosen, a bootstrap strategy to</span>
+0062 <span class="comment">%                                generate the X sequences must be</span>
+0063 <span class="comment">%                                specified. Default value is 'blocks'.</span>
+0064 <span class="comment">%       'BootXStrategy'          Bootstrap procedure to re-sample the</span>
+0065 <span class="comment">%                                sequence X. 'parametric': a model</span>
+0066 <span class="comment">%                                specified in 'BootXParametricModel' is</span>
+0067 <span class="comment">%                                used to generate the bootstrap samples.</span>
+0068 <span class="comment">%                                'blocks': a renewal point is used to</span>
+0069 <span class="comment">%                                create independent blocks and then sample</span>
+0070 <span class="comment">%                                from this blocks to generate the bootstrap</span>
+0071 <span class="comment">%                                samples of the sequence X. 'none': no</span>
+0072 <span class="comment">%                                bootstrap samples are generate for the</span>
+0073 <span class="comment">%                                sequence X. Default value is 'none'.</span>
+0074 <span class="comment">%       'BootXRenewalPoint'      A renewal point to be used when the</span>
+0075 <span class="comment">%                                'BootXStrategy' is 'block'.</span>
+0076 <span class="comment">%       'BootXModel'             Context tree model used to generate the</span>
+0077 <span class="comment">%                                bootstrap samples of the sequence X when</span>
+0078 <span class="comment">%                                'XBootStrategy' is 'parametric'. A cell</span>
+0079 <span class="comment">%                                array that contains in BootXModel{1} a</span>
+0080 <span class="comment">%                                context tree and in BootXModel{2} the</span>
+0081 <span class="comment">%                                associated transition probabilities.</span>
+0082 <span class="comment">%       'BootYModel'             Context tree and distributions used to</span>
+0083 <span class="comment">%                                generate the bootstrap samples of the</span>
+0084 <span class="comment">%                                sequence Y. A cell array containing in</span>
+0085 <span class="comment">%                                BootYModel{1} a context tree and in</span>
+0086 <span class="comment">%                                BootYModel{2} the distributions. Default</span>
+0087 <span class="comment">%                                value is [] (in this case the largest</span>
+0088 <span class="comment">%                                model in the Champion Trees is used).</span>
+0089 <span class="comment">%   References:</span>
+0090 <span class="comment">%      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)</span>
+0091 <span class="comment">%      [2] N. Hernández et al., arXiv:2009.06371, (2021).</span>
+0092 <span class="comment">%      [3] P. Buhlmann et al., Ann. Inst. Statist. Math, 52, 1, 287-315 (2000)</span>
+0093 <span class="comment">%</span>
+0094 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0095 <span class="comment">%Date   : 02/2021</span>
+0096 
+0097 lX = length(X);
+0098 
+0099 <span class="comment">% name-value pairs arguments</span>
+0100 <span class="comment">% default values</span>
+0101 options = struct(   <span class="string">'TuningMethod'</span>, <span class="string">'smc'</span>,              <span class="keyword">...</span>
+0102                     <span class="string">'EstimationMethod'</span>, <span class="string">'bic'</span>,          <span class="keyword">...</span><span class="comment">  </span>
+0103                     <span class="string">'MaxTreeHeight'</span>, floor(log(lX)),    <span class="keyword">...</span>
+0104                     <span class="string">'ParameterLowerBound'</span>, 0,           <span class="keyword">...</span>
+0105                     <span class="string">'ParameterUpperBound'</span>, 100,         <span class="keyword">...</span>
+0106                     <span class="string">'Tolerance'</span>, 10^-5,                 <span class="keyword">...</span>
+0107                     <span class="string">'BicDegreeOfFreedom'</span>, <span class="string">'fix'</span>,        <span class="keyword">...</span>
+0108                     <span class="string">'n1'</span>, floor(0.3*lX),                <span class="keyword">...</span><span class="comment">                        </span>
+0109                     <span class="string">'n2'</span>, floor(0.9*lX),                <span class="keyword">...</span>
+0110                     <span class="string">'Alpha'</span>, 0.01,                      <span class="keyword">...</span>
+0111                     <span class="string">'BootNSamples'</span>, 200,                <span class="keyword">...</span>
+0112                     <span class="string">'BootStrategy'</span>, <span class="string">'blocks'</span>,           <span class="keyword">...</span>
+0113                     <span class="string">'BootXStrategy'</span>, <span class="string">'none'</span>,            <span class="keyword">...</span>
+0114                     <span class="string">'BootXRenewalPoint'</span>, [],            <span class="keyword">...</span>
+0115                     <span class="string">'BootXModel'</span>, [],                   <span class="keyword">...</span>
+0116                     <span class="string">'BootYModel'</span>, []                    <span class="keyword">...</span>
+0117                     );
+0118 
+0119 <span class="comment">% acceptable names</span>
+0120 optionNames = fieldnames(options);
+0121 
+0122 <span class="keyword">for</span> pair = reshape(varargin, 2, [])
+0123     inpName = pair{1};
+0124     
+0125     <span class="keyword">if</span> any(strcmp(inpName, optionNames))
+0126         
+0127         <span class="keyword">if</span> strcmpi(inpName, <span class="string">'estimationmethod'</span>)
+0128             <span class="keyword">if</span> any(strcmpi(pair{2}, {<span class="string">'bic'</span>,<span class="string">'context_empD'</span>, <span class="string">'context_cL'</span>}))
+0129                 options.(inpName) = pair{2};
+0130             <span class="keyword">else</span>
+0131                 error(<span class="string">'%s is not a recognized parameter value'</span>, pair{2})
+0132             <span class="keyword">end</span>
+0133         <span class="keyword">else</span>
+0134             options.(inpName) = pair{2};
+0135         <span class="keyword">end</span>
+0136         
+0137     <span class="keyword">else</span>
+0138         error(<span class="string">'%s is not a recognized parameter name'</span>, inpName);
+0139     <span class="keyword">end</span>
+0140 <span class="keyword">end</span>
+0141 
+0142 <span class="comment">% compute the Champion Trees</span>
+0143 [results.champions, results.Ps, results.fvalues, results.prmvalues] = <a href="estimate_championTrees2.html" class="code" title=" [Trees, Q, ML, cutoff] = estimate_championTrees2(X, Y, A, varargin)">estimate_championTrees2</a>(X, Y, A, <span class="keyword">...</span>
+0144                                                                 <span class="string">'MaxTreeHeight'</span>, options.MaxTreeHeight,             <span class="keyword">...</span>
+0145                                                                 <span class="string">'ParameterLowerBound'</span>, options.ParameterLowerBound, <span class="keyword">...</span>
+0146                                                                 <span class="string">'ParameterUpperBound'</span>, options.ParameterUpperBound, <span class="keyword">...</span>
+0147                                                                 <span class="string">'EstimationMethod'</span>, options.EstimationMethod,       <span class="keyword">...</span>
+0148                                                                 <span class="string">'Tolerance'</span>, options.Tolerance,                     <span class="keyword">...</span>
+0149                                                                 <span class="string">'BicDegreeOfFreedom'</span>, options.BicDegreeOfFreedom    <span class="keyword">...</span>
+0150                                                                 );
+0151 
+0152 <span class="keyword">switch</span> options.BootStrategy    
+0153     <span class="keyword">case</span> <span class="string">'blocks'</span>    
+0154         
+0155         <span class="comment">% define the length of the bootstrap samples</span>
+0156         smc = 1;
+0157         <span class="keyword">if</span> strcmpi(options.TuningMethod, <span class="string">'smc'</span>)
+0158             boot_samples_length = options.n2;
+0159         <span class="keyword">elseif</span> strcmpi(options.TuningMethod, <span class="string">'risk'</span>)
+0160             smc = 0;
+0161             boot_samples_length = lX+1;
+0162         <span class="keyword">else</span>
+0163             error(<span class="string">'%s is not a recognized tunning method'</span>, options.TuningMethod);
+0164         <span class="keyword">end</span>
+0165         
+0166         <span class="comment">% compute a renewal context of results.champions{1} on X</span>
+0167         [~, Nwa] = <a href="../../SeqROCTM/tools/countctx.html" class="code" title=" [count, Nwa] = countctx(contexts, X, A, idx_without_NaN, Y)">countctx</a>(results.champions{1}, X, A);
+0168         p = bsxfun(@rdivide, Nwa, sum(Nwa,2));
+0169         x_renw_point = <a href="../../SeqROCTM/tools/tree_renewalpoint.html" class="code" title=" [renwpoint, renewals] = tree_renewalpoint(contexts, P, A, X)">tree_renewalpoint</a>(results.champions{1}, p, A, X);
+0170         <span class="comment">% do the bootstrap based on paired-blocks</span>
+0171         [results.Xbootsamples, results.Ybootsamples] = <a href="../../SeqROCTM/tools/bootstrap_blocks2.html" class="code" title=" [BX, BY] = bootstrap_blocks2(X, Y, renewal_block, seq_length, nB)">bootstrap_blocks2</a>(X, Y, x_renw_point, boot_samples_length, options.BootNSamples);
+0172     
+0173     <span class="keyword">case</span> <span class="string">'parametric'</span>
+0174         
+0175         <span class="comment">% initialize the model used to generate the bootstrapped Y sequences</span>
+0176         <span class="keyword">if</span> isempty(options.BootYModel)
+0177             tau_y = results.champions{1};
+0178             q_y = results.Ps{1};
+0179         <span class="keyword">else</span>
+0180             tau_y = options.BootYModel{1};
+0181             q_y = options.BootYModel{2};
+0182         <span class="keyword">end</span>
+0183         ml = max(cellfun(@(x) length(x), tau_y));
+0184         
+0185         <span class="comment">%Define the length of the bootstrap samples</span>
+0186         smc = 1;
+0187         <span class="keyword">if</span> strcmpi(options.TuningMethod, <span class="string">'smc'</span>)
+0188             initial_Xboot_length = options.n2 + ml;
+0189             boot_samples_length = options.n2;
+0190         <span class="keyword">elseif</span> strcmpi(options.TuningMethod, <span class="string">'risk'</span>)
+0191             smc = 0;
+0192             initial_Xboot_length = lX+1 + ml;
+0193             boot_samples_length = lX+1;
+0194         <span class="keyword">else</span>
+0195             error(<span class="string">'%s is not a recognized tunning method'</span>, options.TuningMethod);
+0196         <span class="keyword">end</span>
+0197         
+0198         <span class="comment">% (1) Generate bootstrap samples for X (three options)</span>
+0199         <span class="keyword">switch</span> options.BootXStrategy
+0200             <span class="keyword">case</span> <span class="string">'blocks'</span>
+0201                 <span class="keyword">if</span> isempty(options.BootXRenewalPoint)
+0202                     error(<span class="string">'If you choose &quot;blocks&quot; as bootstrap strategy for the sequence X, you must specify a renewal point.'</span>);
+0203                 <span class="keyword">end</span>
+0204                 renewal_point = options.BootXRenewalPoint;
+0205                 tmp_Xbootsamples = <a href="../../SeqROCTM/tools/bootstrap_blocks.html" class="code" title=" B = bootstrap_blocks(X, renewal_block, seq_length, nB)">bootstrap_blocks</a>(X, renewal_point, initial_Xboot_length, options.BootNSamples);
+0206             <span class="keyword">case</span> <span class="string">'parametric'</span>
+0207                 <span class="keyword">if</span> isempty(options.BootXModel)
+0208                     error(<span class="string">'If you choose &quot;parametric&quot; as bootstrap strategy for the sequence X, you must specify a model.'</span>);
+0209                 <span class="keyword">end</span>
+0210                 tmp_Xbootsamples = <a href="../../SeqROCTM/data_manipulation/generatesampleCTM_fast.html" class="code" title=" B = generatesampleCTM_fast(contexts, P, A, lengthSeq, nsamples)">generatesampleCTM_fast</a>(options.BootXModel{1}, options.BootXModel{2}, A, initial_Xboot_length, options.BootNSamples);
+0211             <span class="keyword">case</span> <span class="string">'none'</span>
+0212                 <span class="keyword">if</span> smc
+0213                     <span class="keyword">if</span> options.n2 + ml &lt;= lX
+0214                         tmp_Xbootsamples = ones(options.BootNSamples,1) * X(:,1:options.n2+ml);
+0215                     <span class="keyword">else</span>
+0216                         error(<span class="string">'The value for &quot;n2&quot; must be lower than %s'</span>, num2str(lX - ml));
+0217                     <span class="keyword">end</span>
+0218                 <span class="keyword">else</span>
+0219                     error(<span class="string">'If TuningMethod is &quot;risk&quot; and BootStrategy is &quot;parametric&quot;, you must set BootXStrategy to &quot;parametric&quot;. Otherwise, use &quot;risk&quot; with BootStrategy equals &quot;blocks&quot;.'</span>);
+0220                 <span class="keyword">end</span>
+0221             <span class="keyword">otherwise</span>
+0222                 error(<span class="string">'%s is not a recognized bootstrap strategy for the sequence X'</span>, options.bootXStrategy);
+0223         <span class="keyword">end</span>
+0224         
+0225         <span class="comment">% Generate bootstrap samples for Y.</span>
+0226         <span class="comment">% A parametric bootstrap is used using the bootstrap samples for X</span>
+0227         <span class="comment">% and the model tau_y, q_y. This function changes the tmp_Xbootsamples.</span>
+0228 
+0229         results.Ybootsamples = zeros(options.BootNSamples, boot_samples_length);
+0230         results.Xbootsamples = zeros(options.BootNSamples, boot_samples_length);
+0231         
+0232         i = 1;
+0233         j = 1;
+0234         nsamples = options.BootNSamples;
+0235         <span class="keyword">while</span> i &lt;= nsamples
+0236             <span class="keyword">try</span>
+0237                 [results.Xbootsamples(j,:), results.Ybootsamples(j,:)] = <a href="../../SeqROCTM/data_manipulation/generatesampleYSeqROCTM.html" class="code" title=" [Xnew, Y, qemp] = generatesampleYSeqROCTM(X, contexts, q, A)">generatesampleYSeqROCTM</a>(tmp_Xbootsamples(i,:), tau_y, q_y, A);
+0238                 j = j + 1;
+0239             <span class="keyword">catch</span>
+0240                 disp([<span class="string">'Eliminating bootstrap sample '</span> num2str(i) <span class="string">' due to incompatibilities...'</span>]);
+0241                 options.BootNSamples = options.BootNSamples - 1;
+0242             <span class="keyword">end</span>
+0243             i = i + 1;
+0244         <span class="keyword">end</span>
+0245         results.Ybootsamples(j:<span class="keyword">end</span>,:) = [];
+0246         results.Xbootsamples(j:<span class="keyword">end</span>,:) = [];
+0247         
+0248     <span class="keyword">otherwise</span>
+0249         error(<span class="string">'%s is not a recognized bootstrap strategy for the sequence X'</span>, options.bootXStrategy);
+0250 <span class="keyword">end</span>
+0251 
+0252 <span class="comment">% tuning functions</span>
+0253 <span class="keyword">if</span> smc
+0254     <span class="comment">%choose the optimal model using smc</span>
+0255     [optTree, results.idxOptTree] = <a href="tuning_SMC2.html" class="code" title=" [opt_tree, idx] = tuning_SMC2(championTrees, A, n1, n2, alpha, Xbootsamples, Ybootsamples)">tuning_SMC2</a>(results.champions, A, options.n1, options.n2, options.Alpha, <span class="keyword">...</span>
+0256                                                     results.Xbootsamples, results.Ybootsamples);
+0257 <span class="keyword">else</span>
+0258     <span class="comment">%choose the optimal model using a risk function</span>
+0259     [results.idxOptTree, results.fvalues] = <a href="tuning_risk2.html" class="code" title=" [idx_opt_model, R] = tuning_risk2(param_set, Xbootsamples, Ybootsamples, A, options)">tuning_risk2</a>(results.prmvalues, results.Xbootsamples, results.Ybootsamples,<span class="keyword">...</span>
+0260                                                             A, options);
+0261     
+0262     optTree = results.champions{results.idxOptTree};
+0263 <span class="keyword">end</span>
+0264 optQ = results.Ps{results.idxOptTree};
+0265     
+0266 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

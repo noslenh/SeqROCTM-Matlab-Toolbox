@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of node</title>
+  <meta name="keywords" content="node">
+  <meta name="description" content="Class to model a node of a tree">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">vizualization</a> &gt; node.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\vizualization&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>node
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Class to model a node of a tree</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Class to model a node of a tree
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 02/2024</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="node.html" class="code" title="">node</a>	Class to model a node of a tree</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/model_selection/CTestimator.html" class="code" title=" [contexts, P] = CTestimator(X, A, max_height, statistic, threshold, varargin)">CTestimator</a>	Estimate a context tree from a sequence or from a SeqROCTM.</li><li><a href="../../SeqROCTM/model_selection/estimate_functionalSeqROCTM.html" class="code" title=" contexts = estimate_functionalSeqROCTM(X, Y, A, max_height, n_BM, alpha, beta)">estimate_functionalSeqROCTM</a>	Estimate a context tree from a SeqROCTM with functional data as elements of the response sequence.</li><li><a href="../../SeqROCTM/tools/distanceCT.html" class="code" title=" d = distanceCT(tree1, tree2, A)">distanceCT</a>	Compute a distance between context trees.</li><li><a href="../../SeqROCTM/tools/distance_balding.html" class="code" title=" d = distance_balding(tree1, tree2, all_nodes)">distance_balding</a>	Compute the distance of Balding between two context trees.</li><li><a href="../../SeqROCTM/tools/median_tree.html" class="code" title=" [leaves, mt_contexts] = median_tree(Trees)">median_tree</a>	Compute the median tree from a set of context trees.</li><li><a href="../../SeqROCTM/tools/mode_tree.html" class="code" title=" leaves = mode_tree(Trees, A)">mode_tree</a>	Computes the mode context tree of a set of context tree.</li><li><a href="../../SeqROCTM/tools/tree2nodes.html" class="code" title=" nodes = tree2nodes(tree)">tree2nodes</a>	Gives the set of nodes corresponding to a context tree.</li><li><a href="contexts_to_tree.html" class="code" title=" tree = contexts_to_tree(contexts, A)">contexts_to_tree</a>	Gives a tree class from the list contexts</li><li><a href="node.html" class="code" title="">node</a>	Class to model a node of a tree</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function obj = node(data, varargin)</a></li><li><a href="#_sub2" class="code">function insert_son(obj, n, index)</a></li><li><a href="#_sub3" class="code">function add_son(obj, n)</a></li><li><a href="#_sub4" class="code">function textstr = print(obj)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%Class to model a node of a tree</span>
+0002 <span class="comment">%</span>
+0003 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0004 <span class="comment">%Date   : 02/2024</span>
+0005 
+0006 classdef <a href="node.html" class="code" title="">node</a> &lt; handle
+0007     properties
+0008         data;
+0009         children;
+0010     <span class="keyword">end</span>
+0011     
+0012     methods
+0013         <span class="comment">%constructor</span>
+0014         <a name="_sub0" href="#_subfunctions" class="code">function obj = node(data, varargin)</a>
+0015             <span class="keyword">if</span> nargin &gt; 0
+0016                 obj.data = data;
+0017                 
+0018                 numvarargs = length(varargin);
+0019                 <span class="keyword">if</span> numvarargs == 1
+0020                     obj.children = varargin{1};
+0021                 <span class="keyword">else</span>
+0022                     obj.children = [];
+0023                 <span class="keyword">end</span> 
+0024             <span class="keyword">end</span>
+0025         <span class="keyword">end</span>
+0026         
+0027         <span class="comment">%insert a son at a given position</span>
+0028         <a name="_sub1" href="#_subfunctions" class="code">function insert_son(obj, n, index)</a>
+0029             nl = numel(obj.children);
+0030             new_children(nl+1) = <a href="node.html" class="code" title="">node</a>();
+0031             
+0032             <span class="keyword">for</span> ii = 1 : index-1
+0033                 new_children(ii) = obj.children(ii);
+0034             <span class="keyword">end</span>
+0035             new_children(index) = n;
+0036             
+0037             <span class="keyword">for</span> ii = index : nl
+0038                 new_children(ii+1) = obj.children(ii);
+0039             <span class="keyword">end</span>
+0040             obj.children = new_children;
+0041         <span class="keyword">end</span>
+0042         
+0043         <span class="comment">%add a son</span>
+0044         <a name="_sub2" href="#_subfunctions" class="code">function add_son(obj, n)</a>
+0045             obj.children = [obj.children, n];
+0046         <span class="keyword">end</span>
+0047         
+0048         <span class="comment">%print to console</span>
+0049         <a name="_sub3" href="#_subfunctions" class="code">function textstr = print(obj)</a>
+0050             nl = numel(obj.children);
+0051             whiteSpaces = repmat(<span class="string">' '</span>, 1, 2*length(obj.data));
+0052             <span class="keyword">if</span> nl==0
+0053                 textstr = [whiteSpaces, <span class="string">'--('</span>, obj.data, <span class="string">')'</span>, <span class="string">'-*'</span>, newline]; 
+0054             <span class="keyword">else</span>
+0055                 textstr = [whiteSpaces, <span class="string">'--('</span>, obj.data, <span class="string">')'</span>, newline];
+0056                 <span class="keyword">for</span> i = 1 : nl
+0057                     textstr = [textstr, obj.children(i).print];
+0058                 <span class="keyword">end</span>
+0059             <span class="keyword">end</span>     
+0060         <span class="keyword">end</span>
+0061             
+0062     <span class="keyword">end</span>
+0063 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

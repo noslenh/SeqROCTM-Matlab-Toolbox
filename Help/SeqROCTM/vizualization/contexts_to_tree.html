@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of contexts_to_tree</title>
+  <meta name="keywords" content="contexts_to_tree">
+  <meta name="description" content="Gives a tree class from the list contexts">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">vizualization</a> &gt; contexts_to_tree.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\vizualization&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>contexts_to_tree
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Gives a tree class from the list contexts</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> tree = contexts_to_tree(contexts, A) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">CONTEXTS_TO_TREE Gives a tree class from the list contexts
+
+ Inputs
+ 
+   contexts  : context tree
+   A         : alphabet
+
+ Outputs
+
+   tree      : tree class with the contexts as leaves
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 02/2020</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="node.html" class="code" title="">node</a>	Class to model a node of a tree</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="draw_contexttree.html" class="code" title=" draw_contexttree(contexts, A, varargin)">draw_contexttree</a>	Draws a context tree</li><li><a href="print_tree.html" class="code" title=" print_tree(tree, A)">print_tree</a>	Print a context tree in the console</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function tree = contexts_to_tree(contexts, A)</a>
+0002 <span class="comment">%CONTEXTS_TO_TREE Gives a tree class from the list contexts</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%   contexts  : context tree</span>
+0007 <span class="comment">%   A         : alphabet</span>
+0008 <span class="comment">%</span>
+0009 <span class="comment">% Outputs</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">%   tree      : tree class with the contexts as leaves</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0014 <span class="comment">%Date   : 02/2020</span>
+0015 
+0016 <span class="comment">%TO-DO: compute the total nodes given the contexts</span>
+0017 NODES = cell(100,1);
+0018 
+0019 <span class="comment">% create a node for each context</span>
+0020 max_level = 0;
+0021 
+0022 <span class="keyword">for</span> ii = 1 : length(contexts)
+0023     level = length(contexts{ii});
+0024     txt = mat2str(contexts{ii});
+0025     txt(regexp(txt,<span class="string">'[[ ]]'</span>))=[];    <span class="comment">%delete brackets and white spaces</span>
+0026     NODES{level} = [NODES{level}, <a href="node.html" class="code" title="">node</a>(txt)];
+0027     <span class="keyword">if</span> level &gt; max_level
+0028         max_level = level;
+0029     <span class="keyword">end</span>
+0030 <span class="keyword">end</span>
+0031 
+0032 <span class="keyword">for</span> ii = max_level : -1 : 1
+0033     <span class="comment">% looks for sibling, create parents and add it to the next level</span>
+0034     is_sibling = zeros(1, numel(NODES{ii}));
+0035     <span class="keyword">for</span> jj = 1 : numel(NODES{ii})
+0036         <span class="keyword">if</span> ~is_sibling(jj)
+0037             n1 = NODES{ii}(jj);
+0038             new_node = <a href="node.html" class="code" title="">node</a>(n1.data(2:end), n1);
+0039             idx_sibling = find(A == str2double(n1.data(1)));
+0040             <span class="keyword">for</span> kk = jj + 1 : numel(NODES{ii})
+0041                 <span class="keyword">if</span> ~is_sibling(kk)
+0042                     n2 = NODES{ii}(kk);
+0043                     <span class="keyword">if</span> strcmp(n1.data(2:end), n2.data(2:end))
+0044                         <span class="comment">%determine where to insert</span>
+0045                         ida = find(A == str2double(n2.data(1)));
+0046                         idx = find(idx_sibling &gt; ida, 1);
+0047                         <span class="keyword">if</span> ~isempty(idx)
+0048                             new_node.insert_son(n2, idx);
+0049                             idx_sibling = [idx_sibling(1:idx-1), ida, idx_sibling(idx:end)];
+0050                         <span class="keyword">else</span>
+0051                             new_node.add_son(n2);
+0052                             idx_sibling = [idx_sibling, ida];
+0053                         <span class="keyword">end</span>
+0054                         is_sibling(kk) = 1;
+0055                     <span class="keyword">end</span>
+0056                 <span class="keyword">end</span>
+0057             <span class="keyword">end</span>
+0058             <span class="keyword">if</span> ii &gt; 1
+0059                 NODES{ii-1} = [NODES{ii-1}, new_node];
+0060             <span class="keyword">end</span>
+0061         <span class="keyword">end</span>
+0062     <span class="keyword">end</span> 
+0063 <span class="keyword">end</span>
+0064 
+0065 <span class="keyword">if</span> max_level &gt; 0
+0066     tree = new_node;
+0067 <span class="keyword">else</span>
+0068     tree = <a href="node.html" class="code" title="">node</a>(<span class="string">'empty'</span>);
+0069 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>
