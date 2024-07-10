@@ -1,6 +1,0 @@
-/* Created by mdot for Matlab */
-digraph m2html {
-
-  stat_discrete [URL="stat_discrete.html"];
-  stat_ks_projective [URL="stat_ks_projective.html"];
-}
