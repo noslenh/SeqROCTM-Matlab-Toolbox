@@ -1,7 +1,7 @@
 %Class to model a node of a tree
 %
 %Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
-%Date   : 02/2021
+%Date   : 02/2024
 
 classdef node < handle
     properties
@@ -43,6 +43,20 @@ classdef node < handle
         %add a son
         function add_son(obj, n)
             obj.children = [obj.children, n];
+        end
+        
+        %print to console
+        function textstr = print(obj)
+            nl = numel(obj.children);
+            whiteSpaces = repmat(' ', 1, 2*length(obj.data));
+            if nl==0
+                textstr = [whiteSpaces, '--(', obj.data, ')', '-*', newline]; 
+            else
+                textstr = [whiteSpaces, '--(', obj.data, ')', newline];
+                for i = 1 : nl
+                    textstr = [textstr, obj.children(i).print];
+                end
+            end     
         end
             
     end

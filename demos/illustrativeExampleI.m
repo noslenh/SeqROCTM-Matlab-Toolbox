@@ -116,6 +116,6 @@ end
 [tau3, q3] = estimate_discreteSeqROCTM(X3, Y3, A, 'MaxTreeHeight', max_height, 'EstimationMethod', 'bic', 'ParameterValue', 0.08);
 
 % show the results in the console
-print_tree(tau1);
-print_tree(tau2);
-print_tree(tau3);
+print_tree(tau1, A);
+print_tree(tau2, A);
+print_tree(tau3, A);
