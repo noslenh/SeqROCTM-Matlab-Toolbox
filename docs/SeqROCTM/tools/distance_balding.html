@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of distance_balding</title>
+  <meta name="keywords" content="distance_balding">
+  <meta name="description" content="Compute the distance of Balding between two context trees.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">tools</a> &gt; distance_balding.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\tools&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>distance_balding
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Compute the distance of Balding between two context trees.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> d = distance_balding(tree1, tree2, all_nodes) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">DISTANCE Compute the distance of Balding between two context trees. 
+
+ Inputs
+
+    tree1         : first context tree
+    tree2         : second context tree
+    all_nodes     : nodes of the complete tree
+    all_weights : weights associated to the nodes of the complete tree
+
+ Outputs
+
+    d            : value of the distance
+
+ Reference:
+   Balding et. al. 
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr)
+Date   : 10/2020</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="tree2nodes.html" class="code" title=" nodes = tree2nodes(tree)">tree2nodes</a>	Gives the set of nodes corresponding to a context tree.</li><li><a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>	Class to model a node of a tree</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function w = get_weight(node, all_nodes, all_weights)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function d = distance_balding(tree1, tree2, all_nodes) </a>
+0002 <span class="comment">%DISTANCE Compute the distance of Balding between two context trees.</span>
+0003 <span class="comment">%</span>
+0004 <span class="comment">% Inputs</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">%    tree1         : first context tree</span>
+0007 <span class="comment">%    tree2         : second context tree</span>
+0008 <span class="comment">%    all_nodes     : nodes of the complete tree</span>
+0009 <span class="comment">%    all_weights : weights associated to the nodes of the complete tree</span>
+0010 <span class="comment">%</span>
+0011 <span class="comment">% Outputs</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%    d            : value of the distance</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">% Reference:</span>
+0016 <span class="comment">%   Balding et. al.</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr)</span>
+0019 <span class="comment">%Date   : 10/2020</span>
+0020 
+0021 <span class="comment">% compute the weights corresponding to the nodes of the complete tree</span>
+0022 n_nodes = length(all_nodes);
+0023 level_nodes = cellfun(@length, all_nodes);
+0024 max_level = max(level_nodes);
+0025 
+0026 amount_by_level = zeros(1, max_level);
+0027 <span class="keyword">for</span> n = 1 : n_nodes
+0028     amount_by_level(level_nodes(n)) = amount_by_level(level_nodes(n)) + 1;
+0029 <span class="keyword">end</span>
+0030 
+0031 normalization = sum(1 ./ 2.^(1:max_level));
+0032 all_weights = (1./(2.^level_nodes) .* 1./amount_by_level(level_nodes)) / normalization;
+0033 
+0034 <span class="comment">% initialize the distance value</span>
+0035 d = 0;
+0036 
+0037 <span class="comment">% context tree to nodes</span>
+0038 nodes1 = <a href="tree2nodes.html" class="code" title=" nodes = tree2nodes(tree)">tree2nodes</a>(tree1);
+0039 nodes2 = <a href="tree2nodes.html" class="code" title=" nodes = tree2nodes(tree)">tree2nodes</a>(tree2);
+0040 
+0041 <span class="comment">% number of nodes</span>
+0042 l_nodes1 = length(nodes1);
+0043 l_nodes2 = length(nodes2);
+0044 
+0045 <span class="comment">% variable to store the nodes that are in tree1 but not in tree2, and the nodes that are in tree2 and in tree1, respectively</span>
+0046 nodes_in_1_not_in_2 = [];
+0047 nodes_in_2_in_1 = [];
+0048 
+0049 <span class="comment">% find the nodes that are in tree1 and in tree2 and the nodes that are in tree1 and not in tree2</span>
+0050 <span class="keyword">for</span> n = 1 : l_nodes1
+0051     found = false;
+0052     count = 0;
+0053     <span class="keyword">while</span> ~found &amp;&amp; count &lt; l_nodes2
+0054         count = count + 1;
+0055         <span class="keyword">if</span> isequal(nodes1{n}, nodes2{count})
+0056             found = true;
+0057             nodes_in_2_in_1 = [nodes_in_2_in_1; count];
+0058         <span class="keyword">end</span>
+0059     <span class="keyword">end</span>
+0060     <span class="keyword">if</span> ~found 
+0061         nodes_in_1_not_in_2 = [nodes_in_1_not_in_2; n];
+0062     <span class="keyword">end</span>    
+0063 <span class="keyword">end</span>
+0064 
+0065 <span class="comment">% find the nodes that are in tree2 and not in tree1</span>
+0066 nodes_in_2_not_in_1 = setdiff(1:l_nodes2, nodes_in_2_in_1);
+0067 
+0068 <span class="comment">% add the weights corresponding to the nodes that are in tree1 and not in tree2</span>
+0069 <span class="keyword">for</span> j = 1 : length(nodes_in_1_not_in_2)
+0070     idx = nodes_in_1_not_in_2(j);
+0071     d = d + <a href="#_sub1" class="code" title="subfunction w = get_weight(node, all_nodes, all_weights)">get_weight</a>(nodes1{idx}, all_nodes, all_weights);
+0072 <span class="keyword">end</span>
+0073 
+0074 <span class="comment">% add the weights corresponding</span>
+0075 <span class="keyword">for</span> j = 1 : length(nodes_in_2_not_in_1)
+0076     idx = nodes_in_2_not_in_1(j);
+0077     d = d + <a href="#_sub1" class="code" title="subfunction w = get_weight(node, all_nodes, all_weights)">get_weight</a>(nodes2{idx}, all_nodes, all_weights);
+0078 <span class="keyword">end</span>
+0079 <span class="keyword">end</span>
+0080 
+0081 <a name="_sub1" href="#_subfunctions" class="code">function w = get_weight(node, all_nodes, all_weights)</a>
+0082 
+0083     found = false;
+0084     count = 0;
+0085     <span class="keyword">while</span> ~found
+0086         count = count + 1;
+0087         <span class="keyword">if</span> isequal(<a href="../../SeqROCTM/vizualization/node.html" class="code" title="">node</a>, all_nodes{count})
+0088             found = true;
+0089         <span class="keyword">end</span>
+0090     <span class="keyword">end</span>
+0091     w = all_weights(count);
+0092 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,353 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of DrawTree</title>
+  <meta name="keywords" content="DrawTree">
+  <meta name="description" content="Class to model a tree">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">vizualization</a> &gt; DrawTree.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\vizualization&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>DrawTree
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Class to model a tree</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">Class to model a tree
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 02/2021</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="DrawTree.html" class="code" title="">DrawTree</a>	Class to model a tree</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="DrawTree.html" class="code" title="">DrawTree</a>	Class to model a tree</li><li><a href="draw_contexttree.html" class="code" title=" draw_contexttree(contexts, A, varargin)">draw_contexttree</a>	Draws a context tree</li></ul>
+<!-- crossreference -->
+
+<h2><a name="_subfunctions"></a>SUBFUNCTIONS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="#_sub1" class="code">function obj = DrawTree(tree, varargin)</a></li><li><a href="#_sub2" class="code">function l = left(obj)</a></li><li><a href="#_sub3" class="code">function l = right(obj)</a></li><li><a href="#_sub4" class="code">function n = left_brother(obj)</a></li><li><a href="#_sub5" class="code">function n = get_lmostsibling(obj)</a></li><li><a href="#_sub6" class="code">function dt = buchheim(dt)</a></li><li><a href="#_sub7" class="code">function third_walk(dt, m)</a></li><li><a href="#_sub8" class="code">function firstwalk(v, varargin)</a></li><li><a href="#_sub9" class="code">function default_ancestor = apportion(v, default_ancestor, distance)</a></li><li><a href="#_sub10" class="code">function move_subtree(wl, wr, shift)</a></li><li><a href="#_sub11" class="code">function execute_shifts(v)</a></li><li><a href="#_sub12" class="code">function an = ancestor(vil, v, default_ancestor)</a></li><li><a href="#_sub13" class="code">function [min, max, h] = second_walk(v, varargin)</a></li><li><a href="#_sub14" class="code">function do_plot(obj)</a></li><li><a href="#_sub15" class="code">function do_graphic(obj, varargin)</a></li></ul>
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%Class to model a tree</span>
+0002 <span class="comment">%</span>
+0003 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0004 <span class="comment">%Date   : 02/2021</span>
+0005 
+0006 classdef <a href="DrawTree.html" class="code" title="">DrawTree</a> &lt; handle
+0007     properties
+0008         x;
+0009         y;
+0010         tree;
+0011         children;
+0012         parent;
+0013         thread;
+0014         offset;
+0015         pancestor;
+0016         change; shift;
+0017         lmost_sibling;
+0018         number;
+0019         mod;
+0020         
+0021         max_x;
+0022         height;
+0023     <span class="keyword">end</span>
+0024     
+0025     methods
+0026         <span class="comment">%constructor</span>
+0027         <a name="_sub0" href="#_subfunctions" class="code">function obj = DrawTree(tree, varargin)</a>
+0028             
+0029             <span class="comment">% only want 3 optional inputs at most</span>
+0030             numvarargs = length(varargin);
+0031             <span class="keyword">if</span> numvarargs &gt; 3
+0032                 error(<span class="string">'DrawTree:TooManyInputs'</span>, <span class="keyword">...</span>
+0033                     <span class="string">'requires at most 3 optional inputs'</span>);
+0034             <span class="keyword">end</span>
+0035             
+0036             <span class="comment">% set defaults for optional inputs (parent, depth, number)</span>
+0037             optargs = {[], 0, 1};
+0038             optargs(1:numvarargs) = varargin;
+0039             <span class="comment">% Place optional args in memorable variable names</span>
+0040             [obj.parent, depth, obj.number] = optargs{:};
+0041             
+0042             obj.x = -1;
+0043             obj.y = depth;
+0044             obj.tree = tree;
+0045             <span class="keyword">for</span> i = 1 : numel(tree.children)
+0046                 obj.children = [obj.children, <span class="keyword">...</span>
+0047                     <a href="DrawTree.html" class="code" title="">DrawTree</a>(tree.children(i), obj, depth + 0.5, i)]; <span class="comment">% this 0.5 can change</span>
+0048             <span class="keyword">end</span>
+0049             
+0050             obj.thread = [];
+0051             obj.offset = 0;
+0052             obj.pancestor = obj;
+0053             obj.lmost_sibling = [];
+0054             obj.change = 0;
+0055             obj.shift = 0;
+0056             obj.mod = 0;
+0057         <span class="keyword">end</span>
+0058         
+0059         <a name="_sub1" href="#_subfunctions" class="code">function l = left(obj)</a>
+0060             <span class="keyword">if</span> numel(obj.children) &gt; 0
+0061                 l = obj.children(1);
+0062             <span class="keyword">else</span>
+0063                l = obj.thread;
+0064             <span class="keyword">end</span>
+0065         <span class="keyword">end</span>
+0066         
+0067         <a name="_sub2" href="#_subfunctions" class="code">function l = right(obj)</a>
+0068             nc = numel(obj.children);
+0069             <span class="keyword">if</span> nc &gt; 0
+0070                 l = obj.children(nc);
+0071             <span class="keyword">else</span>
+0072                l = obj.thread;
+0073             <span class="keyword">end</span>
+0074         <span class="keyword">end</span>
+0075         
+0076         
+0077         <a name="_sub3" href="#_subfunctions" class="code">function n = left_brother(obj)</a>
+0078             n = [];
+0079             <span class="keyword">if</span> ~isempty(obj.parent)
+0080                 <span class="keyword">for</span> ch = obj.parent.children
+0081                     <span class="keyword">if</span> ch == obj
+0082                         <span class="keyword">return</span>;
+0083                     <span class="keyword">else</span>
+0084                         n = ch;
+0085                     <span class="keyword">end</span>
+0086                 <span class="keyword">end</span>
+0087             <span class="keyword">end</span>
+0088         <span class="keyword">end</span>
+0089         
+0090         <a name="_sub4" href="#_subfunctions" class="code">function n = get_lmostsibling(obj)</a>
+0091             <span class="keyword">if</span> isempty(obj.lmost_sibling)&amp;&amp;(~isempty(obj.parent))&amp;&amp;(~isequal(obj,obj.parent.children(1)))
+0092                 obj.lmost_sibling = obj.parent.children(1);
+0093             <span class="keyword">end</span>
+0094             n = obj.lmost_sibling;
+0095         <span class="keyword">end</span>
+0096         
+0097         <a name="_sub5" href="#_subfunctions" class="code">function dt = buchheim(dt)</a>
+0098             <a href="#_sub8" class="code" title="subfunction firstwalk(v, varargin)">firstwalk</a>(dt);
+0099             [min, max, h] = <a href="#_sub13" class="code" title="subfunction [min, max, h] = second_walk(v, varargin)">second_walk</a>(dt);
+0100             <span class="keyword">if</span> min &lt; 0 
+0101                 <a href="#_sub7" class="code" title="subfunction third_walk(dt, m)">third_walk</a>(dt, -min);
+0102             <span class="keyword">end</span>
+0103             dt.max_x = max;
+0104             dt.height = h;
+0105         <span class="keyword">end</span>
+0106         
+0107         <a name="_sub6" href="#_subfunctions" class="code">function third_walk(dt, m)</a>
+0108             dt.x = dt.x + m;
+0109             <span class="keyword">for</span> c = dt.children
+0110                 <a href="#_sub7" class="code" title="subfunction third_walk(dt, m)">third_walk</a>(c, m);
+0111             <span class="keyword">end</span>
+0112         <span class="keyword">end</span>
+0113         
+0114         <a name="_sub7" href="#_subfunctions" class="code">function firstwalk(v, varargin)</a>
+0115             <span class="comment">% only want 1 optional inputs at most (distance)</span>
+0116             numvarargs = length(varargin);
+0117             <span class="keyword">if</span> numvarargs &gt; 1
+0118                 error(<span class="string">'DrawTree:firstwalk:TooManyInputs'</span>, <span class="keyword">...</span>
+0119                     <span class="string">'requires at most 1 optional inputs'</span>);
+0120             <span class="keyword">end</span>
+0121             <span class="comment">% set defaults for optional inputs (distance)</span>
+0122             optargs = {1.2};
+0123             optargs(1:numvarargs) = varargin;
+0124             <span class="comment">% Place optional args in memorable variable names</span>
+0125             distance = optargs{1};
+0126             
+0127             <span class="keyword">if</span> isempty(v.children)
+0128                 <span class="keyword">if</span> ~isempty(v.get_lmostsibling)
+0129                     v.x = v.left_brother().x + distance;
+0130                 <span class="keyword">else</span>
+0131                     v.x = 0;
+0132                 <span class="keyword">end</span>
+0133             <span class="keyword">else</span>
+0134                 default_ancestor = v.children(1);
+0135                 <span class="keyword">for</span> w = v.children
+0136                     <a href="#_sub8" class="code" title="subfunction firstwalk(v, varargin)">firstwalk</a>(w);
+0137                     default_ancestor = <a href="#_sub9" class="code" title="subfunction default_ancestor = apportion(v, default_ancestor, distance)">apportion</a>(w, default_ancestor, distance);
+0138                 <span class="keyword">end</span>
+0139                 <a href="#_sub11" class="code" title="subfunction execute_shifts(v)">execute_shifts</a>(v);
+0140                 
+0141                 midpoint = (v.children(1).x + v.children(numel(v.children)).x) / 2;
+0142 
+0143                 ell = v.children(1);
+0144                 arr = v.children(numel(v.children));
+0145                 w = v.left_brother();
+0146                 <span class="keyword">if</span> ~isempty(w)
+0147                     v.x = w.x + distance;
+0148                     v.mod = v.x - midpoint;
+0149                 <span class="keyword">else</span>
+0150                     v.x = midpoint;
+0151                 <span class="keyword">end</span>
+0152             <span class="keyword">end</span>
+0153         <span class="keyword">end</span>
+0154         
+0155         <a name="_sub8" href="#_subfunctions" class="code">function default_ancestor = apportion(v, default_ancestor, distance)</a>
+0156             w = v.left_brother();
+0157             <span class="keyword">if</span> ~isempty(w) 
+0158                 <span class="comment">% in buchheim notation</span>
+0159                 <span class="comment">% i == inner; o == outer; r == right; l == left;</span>
+0160                 vir = v; vor = v;
+0161                 vil = w;
+0162                 vol = v.get_lmostsibling();
+0163                 sir = v.mod; sor = v.mod;
+0164                 sil = vil.mod;
+0165                 sol = vol.mod;
+0166                 <span class="keyword">while</span> ~isempty(vil.right())&amp;&amp;(~isempty(vir.left()))
+0167                     vil = vil.right();
+0168                     vir = vir.left();
+0169                     vol = vol.left();
+0170                     vor = vor.right();
+0171                     vor.pancestor = v;
+0172                     shift1 = (vil.x + sil) - (vir.x + sir) + distance;
+0173                     <span class="keyword">if</span> shift1 &gt; 0
+0174                         a = <a href="#_sub12" class="code" title="subfunction an = ancestor(vil, v, default_ancestor)">ancestor</a>(vil, v, default_ancestor);
+0175                         <a href="#_sub10" class="code" title="subfunction move_subtree(wl, wr, shift)">move_subtree</a>(a, v, shift1);
+0176                         sir = sir + shift1;
+0177                         sor = sor + shift1;
+0178                     <span class="keyword">end</span>
+0179                     sil = sil + vil.mod;
+0180                     sir = sir + vir.mod;
+0181                     sol = sol + vol.mod;
+0182                     sor = sor + vor.mod;
+0183                 <span class="keyword">end</span>
+0184                 <span class="keyword">if</span> ~isempty(vil.right()) &amp;&amp; isempty(vor.right())
+0185                     vor.thread = vil.right();
+0186                     vor.mod = vor.mod + sil - sor;
+0187                 <span class="keyword">else</span>
+0188                     <span class="keyword">if</span> ~isempty(vir.left()) &amp;&amp; isempty(vol.left())
+0189                         vol.thread = vir.left();
+0190                         vol.mod = vol.mod + sir - sol;
+0191                     <span class="keyword">end</span>
+0192                     default_ancestor = v;
+0193                 <span class="keyword">end</span>
+0194             <span class="keyword">end</span>
+0195         <span class="keyword">end</span>
+0196         
+0197         <a name="_sub9" href="#_subfunctions" class="code">function move_subtree(wl, wr, shift)</a>
+0198             subtrees = wr.number - wl.number;
+0199             wr.change = wr.change - shift / subtrees;
+0200             wr.shift = wr.shift + shift;
+0201             wl.change = wl.change + shift / subtrees;
+0202             wr.x = wr.x + shift;
+0203             wr.mod = wr.mod + shift;
+0204         <span class="keyword">end</span>
+0205         
+0206         <a name="_sub10" href="#_subfunctions" class="code">function execute_shifts(v)</a>
+0207             shift1 = 0; change1 = 0;
+0208             nc = numel(v.children);
+0209             <span class="keyword">for</span> ii = nc:-1:1
+0210                 w = v.children(ii);
+0211                 w.x = w.x + shift1;
+0212                 w.mod = w.mod + shift1;
+0213                 change1 = change1 + w.change;
+0214                 shift1 = w.shift + change1;
+0215             <span class="keyword">end</span>
+0216         <span class="keyword">end</span>
+0217         
+0218         <a name="_sub11" href="#_subfunctions" class="code">function an = ancestor(vil, v, default_ancestor)</a>
+0219             found = false;
+0220             ii = 1;
+0221             <span class="keyword">while</span> ~found &amp;&amp; (ii &lt;= numel(v.parent.children))  
+0222                 found = (v.parent.children(ii) == vil.pancestor);
+0223                 ii = ii+1;
+0224             <span class="keyword">end</span>
+0225             <span class="keyword">if</span> found
+0226                 an = vil.pancestor;
+0227             <span class="keyword">else</span>
+0228                 an = default_ancestor;
+0229             <span class="keyword">end</span>
+0230         <span class="keyword">end</span>
+0231 
+0232         <a name="_sub12" href="#_subfunctions" class="code">function [min, max, h] = second_walk(v, varargin) </a>
+0233             
+0234             numvarargs = length(varargin);
+0235             <span class="keyword">if</span> numvarargs &gt; 5
+0236                 error(<span class="string">'DrawTree:secondwalk:TooManyInputs'</span>, <span class="keyword">...</span>
+0237                     <span class="string">'requires at most 3 optional inputs'</span>);
+0238             <span class="keyword">end</span>
+0239             <span class="comment">% set defaults for optional inputs (m, depth)</span>
+0240             optargs = {0, 0, [], [], []};
+0241             optargs(1:numvarargs) = varargin;
+0242             <span class="comment">% Place optional args in memorable variable names</span>
+0243             [m, depth, min, max, h] = optargs{:};
+0244 
+0245             v.x = v.x + m;
+0246             v.y = depth;
+0247             
+0248             <span class="keyword">if</span> isempty(min) || v.x &lt; min
+0249                 min = v.x;
+0250             <span class="keyword">end</span>
+0251             
+0252             <span class="comment">% to known the grater x-coord and the height</span>
+0253             <span class="keyword">if</span> isempty(max) || v.x &gt; max
+0254                 max = v.x;
+0255             <span class="keyword">end</span>
+0256             
+0257             <span class="keyword">if</span> isempty(h) || v.y &gt; h
+0258                 h = v.y;
+0259             <span class="keyword">end</span>
+0260             <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0261 
+0262             <span class="keyword">for</span> w = v.children
+0263                 [min, max, h] = <a href="#_sub13" class="code" title="subfunction [min, max, h] = second_walk(v, varargin)">second_walk</a>(w, m + v.mod, depth+0.5, min, max, h);
+0264             <span class="keyword">end</span>
+0265         <span class="keyword">end</span>
+0266         
+0267         <a name="_sub13" href="#_subfunctions" class="code">function do_plot(obj)</a>
+0268             <span class="keyword">for</span> c = obj.children
+0269                 plot([obj.x, c.x], [-obj.y, -c.y]);
+0270                 <a href="#_sub14" class="code" title="subfunction do_plot(obj)">do_plot</a>(c);
+0271             <span class="keyword">end</span>
+0272             <span class="keyword">if</span> isempty(obj.children)
+0273                 txt = mat2str(obj.tree.data);
+0274                 th = text(obj.x, -obj.y, txt(2:end-1)); 
+0275                 pp = get(th,<span class="string">'Extent'</span>);
+0276                 set(th,<span class="string">'position'</span>,[pp(1)-pp(3)/2, pp(2), 0]);
+0277             <span class="keyword">end</span>
+0278         <span class="keyword">end</span>
+0279         
+0280         <a name="_sub14" href="#_subfunctions" class="code">function do_graphic(obj, varargin)</a>
+0281             hold on;
+0282 
+0283             <span class="keyword">switch</span> length(varargin)
+0284                 <span class="keyword">case</span> 0  <span class="comment">%default</span>
+0285                     ylim([-obj.height - 0.3 0.3]);
+0286                     axis off;
+0287                     set(gca,<span class="string">'colororder'</span>,[1 0 0]);
+0288                 <span class="keyword">case</span> 1  <span class="comment">% set the specified color</span>
+0289                     ylim([-obj.height - 0.3 0.3]);
+0290                     axis off;
+0291                     set(gca,<span class="string">'colororder'</span>,varargin{1});
+0292                 <span class="keyword">case</span> 2 <span class="comment">% set the specified color and height</span>
+0293                     ylim([-varargin{2}*0.5-0.3 0.3]);
+0294                     axis off;
+0295                     set(gca,<span class="string">'colororder'</span>,varargin{1});
+0296             <span class="keyword">end</span>
+0297             <a href="#_sub14" class="code" title="subfunction do_plot(obj)">do_plot</a>(obj);
+0298         <span class="keyword">end</span>
+0299         
+0300     <span class="keyword">end</span>  
+0301 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of illustrativeExampleII</title>
+  <meta name="keywords" content="illustrativeExampleII">
+  <meta name="description" content="This scipt presents an example on how to use SeqROCTM when the objects in the response sequence are functional data.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">demos</a> &gt; illustrativeExampleII.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\demos&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>illustrativeExampleII
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This scipt presents an example on how to use SeqROCTM when the objects in the response sequence are functional data.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>This is a script file. </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">This scipt presents an example on how to use SeqROCTM when the objects in the response sequence are functional data.</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/data_manipulation/generatesampleCTM.html" class="code" title=" [seq, sP] = generatesampleCTM(contexts, P, A, lengthSeq, initStrategy)">generatesampleCTM</a>	Generates a sample of context tree model.</li><li><a href="../../SeqROCTM/model_selection/estimate_functionalSeqROCTM.html" class="code" title=" contexts = estimate_functionalSeqROCTM(X, Y, A, max_height, n_BM, alpha, beta)">estimate_functionalSeqROCTM</a>	Estimate a context tree from a SeqROCTM with functional data as elements of the response sequence.</li><li><a href="../../SeqROCTM/vizualization/draw_contexttree.html" class="code" title=" draw_contexttree(contexts, A, varargin)">draw_contexttree</a>	Draws a context tree</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <span class="comment">%This scipt presents an example on how to use SeqROCTM when the objects in the response sequence are functional data.</span>
+0002 
+0003 <span class="comment">% number of volunteers</span>
+0004 n_volunteers = 3;
+0005 
+0006 <span class="comment">% alphabet and context tree model used to generate the sequence of stimuli</span>
+0007 A = [0,1,2];
+0008 tau = {[0,0], [1,0], [2,0], [0,1], [1 1], [2,1], 2};
+0009 p = [0, 0, 1 ; 0, 0, 1; 0.2, 0.8, 0; 0, 0, 1; 0, 0, 1; 0.2, 0.8, 0; 0.2, 0.8, 0];
+0010 
+0011 <span class="comment">% length of the sequences of stimuli</span>
+0012 seq_length = 700;
+0013 
+0014 <span class="comment">% Sequences of stimuli</span>
+0015 <span class="comment">% matrix X of 3x700 containing on each row a sequence of stimuli</span>
+0016 Xdata = zeros(3,700);
+0017 <span class="keyword">for</span> v = 1 : n_volunteers
+0018     Xdata(v,:) = <a href="../../SeqROCTM/data_manipulation/generatesampleCTM.html" class="code" title=" [seq, sP] = generatesampleCTM(contexts, P, A, lengthSeq, initStrategy)">generatesampleCTM</a>(tau, p, A, seq_length);
+0019 <span class="keyword">end</span>
+0020 
+0021 <span class="comment">% load sequence of stimuli and EEG data for each volunteer</span>
+0022 names_volunteer = {<span class="string">'V02'</span>, <span class="string">'V09'</span>, <span class="string">'V19'</span>};
+0023 
+0024 X = [];
+0025 Y = cell(1,3);
+0026 
+0027 <span class="keyword">for</span> v = 1 : n_volunteers
+0028     
+0029     <span class="comment">% load stimuli data</span>
+0030     vname_i = [names_volunteer{v} <span class="string">'_stimuli'</span>];
+0031     x = load(vname_i);
+0032     x = x.(vname_i);
+0033     X = [X; x];
+0034 
+0035     <span class="comment">% load response data</span>
+0036     vname_r = [names_volunteer{v} <span class="string">'_response'</span>];
+0037     y = load(vname_r);
+0038     y = y.(vname_r);
+0039     Y{v} = y;
+0040 <span class="keyword">end</span>
+0041 
+0042 <span class="comment">% visualize some symbols of the stimuli sequence and its corresponding EEG</span>
+0043 <span class="comment">% chunks for volunteer V02</span>
+0044 figure;
+0045 id_cols = 760:768;
+0046 <span class="keyword">for</span> i = 1 : 9
+0047     <span class="comment">% plot the stimuli</span>
+0048     ax = subplot(2, 9, i);
+0049     text(0.5, 0.5, num2str(X(1, id_cols(i))), <span class="string">'FontSize'</span>, 20);
+0050     set( ax, <span class="string">'visible'</span>, <span class="string">'off'</span>)
+0051     
+0052     <span class="comment">% plot the EEG chunk</span>
+0053     ax = subplot(2, 9, 9+i);
+0054     plot(Y{1}(:, id_cols(i)));
+0055     set( ax, <span class="string">'visible'</span>, <span class="string">'off'</span>)
+0056     xlim([0 115])
+0057 <span class="keyword">end</span>
+0058 
+0059 <span class="comment">% model selection algorithm on the data of each volunteer</span>
+0060 nBM = 1000;
+0061 alpha = 0.05;
+0062 beta = 0.05;
+0063 
+0064 rng(1); tree_v02 = <a href="../../SeqROCTM/model_selection/estimate_functionalSeqROCTM.html" class="code" title=" contexts = estimate_functionalSeqROCTM(X, Y, A, max_height, n_BM, alpha, beta)">estimate_functionalSeqROCTM</a>(X(1,:), Y{1}, A, 3, nBM, alpha, beta);
+0065 rng(1); tree_v09 = <a href="../../SeqROCTM/model_selection/estimate_functionalSeqROCTM.html" class="code" title=" contexts = estimate_functionalSeqROCTM(X, Y, A, max_height, n_BM, alpha, beta)">estimate_functionalSeqROCTM</a>(X(2,:), Y{2}, A, 3, nBM, alpha, beta);
+0066 rng(1); tree_v19 = <a href="../../SeqROCTM/model_selection/estimate_functionalSeqROCTM.html" class="code" title=" contexts = estimate_functionalSeqROCTM(X, Y, A, max_height, n_BM, alpha, beta)">estimate_functionalSeqROCTM</a>(X(3,:), Y{3}, A, 3, nBM, alpha, beta);
+0067 
+0068 <span class="comment">% draw the results</span>
+0069 figure
+0070 subplot(1,3,1)
+0071 <a href="../../SeqROCTM/vizualization/draw_contexttree.html" class="code" title=" draw_contexttree(contexts, A, varargin)">draw_contexttree</a>(tree_v02, A, [1 0 0], 3);
+0072 subplot(1,3,2)
+0073 <a href="../../SeqROCTM/vizualization/draw_contexttree.html" class="code" title=" draw_contexttree(contexts, A, varargin)">draw_contexttree</a>(tree_v09, A, [0 1 0], 3);
+0074 subplot(1,3,3)
+0075 <a href="../../SeqROCTM/vizualization/draw_contexttree.html" class="code" title=" draw_contexttree(contexts, A, varargin)">draw_contexttree</a>(tree_v19, A, [0 0 1], 3);
+0076</pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

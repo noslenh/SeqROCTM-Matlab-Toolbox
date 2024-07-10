@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of estimate_championTrees2</title>
+  <meta name="keywords" content="estimate_championTrees2">
+  <meta name="description" content="Compute the Champion Trees.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">model_selection</a> &gt; estimate_championTrees2.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\model_selection&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>estimate_championTrees2
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Compute the Champion Trees.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> [Trees, Q, ML, cutoff] = estimate_championTrees2(X, Y, A, varargin) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">ESTIMATE_CHAMPIONTREES Compute the Champion Trees.
+   [TREE, P] = ESTIMATE_CHAMPIONTREES(X, A) compute the champion trees
+   using the SeqROCTM (X,Y) taking values in the alphabet A. The champion
+   trees are returned in the cell array TREE and the corresponding family
+   of distributions in the cell array Q.
+
+   [TREE, Q, ML, CUTOFF] = ESTIMATE_CHAMPIONTREES(...) returns in the
+   vector ML the likelihood of each champion tree and in vector CUTOFF the
+   value of the hyperparameter with which it was obtained each champion
+   tree.
+
+   [...] = ESTIMATE_CHAMPIONTREES(X,A,'PARAM1',val1,'PARAM2',val2,...)
+   specifies one or more of the following name/value pairs:
+
+       Parameter                Value
+       'EstimationMethod'       'bic' to estimate the context tree models
+                                using the Bayesian Information Criteria or
+                                'context_cL' to estimate the context tree
+                                models using the Context Algorithm based
+                                on comparison of likelihoods.
+                                'context_empD' to estimate the context tree
+                                models using the Context Algorithm based
+                                on comparison of distributions.
+                                Default is 'bic'.
+       'MaxTreeHeight'          Maximum height of the context tree.
+                                Default is log(length(X)).
+       'ParameterLowerBound'    Minimum value of the parameter to be
+                                tuned. Default is 0.
+       'ParameterUpperBound'    Maximum value of the parameter to be
+                                tuned. Default is 100.
+       'Tolerance'              Minimum distance between parameter values.
+                                Default value is 10^-5.
+       'BicDegreeOfFreedom'     Degree of freedom used during the
+                                penalization in the BIC algorithm. 'fix'
+                                =&gt; (|A|-1), 'variable' =&gt; \sum_{a \in A}
+                                1{Q(a|w)~=0}. Default value is 'fix'.
+
+   References:
+      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)
+      [2] N. Hernández et al., arXiv:2009.06371, (2021).     
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 01/2021</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="bic_WCT.html" class="code" title=" [tree, P, V, results] = bic_WCT(X, A, max_height, c, df, missing, varargin)">bic_WCT</a>	Estimate a context tree model from a sequence using the BIC criterion.</li><li><a href="estimate_discreteSeqROCTM.html" class="code" title=" [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, varargin)">estimate_discreteSeqROCTM</a>	Model selection for a SeqROCTM.</li><li><a href="getTESTstructure.html" class="code" title=" TEST = getTESTstructure(T, I, la, Y)">getTESTstructure</a>	Gives an structure to be used in the function CTestimator. This function is used only to speed-up other functions.</li><li><a href="../../SeqROCTM/tools/completetree.html" class="code" title=" [T, I, nT] = completetree(X, max_height, A)">completetree</a>	 Compute the complete tree.</li><li><a href="../../SeqROCTM/tools/isequalCT.html" class="code" title=" match = isequalCT(tree1, tree2)">isequalCT</a>	Determine if two context trees are equal.</li><li><a href="../../SeqROCTM/tools/treeloglikelihood2.html" class="code" title=" logL = treeloglikelihood2(X, Y, tree, alphabet)">treeloglikelihood2</a>	 Compute the likelihood of a context tree for the SeqROCTM (X,Y).</li></ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="tune_SeqROCTM.html" class="code" title=" [optTree, optQ, results] = tune_SeqROCTM(X, Y, A, varargin)">tune_SeqROCTM</a>	Tune a SeqROCTM estimation algorithm.</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function [Trees, Q, ML, cutoff] = estimate_championTrees2(X, Y, A, varargin)</a>
+0002 <span class="comment">%ESTIMATE_CHAMPIONTREES Compute the Champion Trees.</span>
+0003 <span class="comment">%   [TREE, P] = ESTIMATE_CHAMPIONTREES(X, A) compute the champion trees</span>
+0004 <span class="comment">%   using the SeqROCTM (X,Y) taking values in the alphabet A. The champion</span>
+0005 <span class="comment">%   trees are returned in the cell array TREE and the corresponding family</span>
+0006 <span class="comment">%   of distributions in the cell array Q.</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%   [TREE, Q, ML, CUTOFF] = ESTIMATE_CHAMPIONTREES(...) returns in the</span>
+0009 <span class="comment">%   vector ML the likelihood of each champion tree and in vector CUTOFF the</span>
+0010 <span class="comment">%   value of the hyperparameter with which it was obtained each champion</span>
+0011 <span class="comment">%   tree.</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">%   [...] = ESTIMATE_CHAMPIONTREES(X,A,'PARAM1',val1,'PARAM2',val2,...)</span>
+0014 <span class="comment">%   specifies one or more of the following name/value pairs:</span>
+0015 <span class="comment">%</span>
+0016 <span class="comment">%       Parameter                Value</span>
+0017 <span class="comment">%       'EstimationMethod'       'bic' to estimate the context tree models</span>
+0018 <span class="comment">%                                using the Bayesian Information Criteria or</span>
+0019 <span class="comment">%                                'context_cL' to estimate the context tree</span>
+0020 <span class="comment">%                                models using the Context Algorithm based</span>
+0021 <span class="comment">%                                on comparison of likelihoods.</span>
+0022 <span class="comment">%                                'context_empD' to estimate the context tree</span>
+0023 <span class="comment">%                                models using the Context Algorithm based</span>
+0024 <span class="comment">%                                on comparison of distributions.</span>
+0025 <span class="comment">%                                Default is 'bic'.</span>
+0026 <span class="comment">%       'MaxTreeHeight'          Maximum height of the context tree.</span>
+0027 <span class="comment">%                                Default is log(length(X)).</span>
+0028 <span class="comment">%       'ParameterLowerBound'    Minimum value of the parameter to be</span>
+0029 <span class="comment">%                                tuned. Default is 0.</span>
+0030 <span class="comment">%       'ParameterUpperBound'    Maximum value of the parameter to be</span>
+0031 <span class="comment">%                                tuned. Default is 100.</span>
+0032 <span class="comment">%       'Tolerance'              Minimum distance between parameter values.</span>
+0033 <span class="comment">%                                Default value is 10^-5.</span>
+0034 <span class="comment">%       'BicDegreeOfFreedom'     Degree of freedom used during the</span>
+0035 <span class="comment">%                                penalization in the BIC algorithm. 'fix'</span>
+0036 <span class="comment">%                                =&gt; (|A|-1), 'variable' =&gt; \sum_{a \in A}</span>
+0037 <span class="comment">%                                1{Q(a|w)~=0}. Default value is 'fix'.</span>
+0038 <span class="comment">%</span>
+0039 <span class="comment">%   References:</span>
+0040 <span class="comment">%      [1] A. Galves et al., Ann. Appl. Stat., 6, 1, 186-209 (2012)</span>
+0041 <span class="comment">%      [2] N. Hernández et al., arXiv:2009.06371, (2021).</span>
+0042 <span class="comment">%</span>
+0043 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0044 <span class="comment">%Date   : 01/2021</span>
+0045 
+0046 
+0047 <span class="comment">%%%%%%%% name-value pairs arguments</span>
+0048 <span class="comment">% default values</span>
+0049 options = struct(<span class="string">'EstimationMethod'</span>, <span class="string">'bic'</span>, <span class="string">'MaxTreeHeight'</span>, floor(log(length(X))), <span class="keyword">...</span>
+0050     <span class="string">'ParameterLowerBound'</span>, 0, <span class="string">'ParameterUpperBound'</span>, 100, <span class="string">'Tolerance'</span>, 10^-5, <span class="string">'BicDegreeOfFreedom'</span>, <span class="string">'fix'</span>);
+0051 
+0052 <span class="comment">% acceptable names</span>
+0053 optionNames = fieldnames(options);
+0054 
+0055 <span class="keyword">for</span> pair = reshape(varargin, 2, [])
+0056     inpName = pair{1};
+0057     
+0058     <span class="keyword">if</span> any(strcmpi(inpName, optionNames))
+0059         
+0060         <span class="keyword">if</span> strcmpi(inpName, <span class="string">'estimationmethod'</span>)
+0061             <span class="keyword">if</span> any(strcmpi(pair{2}, {<span class="string">'bic'</span>,<span class="string">'context_empD'</span>, <span class="string">'context_cL'</span>}))
+0062                 options.(inpName) = pair{2};
+0063             <span class="keyword">else</span>
+0064                 error(<span class="string">'%s is not a recognized parameter value'</span>, pair{2})
+0065             <span class="keyword">end</span>
+0066         <span class="keyword">else</span>
+0067             options.(inpName) = pair{2};
+0068         <span class="keyword">end</span>
+0069         
+0070     <span class="keyword">else</span>
+0071         error(<span class="string">'%s is not a recognized parameter name'</span>, inpName);
+0072     <span class="keyword">end</span>
+0073 <span class="keyword">end</span>
+0074 <span class="comment">%%%%%%%%%%%%%%%%%%</span>
+0075 
+0076 l_min = options.ParameterLowerBound;
+0077 u = options.ParameterUpperBound;
+0078 tol = options.Tolerance;
+0079 max_height = options.MaxTreeHeight;
+0080 df = options.BicDegreeOfFreedom;
+0081 
+0082 lA = length(A);
+0083 
+0084 <span class="keyword">if</span> any(strcmpi(options.EstimationMethod, {<span class="string">'context_empD'</span>,<span class="string">'context_cL'</span>}))
+0085     <span class="comment">% compute the complete tree and the TEST structure only once (for speed-up)</span>
+0086     [T, I] = <a href="../../SeqROCTM/tools/completetree.html" class="code" title=" [T, I, nT] = completetree(X, max_height, A)">completetree</a>(X, max_height, A);
+0087     TEST = <a href="getTESTstructure.html" class="code" title=" TEST = getTESTstructure(T, I, la, Y)">getTESTstructure</a>(T, I, lA, Y);
+0088     ct_inf = {T, I};
+0089     
+0090     <span class="comment">%BIC-info</span>
+0091     precomputed_stats = [];
+0092 <span class="keyword">else</span>
+0093     <span class="comment">% compute the statistics Nw and Nwa used in BIC only once (for speed-up)</span>
+0094     df1 = ~strcmpi(options.BicDegreeOfFreedom,<span class="string">'fix'</span>);
+0095     [~, ~, ~, outps] = <a href="bic_WCT.html" class="code" title=" [tree, P, V, results] = bic_WCT(X, A, max_height, c, df, missing, varargin)">bic_WCT</a>(X, A, max_height, l_min, df1, 0, Y);
+0096     precomputed_stats{1} = outps.stats(:,5:6+lA-1);
+0097     precomputed_stats{2} = outps.nonExistingNodes;
+0098     precomputed_stats{3} = outps.XlengthWithoutNaN;
+0099     
+0100     <span class="comment">% ctx-info</span>
+0101     TEST = -1;
+0102     ct_inf = -1;
+0103 <span class="keyword">end</span>
+0104 
+0105 <span class="comment">% estimate the trees for the minimum and maximal value of the penalization</span>
+0106 <span class="comment">% constant</span>
+0107 [tau_l, p_l] = <a href="estimate_discreteSeqROCTM.html" class="code" title=" [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, varargin)">estimate_discreteSeqROCTM</a>(X, Y, A, <span class="string">'MaxTreeHeight'</span>, max_height, <span class="string">'EstimationMethod'</span>, options.EstimationMethod, <span class="string">'ParameterValue'</span>, l_min, <span class="string">'CtxCompleteTree'</span>, ct_inf, <span class="string">'CtxTestStructure'</span>, TEST, <span class="string">'BicDegreeOfFreedom'</span>, df, <span class="string">'BicPrecomputedStats'</span>, precomputed_stats);  
+0108 [tau_upper, p_upper] = <a href="estimate_discreteSeqROCTM.html" class="code" title=" [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, varargin)">estimate_discreteSeqROCTM</a>(X, Y, A, <span class="string">'MaxTreeHeight'</span>, max_height, <span class="string">'EstimationMethod'</span>, options.EstimationMethod, <span class="string">'ParameterValue'</span>, u, <span class="string">'CtxCompleteTree'</span>, ct_inf, <span class="string">'CtxTestStructure'</span>, TEST, <span class="string">'BicDegreeOfFreedom'</span>, df, <span class="string">'BicPrecomputedStats'</span>, precomputed_stats);
+0109 
+0110 <span class="comment">% [tau_l, p_l] = CTestimator(X, A, max_height, 'context', l_min, Y, {T, I}, TEST);</span>
+0111 <span class="comment">% [tau_upper, p_upper] = CTestimator(X, A, max_height, 'context', u, Y, {T, I}, TEST);</span>
+0112 
+0113 <span class="comment">% initialize</span>
+0114 upper_bound = u;
+0115 Trees = {}; Q = {}; ML = []; cutoff = [];
+0116 
+0117 <span class="keyword">if</span> ~isempty(tau_upper)
+0118     disp(<span class="string">'Warning: The empty tree is not obtain for the maximum value of the penalization constant given.'</span>)
+0119 <span class="keyword">end</span>
+0120 
+0121     tau_u = tau_upper;
+0122     p_u = p_upper;
+0123 
+0124     i = 1; Trees{i} = tau_l; Q{i} = p_l; ML(i) = <a href="../../SeqROCTM/tools/treeloglikelihood2.html" class="code" title=" logL = treeloglikelihood2(X, Y, tree, alphabet)">treeloglikelihood2</a>(X, Y, tau_l, A); cutoff(i) = l_min;
+0125 
+0126     <span class="comment">% estimate the different trees in the interval specified for the</span>
+0127     <span class="comment">% penalization constant</span>
+0128     <span class="keyword">while</span> ~<a href="../../SeqROCTM/tools/isequalCT.html" class="code" title=" match = isequalCT(tree1, tree2)">isequalCT</a>(tau_l, tau_upper)
+0129         <span class="keyword">while</span> abs(u - l_min) &gt; tol
+0130             <span class="keyword">while</span> ~<a href="../../SeqROCTM/tools/isequalCT.html" class="code" title=" match = isequalCT(tree1, tree2)">isequalCT</a>(tau_u, tau_l)&amp;&amp;(abs(u - l_min) &gt; tol) <span class="comment">% the second condition its necessary because for some cases,</span>
+0131                 a = u;                                               <span class="comment">% the complete tree is obtain when l_min=0 and for any value</span>
+0132                 tau_a = tau_u; p_a = p_u;                            <span class="comment">% greater than zero, a tree different from the complete tree is obtained</span>
+0133                 u = (l_min + u)/2;                                      
+0134                 [tau_u, p_u] = <a href="estimate_discreteSeqROCTM.html" class="code" title=" [contexts, Q, results] = estimate_discreteSeqROCTM(X, Y, Alphabet, varargin)">estimate_discreteSeqROCTM</a>(X, Y, A, <span class="string">'MaxTreeHeight'</span>, max_height, <span class="string">'EstimationMethod'</span>, options.EstimationMethod, <span class="string">'ParameterValue'</span>, u, <span class="string">'CtxCompleteTree'</span>, ct_inf, <span class="string">'CtxTestStructure'</span>, TEST, <span class="string">'BicDegreeOfFreedom'</span>, df, <span class="string">'BicPrecomputedStats'</span>, precomputed_stats);
+0135             <span class="keyword">end</span>
+0136             l_min = u; tau_l = tau_u;
+0137             u = a; tau_u = tau_a; p_u = p_a;
+0138         <span class="keyword">end</span>
+0139         i = i + 1;
+0140         Trees{i} = tau_u; Q{i} = p_u; cutoff(i) = u;
+0141         ML(i) = <a href="../../SeqROCTM/tools/treeloglikelihood2.html" class="code" title=" logL = treeloglikelihood2(X, Y, tree, alphabet)">treeloglikelihood2</a>(X, Y, tau_u, A);
+0142         l_min = u; tau_l = tau_u; 
+0143         u = upper_bound;
+0144         tau_u = tau_upper;  
+0145         p_u = p_upper;
+0146     <span class="keyword">end</span>
+0147 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

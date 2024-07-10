@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of bootstrap_blocks</title>
+  <meta name="keywords" content="bootstrap_blocks">
+  <meta name="description" content="Generate bootstrap samples of a CTM.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">tools</a> &gt; bootstrap_blocks.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\tools&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>bootstrap_blocks
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Generate bootstrap samples of a CTM.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> B = bootstrap_blocks(X, renewal_block, seq_length, nB) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">BOOTSTRAP_BLOCKS Generate bootstrap samples of a CTM.
+                 This function creates nB bootstrap samples from a
+                 sequence X and a renewal point of X. 
+
+ Inputs
+
+   X             : sequence  
+   renewal_point : renewal point
+   seq_length    : length of the bootstrap samples
+   nB            : number of bootstrap samples
+
+ Outputs
+
+   B             : matrix containing on each row a bootstrap sample
+
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 06/2021</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/demos/tuningContextTreeModels.html" class="code" title="">tuningContextTreeModels</a>	Examples on tuning procedures.</li><li><a href="../../SeqROCTM/model_selection/tune_SeqROCTM.html" class="code" title=" [optTree, optQ, results] = tune_SeqROCTM(X, Y, A, varargin)">tune_SeqROCTM</a>	Tune a SeqROCTM estimation algorithm.</li><li><a href="../../SeqROCTM/model_selection/tune_contextTreeModel.html" class="code" title=" [optTree, optP, results] = tune_contextTreeModel(X, A, varargin)">tune_contextTreeModel</a>	Tune a context tree estimation algorithm.</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function B = bootstrap_blocks(X, renewal_block, seq_length, nB)</a>
+0002 <span class="comment">%BOOTSTRAP_BLOCKS Generate bootstrap samples of a CTM.</span>
+0003 <span class="comment">%                 This function creates nB bootstrap samples from a</span>
+0004 <span class="comment">%                 sequence X and a renewal point of X.</span>
+0005 <span class="comment">%</span>
+0006 <span class="comment">% Inputs</span>
+0007 <span class="comment">%</span>
+0008 <span class="comment">%   X             : sequence</span>
+0009 <span class="comment">%   renewal_point : renewal point</span>
+0010 <span class="comment">%   seq_length    : length of the bootstrap samples</span>
+0011 <span class="comment">%   nB            : number of bootstrap samples</span>
+0012 <span class="comment">%</span>
+0013 <span class="comment">% Outputs</span>
+0014 <span class="comment">%</span>
+0015 <span class="comment">%   B             : matrix containing on each row a bootstrap sample</span>
+0016 <span class="comment">%</span>
+0017 <span class="comment">%</span>
+0018 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0019 <span class="comment">%Date   : 06/2021</span>
+0020 
+0021 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0022 <span class="comment">% TRICK: Avoid that all bootstrapped samples ended at the same context.</span>
+0023 <span class="comment">% This could happens when the sequence X is periodic. To avoid that, we will</span>
+0024 <span class="comment">% generated larger bootstrap samples and, randomly, cut them to the</span>
+0025 <span class="comment">% specified size.</span>
+0026 additional_length = ceil(0.3 * seq_length);
+0027 tseq_length = seq_length + additional_length;
+0028 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0029 
+0030 
+0031 lrb = length(renewal_block);
+0032 
+0033 <span class="comment">% allocate memory</span>
+0034 idx = zeros(tseq_length,1);
+0035 
+0036 <span class="comment">% find the renewal blocks in the sample. If a block appears at position 'i'</span>
+0037 <span class="comment">% the next block is searched from position 'i + lrp'</span>
+0038 lX = length(X);
+0039 nrenewals = 1;
+0040 i = 1;
+0041 <span class="keyword">while</span> i &lt;= lX - lrb
+0042      <span class="keyword">if</span> isequal(X(i:i+lrb-1), renewal_block)
+0043         idx(nrenewals) = i;
+0044         nrenewals = nrenewals + 1;
+0045         i = i + lrb;
+0046      <span class="keyword">else</span>
+0047          i = i + 1;
+0048      <span class="keyword">end</span>
+0049 <span class="keyword">end</span>
+0050 
+0051 <span class="comment">% shrink the allocated memory</span>
+0052 idx(nrenewals:end) = [];
+0053 
+0054 <span class="comment">% create the blocks using the renewal block</span>
+0055 l_idx = length(idx);
+0056 blocks = cell(l_idx-1,1);
+0057 <span class="keyword">for</span> i = 1 : l_idx-1
+0058     blocks{i} = X(idx(i):idx(i+1)-1);
+0059 <span class="keyword">end</span>
+0060 
+0061 <span class="comment">% create the bootstrap samples</span>
+0062 nblocks = length(blocks);
+0063 lblocks = cellfun(@(x) length(x), blocks);
+0064 
+0065 <span class="comment">%allocate memory</span>
+0066 tB = -1*ones(nB, tseq_length + max(lblocks));
+0067 
+0068 <span class="keyword">for</span> b = 1 : nB
+0069     nseq = 0;
+0070     <span class="comment">% draw randomly a block and concatenate until the sequence has the</span>
+0071     <span class="comment">% required length</span>
+0072     <span class="keyword">while</span> nseq &lt; tseq_length
+0073         blk = randi(nblocks);
+0074         tB(b, nseq+1 : nseq+lblocks(blk)) = blocks{blk};
+0075         nseq = nseq + lblocks(blk);
+0076     <span class="keyword">end</span>
+0077 <span class="keyword">end</span>
+0078 <span class="comment">%shrink the allocated memory</span>
+0079 tB(:,tseq_length+1:end) = [];
+0080 
+0081 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0082 <span class="comment">% TRICK - end: Randomly choose where to cut the sequences</span>
+0083 B = zeros(nB, seq_length);
+0084 
+0085 rand_positions = randi(additional_length, nB, 1);
+0086 <span class="keyword">for</span> b = 1 : nB
+0087     B(b,:) = tB(b, rand_positions(b)+1 : seq_length+rand_positions(b));
+0088 <span class="keyword">end</span>
+0089 <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span>
+0090</pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>

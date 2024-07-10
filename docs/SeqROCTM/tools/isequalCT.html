@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+                "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <title>Description of isequalCT</title>
+  <meta name="keywords" content="isequalCT">
+  <meta name="description" content="Determine if two context trees are equal.">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="generator" content="m2html v1.5 &copy; 2003-2005 Guillaume Flandin">
+  <meta name="robots" content="index, follow">
+  <link type="text/css" rel="stylesheet" href="../../m2html.css">
+</head>
+<body>
+<a name="_top"></a>
+<div><a href="../../index.html">Home</a> &gt;  <a href="../index.html">SeqROCTM</a> &gt; <a href="index.html">tools</a> &gt; isequalCT.m</div>
+
+<!--<table width="100%"><tr><td align="left"><a href="../../index.html"><img alt="<" border="0" src="../../left.png">&nbsp;Master index</a></td>
+<td align="right"><a href="index.html">Index for SeqROCTM\tools&nbsp;<img alt=">" border="0" src="../../right.png"></a></td></tr></table>-->
+
+<h1>isequalCT
+</h1>
+
+<h2><a name="_name"></a>PURPOSE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong>Determine if two context trees are equal.</strong></div>
+
+<h2><a name="_synopsis"></a>SYNOPSIS <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="box"><strong> match = isequalCT(tree1, tree2) </strong></div>
+
+<h2><a name="_description"></a>DESCRIPTION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre class="comment">ISEQUALCT Determine if two context trees are equal.
+          (based only in the comparison of the contexts)
+
+ Inputs
+
+   tree1 : first context tree 
+   tree2 : second context tree
+
+ Outputs
+
+   match : true if the context tree are equal, false otherwise
+
+Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)
+Date   : 02/2019</pre></div>
+
+<!-- crossreference -->
+<h2><a name="_cross"></a>CROSS-REFERENCE INFORMATION <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+This function calls:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+</ul>
+This function is called by:
+<ul style="list-style-image:url(../../matlabicon.gif)">
+<li><a href="../../SeqROCTM/demos/simulationsAnnApplStat.html" class="code" title="">simulationsAnnApplStat</a>	Similations from A. Galves et. al., Ann. Appl. Stat., Volume 6, Number 1 (2012), 186-209</li><li><a href="../../SeqROCTM/demos/tuningContextTreeModels.html" class="code" title="">tuningContextTreeModels</a>	Examples on tuning procedures.</li><li><a href="../../SeqROCTM/model_selection/estimate_championTrees.html" class="code" title=" [Trees, P, ML, cutoff] = estimate_championTrees(X, A, varargin)">estimate_championTrees</a>	Compute the Champion Trees.</li><li><a href="../../SeqROCTM/model_selection/estimate_championTrees2.html" class="code" title=" [Trees, Q, ML, cutoff] = estimate_championTrees2(X, Y, A, varargin)">estimate_championTrees2</a>	Compute the Champion Trees.</li></ul>
+<!-- crossreference -->
+
+
+
+<h2><a name="_source"></a>SOURCE CODE <a href="#_top"><img alt="^" border="0" src="../../up.png"></a></h2>
+<div class="fragment"><pre>0001 <a name="_sub0" href="#_subfunctions" class="code">function match = isequalCT(tree1, tree2)</a>
+0002 <span class="comment">%ISEQUALCT Determine if two context trees are equal.</span>
+0003 <span class="comment">%          (based only in the comparison of the contexts)</span>
+0004 <span class="comment">%</span>
+0005 <span class="comment">% Inputs</span>
+0006 <span class="comment">%</span>
+0007 <span class="comment">%   tree1 : first context tree</span>
+0008 <span class="comment">%   tree2 : second context tree</span>
+0009 <span class="comment">%</span>
+0010 <span class="comment">% Outputs</span>
+0011 <span class="comment">%</span>
+0012 <span class="comment">%   match : true if the context tree are equal, false otherwise</span>
+0013 <span class="comment">%</span>
+0014 <span class="comment">%Author : Noslen Hernandez (noslen.hernandez-gonzalez@inrae.fr), Aline Duarte (alineduarte@usp.br)</span>
+0015 <span class="comment">%Date   : 02/2019</span>
+0016 
+0017 match = false;
+0018 
+0019 l = length(tree1);
+0020 <span class="keyword">if</span> (l == length(tree2))
+0021     
+0022     match = true;
+0023     ctx1 = 1;
+0024     <span class="keyword">while</span> (match)&amp;&amp;(ctx1 &lt;= l)
+0025         ctx2 = 1;
+0026         found = false;
+0027         <span class="keyword">while</span> (~found)&amp;&amp;(ctx2 &lt;= l)
+0028             found = isequal(tree1{ctx1}, tree2{ctx2});
+0029             ctx2 = ctx2 + 1;
+0030         <span class="keyword">end</span>
+0031         match = found;
+0032         ctx1 = ctx1 + 1;
+0033     <span class="keyword">end</span> 
+0034 <span class="keyword">end</span>
+0035 
+0036 <span class="keyword">end</span></pre></div>
+<hr><address>Generated on Wed 10-Jul-2024 11:18:52 by <strong><a href="http://www.artefact.tk/software/matlab/m2html/" title="Matlab Documentation in HTML">m2html</a></strong> &copy; 2005</address>
+</body>
+</html>
